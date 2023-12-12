@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Listar Contratos Mãe</title>
+  </head>
+  <body>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID CONTRATO Mãe:</th>
+          <th>ID CLIENTE:</th>
+          <th>ID FACTORING:</th>
+          <th>VALIDADE CONTRATO:</th>
+          <th>DATA CADASTRO:</th>
+        </tr>
+      </thead>
+      <body>
+        {% for i in contratomae %}
+        <tr>
+          <td>{{i.cma_id}}</td>
+          <td>{{i.cli_id}}</td>
+          <td>{{i.fac_id}}</td>
+          <td>{{i.cma_validadecontrato}}</td>
+          <td>{{i.cma_datacadastro}}</td>
+          
+          <td>
+            <form method="post" action="{% url 'gerar_contrato_word' i.cma_id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary">Gerar Word</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </body>
+    </table>
+    <a href="{% url 'inserir_contratomae' %}"> <button class="btn btn-primary">Cadastrar Contrato Mãe</button></a>
+  </body>
+</html>

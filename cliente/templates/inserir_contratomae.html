@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Contrato Mãe</title>
+</head>
+<body>
+    <h1>Gerar Contrato Mãe</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="cma_id">ID Contrato Mãe:</label>
+        <input type="text" name="cma_id" value="{{ clientes.cma_id }}" required>
+
+        <label for="cli_id">ID Cliente:</label>
+        <input type="text" name="cli_id" value="{{ clientes.cli_id }}" required>
+
+        <label for="fac_id">ID Factoring:</label>
+        <input type="text" name="fac_id" value="{{ clientes.fac_id }}" required>     
+    
+        <!-- criado para trazer a data de vencimento automáticamente -->
+        <label for="{{ form.cma_validadecontrato.id_for_label }}">Validade Contrato:</label>
+        {{ form.cma_validadecontrato }}
+
+        <!-- criado para trazer a data de cadastro automáticamente -->
+        <label for="{{ form.cma_datacadastro.id_for_label }}">Data Cadastro:</label>
+        {{ form.cma_datacadastro }}
+
+        <button type="submit">Salvar</button>        
+
+    </form>
+</body>
+</html>

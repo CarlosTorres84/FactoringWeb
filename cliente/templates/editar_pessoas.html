@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pessoa</title>
+</head>
+<body>
+    <h1>Editar Pessoa</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="pes_id">ID PESSOA:</label>
+        <input type="text" name="pes_id" value="{{ pessoas.pes_id }}" required>
+
+        <label for="pes_nome">NOME:</label>
+        <input type="text" name="pes_nome" value="{{ pessoas.pes_nome }}" required>
+
+        <label for="pes_cpf">CPF:</label>
+        <input type="text" name="pes_cpf" value="{{ pessoas.pes_cpf }}" required>
+
+        <label for="pes_rg">RG:</label>
+        <input type="text" name="pes_rg" value="{{ pessoas.pes_rg }}" required>
+
+        <label for="pes_estadocivil">ESTADO CIVÍL:</label>
+        <input type="text" name="pes_estadocivil" value="{{ pessoas.pes_estadocivil}}" required>
+
+        <label for="pes_nacionalidade">NACIONALIDADE:</label>
+        <input type="text" name="pes_nacionalidade" value="{{ pessoas.pes_nacionalidade }}" required>
+
+        <label for="pes_email1">E-mail 1:</label>
+        <input type="text" name="pes_email1" value="{{ pessoas.pes_email1 }}" required>
+
+        <label for="pes_email2">E-mail2:</label>
+        <input type="text" name="pes_email2" value="{{ pessoas.pes_email2 }}" required>
+
+        <label for="pes_telefone1">Telefone 1:</label>
+        <input type="text" name="pes_telefone1" value="{{ pessoas.pes_telefone1 }}" required>
+
+        <label for="pes_telefone2">Telefone2:</label>
+        <input type="text" name="pes_telefone2" value="{{ pessoas.pes_telefone2 }}" required>
+
+        <label for="pes_profissao">PROFISSÃO:</label>
+        <input type="text" name="pes_profissao" value="{{ pessoas.pes_profissao }}" required>
+
+        <label for="pes_enderereco">Endereço:</label>
+        <input type="text" name="pes_enderereco" value="{{ pessoas.pes_enderereco }}" required>
+
+        <label for="pes_complementoenderereco">Complemento:</label>
+        <input type="text" name="pes_complementoenderereco" value="{{ pessoas.pes_complementoenderereco }}" required>
+
+        <label for="pes_cep">CEP:</label>
+        <input type="text" name="pes_cep" value="{{ pessoas.pes_cep }}" required>
+
+        <label for="pes_bairro">Bairro:</label>
+        <input type="text" name="pes_bairro" value="{{ pessoas.pes_bairro }}" required>
+
+        <label for="pes_cidade">Cidade:</label>
+        <input type="text" name="pes_cidade" value="{{ pessoas.pes_cidade }}" required>
+
+        <label for="pes_estado">Estado:</label>
+        <input type="text" name="pes_estado" value="{{ pessoas.pes_estado }}" required>
+
+        <label for="pes_datacadastro">Data Cadastro:</label>
+        <input type="date" name="pes_datacadastro" value="{{ pessoas.pes_datacadastro|date:'Y-m-d' }}" required>
+
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+{% load meus_filtros %}
+<html lang = "pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Pessoas</title>
+<body>
+    <main class="container">
+    <form method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            {{form.pes_id.erros}}
+            <label> ID : </label>
+            {{form.pes_id|addclass:'form-control'}}
+        </div>
+        
+        <div class="form-group">
+            {{form.pes_nome.erros}}
+            <label> NOME : </label>
+            {{form.pes_nome|addclass:'form-control'}}
+        </div>
+        
+        <div class="form-group">
+            {{form.pes_cpf.erros}}
+            <label> CPF : </label>
+            {{form.pes_cpf|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_rg.erros}}
+            <label> RG : </label>
+            {{form.pes_rg|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_estadocivil.erros}}
+            <label> ESTADO CIVIL: </label>
+            {{form.pes_estadocivil|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_nacionalidade.erros}}
+            <label> NACIONALIDADE: </label>
+            {{form.pes_nacionalidade|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_email1.erros}}
+            <label> EMAIL 1: </label>
+            {{form.pes_email1|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_email2.erros}}
+            <label> EMAIL 2: </label>
+            {{form.pes_email2|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_telefone1.erros}}
+            <label> TELEFONE 1: </label>
+            {{form.pes_telefone1|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_telefone2.erros}}
+            <label> TELEFONE 2: </label>
+            {{form.pes_telefone2|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_profissao.erros}}
+            <label> PROFISSÃO: </label>
+            {{form.pes_profissao|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_enderereco.erros}}
+            <label> ENDEREÇO: </label>
+            {{form.pes_enderereco|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_complementoenderereco.erros}}
+            <label> COMPLEMENTO : </label>
+            {{form.pes_complementoenderereco|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_cep.erros}}
+            <label> CEP : </label>
+            {{form.pes_cep|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_bairro.erros}}
+            <label> BAIRRO : </label>
+            {{form.pes_bairro|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_cidade.erros}}
+            <label> CIDADE : </label>
+            {{form.pes_cidade|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_estado.erros}}
+            <label> ESTADO : </label>
+            {{form.pes_estado|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_id.erros}}
+            <label> ID CLIENTE : </label>
+            {{form.cli_id|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.fac_id.erros}}
+            <label> ID FACTORING : </label>
+            {{form.fac_id|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_tipopessoa.erros}}
+            <label> TIPO PESSOA : </label>
+            {{form.pes_tipopessoa|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.pes_datacadastro.erros}}
+            <label> DATA DE CADASTRO : </label>
+            {{form.pes_datacadastro|addclass:'form-control'}}
+        </div>
+
+        <div>
+            <input type="submit" name="Cadastrar Pessoa">
+        </div>
+    </form>
+    </main>
+</body>
+</head>    
+</html>

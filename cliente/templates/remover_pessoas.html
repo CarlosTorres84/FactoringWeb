@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remover Cliente</title>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+          Remover Cliente Abaixo?
+        </div>
+        <div class="card-body"></div>
+          <h5 class="card-title">ID CLIENTE: {{clientes.cli_id}}</h5>
+          <h5 class="card-title">RAZÃO SOCIAL: {{clientes.cli_razaosocial}}</h5>
+          <h5 class="card-title">NOME FANTASIA: {{clientes.cli_nomefantasia}}</h5>
+          <h5 class="card-title">CNPJ: {{clientes.cli_cnpj}}</h5>
+          <h5 class="card-title">INSCRIÇÃO MUNICIPAL: {{clientes.cli_im}}</h5>
+          <h5 class="card-title">INSCRIÇÃO ESTADUAL: {{clientes.cli_ie}}</h5>
+          <h5 class="card-title">E-MAIL: {{clientes.cli_email1}}</h5>
+          <h5 class="card-title">E-MAIL: {{clientes.cli_email2}}</h5>
+          <h5 class="card-title">TELEFONE: {{clientes.cli_telefone1}}</h5>
+          <h5 class="card-title">TELEFONE: {{clientes.cli_telefone2}}</h5>
+          <h5 class="card-title">ENDEREÇO: {{clientes.cli_endereco}}</h5>
+          <h5 class="card-title">COMPLEMENTO: {{clientes.cli_complementoendereco}}</h5>
+          <h5 class="card-title">CEP: {{clientes.cli_cep}}</h5>
+          <h5 class="card-title">BAIRRO: {{clientes.cli_bairro}}</h5>
+          <h5 class="card-title">CIDADE: {{clientes.cli_cidade}}</h5>
+          <h5 class="card-title">ESTADO: {{clientes.cli_estado}}</h5>
+          <h5 class="card-title">TAXA DE COMPRA %: {{clientes.cli_taxacompra}}</h5>
+          <h5 class="card-title">MULTA: {{clientes.cli_multa}}</h5>
+          <h5 class="card-title">JUROS: {{clientes.cli_juros}}</h5>
+          <h5 class="card-title">TAXA RECOMPRA $: {{clientes.cli_taxarecompra}}</h5>
+          <h5 class="card-title">VALOR TOTAL OPERAÇÃO: {{clientes.cli_valortotaloperacao}}</h5>
+          <h5 class="card-title">DATA CADASTRO: {{clientes.cli_datacadastro}}</h5>
+        </div>
+      </div>
+          <form method="post">
+              {% csrf_token %}
+              <button class="btn btn-danger" type="submit">Remover</button>
+          </form>
+  </body>
+  </html> 
+          

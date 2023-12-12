@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remover Factoring</title>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+          Remover Factoring Abaixo?
+        </div>
+        <div class="card-body"></div>
+          <h5 class="card-title">ID CLIENTE: {{clientes.fac_id}}</h5>
+          <h5 class="card-title">RAZÃO SOCIAL: {{clientes.fac_razaosocial}}</h5>
+          <h5 class="card-title">NOME FANTASIA: {{clientes.fac_nomefantasia}}</h5>
+          <h5 class="card-title">CNPJ: {{clientes.fac_cnpj}}</h5>
+          <h5 class="card-title">INSCRIÇÃO MUNICIPAL: {{clientes.fac_im}}</h5>
+          <h5 class="card-title">INSCRIÇÃO ESTADUAL: {{clientes.fac_ie}}</h5>
+          <h5 class="card-title">E-MAIL: {{clientes.fac_email1}}</h5>
+          <h5 class="card-title">E-MAIL: {{clientes.fac_email2}}</h5>
+          <h5 class="card-title">TELEFONE: {{clientes.fac_telefone1}}</h5>
+          <h5 class="card-title">TELEFONE: {{clientes.fac_telefone2}}</h5>
+          <h5 class="card-title">ENDEREÇO: {{clientes.fac_endereco}}</h5>
+          <h5 class="card-title">COMPLEMENTO: {{clientes.fac_complementoendereco}}</h5>
+          <h5 class="card-title">CEP: {{clientes.fac_cep}}</h5>
+          <h5 class="card-title">BAIRRO: {{clientes.fac_bairro}}</h5>
+          <h5 class="card-title">CIDADE: {{clientes.fac_cidade}}</h5>
+          <h5 class="card-title">ESTADO: {{clientes.fac_estado}}</h5>
+          <h5 class="card-title">TAXA DE COMPRA %: {{clientes.fac_taxacompra}}</h5>
+          <h5 class="card-title">IOF %: {{clientes.fac_iof}}</h5>
+          <h5 class="card-title">IOF ADICIONAL %: {{clientes.fac_iofadicional}}</h5>
+          <h5 class="card-title">PIS %: {{clientes.fac_pis}}</h5>
+          <h5 class="card-title">COFINS %: {{clientes.fac_cofins}}</h5>
+          <h5 class="card-title">FLOAT %: {{clientes.fac_float}}</h5>
+          <h5 class="card-title">MULTA: {{clientes.fac_multa}}</h5>
+          <h5 class="card-title">JUROS: {{clientes.fac_juros}}</h5>
+          <h5 class="card-title">TAXA RECOMPRA $: {{clientes.fac_taxarecompra}}</h5>
+          <h5 class="card-title">VALOR TOTAL OPERAÇÃO: {{clientes.fac_valortotaloperacao}}</h5>
+          <h5 class="card-title">DATA CADASTRO: {{clientes.fac_datacadastro}}</h5>
+        </div>
+      </div>
+          <form method="post">
+              {% csrf_token %}
+              <button class="btn btn-danger" type="submit">Remover</button>
+          </form>
+  </body>
+  </html> 
+          

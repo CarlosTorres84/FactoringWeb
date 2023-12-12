@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Listar Clientes</title>
+    <link rel="stylesheet" href="style.css" % />
+  </head>
+  <body>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID CLIENTE:</th>
+          <th>RAZÃO SOCIAL:</th>
+          <th>NOME FANTASIA:</th>
+          <th>CNPJ:</th>
+          <th>INSCRIÇÃO MUNICIPAL:</th>
+          <th>INSCRIÇÃO ESTADUAL:</th>
+          <th>E-MAIL:</th>
+          <th>E-MAIL:</th>
+          <th>TELEFONE:</th>
+          <th>TELEFONE:</th>
+          <th>ENDEREÇO:</th>
+          <th>COMPLEMENTO:</th>
+          <th>CEP:</th>
+          <th>BAIRRO:</th>
+          <th>CIDADE:</th>
+          <th>ESTADO:</th>
+          <th>TAXA DE COMPRA %:</th>
+          <th>MULTA:</th>
+          <th>JUROS:</th>
+          <th>TAXA RECOMPRA $:</th>
+          <th>VALOR TOTAL OPERAÇÃO:</th>
+          <th>DATA CADASTRO:</th>
+        </tr>
+      </thead>
+      <body>
+        {% for i in clientes %}
+        <tr>
+          <td>{{i.cli_id}}</td>
+          <td>{{i.cli_razaosocial}}</td>
+          <td>{{i.cli_nomefantasia}}</td>
+          <td>{{i.cli_cnpj}}</td>
+          <td>{{i.cli_im}}</td>
+          <td>{{i.cli_ie}}</td>
+          <td>{{i.cli_email1}}</td>
+          <td>{{i.cli_email2}}</td>
+          <td>{{i.cli_telefone1}}</td>
+          <td>{{i.cli_telefone2}}</td>
+          <td>{{i.cli_enderereco}}</td>
+          <td>{{i.cli_complementoenderereco}}</td>
+          <td>{{i.cli_cep}}</td>
+          <td>{{i.cli_bairro}}</td>
+          <td>{{i.cli_cidade}}</td>
+          <td>{{i.cli_estado}}</td>
+          <td>{{i.cli_taxacompra}}</td>
+          <td>{{i.cli_multa}}</td>
+          <td>{{i.cli_juros}}</td>
+          <td>{{i.cli_taxarecompra}}</td>
+          <td>{{i.cli_valortotaloperacao}}</td>
+          <td>{{i.cli_datacadastro}}</td>
+          <td>
+            <a href="{% url 'editar_clientes' i.cli_id %}">Editar</a>
+            <a href="{% url 'editar_clientes2' i.cli_id %}">Editar 2</a>
+            <a href="{% url 'remover_clientes' i.cli_id %}">Remover</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </body>
+    </table>
+    <a href="{% url 'inserir_clientes' %}"> <button class="btn btn-primary">Cadastrar Clientes</button></a>
+  </body>
+</html>

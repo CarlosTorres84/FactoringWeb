@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    
+</head>
+<body>
+<table class="tables">
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        {{form_login.username.errors}}
+        <label>UserName: </label>
+        {{form_logins.username}}
+    </div>
+    <div class="form-group">
+        {{form_login.password.errors}}
+        <label>Senha: </label>
+        {{form_logins.password}}
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Enviar" class="btn btn-primary">
+    </div>
+</form>
+</table>
+</body>

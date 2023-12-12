@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Factoring</title>
+</head>
+<body>
+    <h1>Editar Factoring</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="fac_id">ID CLIENTE:</label>
+        <input type="text" name="fac_id" value="{{ clientes.fac_id }}" required>
+        
+        <label for="fac_razaosocial">Razão Social:</label>
+        <input type="text" name="fac_razaosocial" value="{{ clientes.fac_razaosocial }}" required>
+
+        <label for="fac_nomefantasia">Nome Fantasia:</label>
+        <input type="text" name="fac_nomefantasia" value="{{ clientes.fac_nomefantasia }}" required>
+
+        <label for="fac_cnpj">CNPJ:</label>
+        <input type="text" name="fac_cnpj" value="{{ clientes.fac_cnpj }}" required>
+
+        <label for="fac_im">Inscrição Municipal:</label>
+        <input type="text" name="fac_im" value="{{ clientes.fac_im}}" required>
+
+        <label for="fac_ie">Inscrição Estadual:</label>
+        <input type="text" name="fac_ie" value="{{ clientes.fac_ie }}" required>
+
+        <label for="fac_email1">E-mail:</label>
+        <input type="text" name="fac_email1" value="{{ clientes.fac_email1 }}" required>
+
+        <label for="fac_email2">E-mail2:</label>
+        <input type="text" name="fac_email2" value="{{ clientes.fac_email2 }}" required>
+
+        <label for="fac_telefone1">Telefone:</label>
+        <input type="text" name="fac_telefone1" value="{{ clientes.fac_telefone1 }}" required>
+
+        <label for="fac_telefone2">Telefone2:</label>
+        <input type="text" name="fac_telefone2" value="{{ clientes.fac_telefone2 }}" required>
+
+        <label for="fac_enderereco">Endereço:</label>
+        <input type="text" name="fac_enderereco" value="{{ clientes.fac_enderereco }}" required>
+
+        <label for="fac_complementoenderereco">Complemento:</label>
+        <input type="text" name="fac_complementoenderereco" value="{{ clientes.fac_complementoenderereco }}" required>
+
+        <label for="fac_cep">CEP:</label>
+        <input type="text" name="fac_cep" value="{{ clientes.fac_cep }}" required>
+
+        <label for="fac_bairro">Bairro:</label>
+        <input type="text" name="fac_bairro" value="{{ clientes.fac_bairro }}" required>
+
+        <label for="fac_cidade">Cidade:</label>
+        <input type="text" name="fac_cidade" value="{{ clientes.fac_cidade }}" required>
+
+        <label for="fac_estado">Estado:</label>
+        <input type="text" name="fac_estado" value="{{ clientes.fac_estado }}" required>
+
+        <label for="fac_taxacompra">Taxa de Compra %:</label>
+        <input type="text" name="fac_taxacompra" value="{{ clientes.fac_taxacompra }}" required>
+
+        <label for="fac_iof">IOF %:</label>
+        <input type="text" name="fac_iof" value="{{ clientes.fac_iof }}" required>
+
+        <label for="fac_iofadicional">IOF Adicional %:</label>
+        <input type="text" name="fac_iofadicional" value="{{ clientes.fac_iofadicional }}" required>
+
+        <label for="fac_pis">Pis %:</label>
+        <input type="text" name="fac_pis" value="{{clientes.fac_pis }}" required>
+
+        <label for="fac_cofins">Cofins %:</label>
+        <input type="text" name="fac_cofins" value="{{clientes.fac_cofins }}" required>
+
+        <label for="fac_float">Float:</label>
+        <input type="text" name="fac_float" value="{{clientes.fac_float }}" required>
+
+        <label for="fac_multa">Multa %:</label>
+        <input type="text" name="fac_multa" value="{{ clientes.fac_multa }}" required>
+
+        <label for="fac_juros">Juros %:</label>
+        <input type="text" name="fac_juros" value="{{ clientes.fac_juros }}" required>
+
+        <label for="fac_taxarecompra">Taxa Recompra $:</label>
+        <input type="text" name="fac_taxarecompra" value="{{ clientes.fac_taxarecompra }}" required>
+
+        <label for="fac_valortotaloperacao">Valor Total Operação:</label>
+        <input type="text" name="fac_valortotaloperacao" value="{{ clientes.fac_valortotaloperacao }}" required>
+
+        <label for="fac_datacadastro">Data Cadastro:</label>
+        <input type="date" name="fac_datacadastro" value="{{ clientes.fac_datacadastro|date:'Y-m-d' }}" required>
+
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

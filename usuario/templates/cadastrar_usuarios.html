@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Usuario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    
+</head>
+<body>
+<table class="tables">
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        {{form_usuarios.username.errors}}
+        <label>UserName: </label>
+        {{form_usuarios.username}}
+    </div>
+    <div class="form-group">
+        {{form_usuarios.password1.errors}}
+        <label>Senha: </label>
+        {{form_usuarios.password1}}
+    </div>
+    <div class="form-group">
+        {{form_usuarios.password2.errors}}
+        <label>Confirmar a Senha: </label>
+        {{form_usuarios.password2}}
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Cadastrar" class="btn btn-primary">
+    </div>
+</form>
+</table>

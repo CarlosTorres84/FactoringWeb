@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+{% load meus_filtros %}
+<html lang = "pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Clientes</title>
+<body>
+    <main class="container">
+    <form method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            {{form.cli_id.erros}}
+            <label> ID CLIENTE: </label>
+            {{form.cli_id|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_razaosocial.erros}}
+            <label> RAZÃO SOCIAL: </label>
+            {{form.cli_razaosocial|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_nomefantasia.erros}}
+            <label> NOME FANTASIA: </label>
+            {{form.cli_nomefantasia|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_cnpj.erros}}
+            <label> CNPJ: </label>
+            {{form.cli_cnpj|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_im.erros}}
+            <label> INSCRIÇÃO MUNICIPAL: </label>
+            {{form.cli_im|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_ie.erros}}
+            <label> INSCRIÇÃO ESTADUAL: </label>
+            {{form.cli_ie|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_email1.erros}}
+            <label> E-MAIL: </label>
+            {{form.cli_email1|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_email2.erros}}
+            <label> E-MAIL2: </label>
+            {{form.cli_email2|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_telefone1.erros}}
+            <label> TELEFONE: </label>
+            {{form.cli_telefone1|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_telefone2.erros}}
+            <label> TELEFONE2: </label>
+            {{form.cli_telefone2|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_enderereco.erros}}
+            <label> ENDEREÇO: </label>
+            {{form.cli_enderereco|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_complementoenderereco.erros}}
+            <label> COMPLEMENTO: </label>
+            {{form.cli_complementoenderereco|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_cep.erros}}
+            <label> CEP: </label>
+            {{form.cli_cep|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_bairro.erros}}
+            <label> BAIRRO: </label>
+            {{form.cli_bairro|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_cidade.erros}}
+            <label> CIDADE: </label>
+            {{form.cli_cidade|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_estado.erros}}
+            <label> ESTADO: </label>
+            {{form.cli_estado|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_taxacompra.erros}}
+            <label> TAXA DE COMPRA %: </label>
+            {{form.cli_taxacompra|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_multa.erros}}
+            <label> MULTA %: </label>
+            {{form.cli_multa|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_juros.erros}}
+            <label> JUROS %: </label>
+            {{form.cli_juros|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_taxarecompra.erros}}
+            <label> TAXA RECOMPRA $: </label>
+            {{form.cli_taxarecompra|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_valortotaloperacao.erros}}
+            <label> VALOR TOTAL OPERAÇÃO: </label>
+            {{form.cli_valortotaloperacao|addclass:'form-control'}}
+        </div>
+
+        <div class="form-group">
+            {{form.cli_datacadastro.erros}}
+            <label> DATA CADASTRO: </label>
+            {{form.cli_datacadastro|addclass:'form-control'}}
+        </div>
+        
+        <div>
+            <input type="submit" name="Cadastrar Cliente">
+        </div>
+    </form>
+    </main>
+</body>
+</head>    
+</html>

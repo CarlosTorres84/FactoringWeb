@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Listar Factorings</title>
+    <link rel="stylesheet" href="style.css" % />
+  </head>
+  <body>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID CLIENTE:</th>
+          <th>RAZÃO SOCIAL:</th>
+          <th>NOME FANTASIA:</th>
+          <th>CNPJ:</th>
+          <th>INSCRIÇÃO MUNICIPAL:</th>
+          <th>INSCRIÇÃO ESTADUAL:</th>
+          <th>E-MAIL:</th>
+          <th>E-MAIL:</th>
+          <th>TELEFONE:</th>
+          <th>TELEFONE:</th>
+          <th>ENDEREÇO:</th>
+          <th>COMPLEMENTO:</th>
+          <th>CEP:</th>
+          <th>BAIRRO:</th>
+          <th>CIDADE:</th>
+          <th>ESTADO:</th>
+          <th>TAXA DE COMPRA %:</th>
+          <th>IOF %:</th>
+          <th>IOF ADICIONAL %:</th>
+          <th>PIS %:</th>
+          <th>COFINS %:</th>
+          <th>FLOAT %:</th>
+          <th>MULTA:</th>
+          <th>JUROS:</th>
+          <th>TAXA RECOMPRA $:</th>
+          <th>VALOR TOTAL OPERAÇÃO:</th>
+          <th>DATA CADASTRO:</th>
+        </tr>
+      </thead>
+      <body>
+        {% for i in clientes %}
+        <tr>
+          <td>{{i.fac_id}}</td>
+          <td>{{i.fac_razaosocial}}</td>
+          <td>{{i.fac_nomefantasia}}</td>
+          <td>{{i.fac_cnpj}}</td>
+          <td>{{i.fac_im}}</td>
+          <td>{{i.fac_ie}}</td>
+          <td>{{i.fac_email1}}</td>
+          <td>{{i.fac_email2}}</td>
+          <td>{{i.fac_telefone1}}</td>
+          <td>{{i.fac_telefone2}}</td>
+          <td>{{i.fac_enderereco}}</td>
+          <td>{{i.fac_complementoenderereco}}</td>
+          <td>{{i.fac_cep}}</td>
+          <td>{{i.fac_bairro}}</td>
+          <td>{{i.fac_cidade}}</td>
+          <td>{{i.fac_estado}}</td>
+          <td>{{i.fac_taxacompra}}</td>
+          <td>{{i.fac_iof}}</td>
+          <td>{{i.fac_iofadicional}}</td>
+          <td>{{i.fac_pis}}</td>
+          <td>{{i.fac_cofins}}</td>
+          <td>{{i.fac_float}}</td>
+          <td>{{i.fac_multa}}</td>
+          <td>{{i.fac_juros}}</td>
+          <td>{{i.fac_taxarecompra}}</td>
+          <td>{{i.fac_valortotaloperacao}}</td>
+          <td>{{i.fac_datacadastro}}</td>
+          <td>
+            <a href="{% url 'editar_factorings' i.fac_id %}">Editar</a>
+            <a href="{% url 'editar_factorings2' i.fac_id %}">Editar 2</a>
+            <a href="{% url 'remover_factorings' i.fac_id %}">Remover</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </body>
+    </table>
+    <a href="{% url 'inserir_factorings' %}"> <button class="btn btn-primary">Cadastrar Factorings</button></a>
+  </body>
+</html>
