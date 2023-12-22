@@ -11,14 +11,14 @@
         {% csrf_token %}
 
         <label for="cma_id">ID Contrato Mãe:</label>
-        <input type="text" name="cma_id" value="{{ clientes.cma_id }}" required>
+        <input type="text" name="cma_id" value="{{ form.instance.cma_id }}" required>
 
         <label for="cli_id">ID Cliente:</label>
-        <input type="text" name="cli_id" value="{{ clientes.cli_id }}" required>
+        <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required>
 
         <label for="fac_id">ID Factoring:</label>
-        <input type="text" name="fac_id" value="{{ clientes.fac_id }}" required>     
-    
+        <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required>
+        
         <!-- criado para trazer a data de vencimento automáticamente -->
         <label for="{{ form.cma_validadecontrato.id_for_label }}">Validade Contrato:</label>
         {{ form.cma_validadecontrato }}
@@ -28,7 +28,6 @@
         {{ form.cma_datacadastro }}
 
         <button type="submit">Salvar</button>        
-
     </form>
 </body>
 </html>

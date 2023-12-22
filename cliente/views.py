@@ -249,7 +249,7 @@ def gerar_contrato_word(request, cma_id):
     pessoas_associadas_re = Dpessoas.objects.filter(cli_id_id=contrato.cli_id.cli_id, pes_tipopessoa='RE')
     pessoas_associadas_rs = Dpessoas.objects.filter(cli_id_id=contrato.cli_id.cli_id, pes_tipopessoa='RS')
     pessoas_associadas_rt = Dpessoas.objects.filter(fac_id_id=contrato.fac_id.fac_id, pes_tipopessoa='RT')
-    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\modelo.docx"  
+    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\ContratoPadrao.docx"
     # Formatação vencimento
     data_validade_contrato = contrato.cma_validadecontrato
     validade_formatada = data_validade_contrato.strftime('%d/%m/%Y')
@@ -355,4 +355,296 @@ def gerar_contrato_word(request, cma_id):
     with open(output_path, 'rb') as doc_file:
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
         response['Content-Disposition'] = f'attachment; filename=CONTRATO FOMENTO MERCANTIL - {cma_id}.docx'
+    return response
+def editar_contratomae2(request, id):
+    contratomae=Dcontratomae.objects.get(cma_id=id)
+    form = DcontratomaeForm(request.POST or None, instance=contratomae)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_contratomae')
+    return render(request,'inserir_contratomae.html', {'form':form})
+
+def inserir_simulacao(request):
+    if request.method == 'POST':
+        form = DsimulacaoForm(request.POST)
+        if form.is_valid():
+            nova_simulacao = form.save()
+            # Obtém o ID da nova_simulacao
+            novo_id = nova_simulacao.sim_id
+            # Redireciona para 'listar_simulacaoid' com o novo ID
+            return redirect('listar_simulacaoid', id=novo_id)
+    else:
+        form = DsimulacaoForm()
+    return render(request, 'inserir_simulacao.html', {'form': form})
+def listar_simulacao(request):
+    simulacao=Dsimulacao.objects.all()
+    return render(request, 'listar_simulacao.html', {'simulacao':simulacao})
+def listar_simulacaocopy(request):
+    simulacao=Dsimulacao.objects.all()
+    return render(request, 'listar_simulacaocopy.html', {'simulacao':simulacao})
+def listar_simulacaoid(request, id):
+    simulacao_id=Dsimulacao.objects.get(sim_id=id)
+    return render(request, 'listar_simulacaoid.html', {'simulacao_id':simulacao_id})
+def gerar_simulacao_word(request, sim_id):
+    simulacao = Dsimulacao.objects.get(sim_id=sim_id)
+    cliente_associado = simulacao.cli_id
+    factoring_associado = simulacao.fac_id
+    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\SimulacaoPadrao.docx"     
+    # Caminho de saída do documento gerado
+    output_path = f"SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx"
+    doc = DocxTemplate(template_path)
+    # Defina os dados a serem inseridos no modelo
+    context = {
+        'ID_SIM': simulacao.sim_id,
+        'DATASIMULACAO': simulacao.sim_datasimulacao.strftime('%d/%m/%Y'),
+        'PRAZOME': f'{((simulacao.sim_prazo1 * simulacao.sim_valortotal1) + (simulacao.sim_prazo2 * simulacao.sim_valortotal2) + (simulacao.sim_prazo3 * simulacao.sim_valortotal3) + (simulacao.sim_prazo4 * simulacao.sim_valortotal4) + (simulacao.sim_prazo5 * simulacao.sim_valortotal5) +  (simulacao.sim_prazo6 * simulacao.sim_valortotal6)) /  (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6)}'.replace('.', ','),
+        'FATORNOM': f'{simulacao.sim_taxadecompra}%'.replace('.', ','),
+        'TAXAEFE': f'{simulacao.sim_taxadecompraefetiva1}%'.replace('.', ','),
+        'FATORPERI': f'{round(((simulacao.sim_taxaperiodo1 * simulacao.sim_valortotal1) + (simulacao.sim_taxaperiodo2 * simulacao.sim_valortotal2) + (simulacao.sim_taxaperiodo3 * simulacao.sim_valortotal3) + (simulacao.sim_taxaperiodo4 * simulacao.sim_valortotal4) + (simulacao.sim_taxaperiodo5 * simulacao.sim_valortotal5) + (simulacao.sim_taxaperiodo6 * simulacao.sim_valortotal6)) / (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6), 2):.2f}%'.replace('.', ','),    
+        'IOF': f'{round((simulacao.sim_iof), 2):.2f}%',
+        'IOFA': f'{round((simulacao.sim_iofadicional), 2):.2f}%',
+        'TAXA': f'{round((simulacao.sim_taxadecompra), 2):.2f}%',
+        # 'ID_CLIENTE
+        'ID_CLIENTE': cliente_associado.cli_id,
+        'RAZAOSOCIAL_CLIENTE': cliente_associado.cli_razaosocial,
+        'CNPJ_CLIENTE': cliente_associado.cli_cnpj,
+        'EMAIL1_CLIENTE': cliente_associado.cli_email1,
+        'TELEFONE1_CLIENTE': cliente_associado.cli_telefone1,
+        'ENDERECO_CLIENTE': cliente_associado.cli_enderereco,
+        'COMPLEMENTO_CLIENTE': cliente_associado.cli_complementoenderereco,
+        'CEP': f'CEP: ' + cliente_associado.cli_cep,
+        'BAIRRO': f'BAIRRO: ' + cliente_associado.cli_bairro,
+        'CIDADE': f'CIDADE: ' + cliente_associado.cli_cidade,
+        'ESTADO': f'ESTADO: ' + cliente_associado.cli_estado,
+        # 'ID_FACTORING'
+        'ID_FACTORING': factoring_associado.fac_id,
+        'RAZAOSOCIAL_FACTORING': factoring_associado.fac_razaosocial,        
+        # 'SIMULACOES 1 A 6'
+        'VALTT1': f' {simulacao.sim_valortotal1:,.2f}'.replace(',', '.'),
+        'VALTT2': f' {simulacao.sim_valortotal2:,.2f}'.replace(',', '.'),
+        'VALTT3': f' {simulacao.sim_valortotal3:,.2f}'.replace(',', '.'),
+        'VALTT4': f' {simulacao.sim_valortotal4:,.2f}'.replace(',', '.'),
+        'VALTT5': f' {simulacao.sim_valortotal5:,.2f}'.replace(',', '.'),
+        'VALTT6': f' {simulacao.sim_valortotal6:,.2f}'.replace(',', '.'),
+        'VENC1': simulacao.sim_vencimento1.strftime('%d/%m/%Y'),
+        'VENC2': simulacao.sim_vencimento2.strftime('%d/%m/%Y'),
+        'VENC3': simulacao.sim_vencimento3.strftime('%d/%m/%Y'),
+        'VENC4': simulacao.sim_vencimento4.strftime('%d/%m/%Y'),
+        'VENC5': simulacao.sim_vencimento5.strftime('%d/%m/%Y'),
+        'VENC6': simulacao.sim_vencimento6.strftime('%d/%m/%Y'),
+        'FLOAT': simulacao.sim_myfloat,
+        'PRAZO1': simulacao.sim_prazo1,
+        'PRAZO2': simulacao.sim_prazo2,
+        'PRAZO3': simulacao.sim_prazo3,
+        'PRAZO4': simulacao.sim_prazo4,
+        'PRAZO5': simulacao.sim_prazo5,
+        'PRAZO6': simulacao.sim_prazo6,
+        'COMPRA1': f' {simulacao.sim_valorcompra1:,.2f}'.replace(',', '.'),
+        'COMPRA2': f' {simulacao.sim_valorcompra2:,.2f}'.replace(',', '.'),
+        'COMPRA3': f' {simulacao.sim_valorcompra3:,.2f}'.replace(',', '.'),
+        'COMPRA4': f' {simulacao.sim_valorcompra4:,.2f}'.replace(',', '.'),
+        'COMPRA5': f' {simulacao.sim_valorcompra5:,.2f}'.replace(',', '.'),
+        'COMPRA6': f' {simulacao.sim_valorcompra6:,.2f}'.replace(',', '.'),
+        'FATOR1': simulacao.sim_taxaperiodo1,
+        'FATOR2': simulacao.sim_taxaperiodo2,
+        'FATOR3': simulacao.sim_taxaperiodo3,
+        'FATOR4': simulacao.sim_taxaperiodo4,
+        'FATOR5': simulacao.sim_taxaperiodo5,
+        'FATOR6': simulacao.sim_taxaperiodo6,
+        'FCOMPRA1': f' {(simulacao.sim_valortotal1 - simulacao.sim_valorcompra1):,.2f}'.replace(',', '.'),
+        'FCOMPRA2': f' {(simulacao.sim_valortotal2 - simulacao.sim_valorcompra2):,.2f}'.replace(',', '.'),
+        'FCOMPRA3': f' {(simulacao.sim_valortotal3 - simulacao.sim_valorcompra3):,.2f}'.replace(',', '.'),
+        'FCOMPRA4': f' {(simulacao.sim_valortotal4 - simulacao.sim_valorcompra4):,.2f}'.replace(',', '.'),
+        'FCOMPRA5': f' {(simulacao.sim_valortotal5 - simulacao.sim_valorcompra5):,.2f}'.replace(',', '.'),
+        'FCOMPRA6': f' {(simulacao.sim_valortotal6 - simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'),
+        'IOF1': f' {simulacao.sim_valoriof1:,.2f}'.replace(',', '.'),
+        'IOF2': f' {simulacao.sim_valoriof2:,.2f}'.replace(',', '.'),
+        'IOF3': f' {simulacao.sim_valoriof3:,.2f}'.replace(',', '.'),
+        'IOF4': f' {simulacao.sim_valoriof4:,.2f}'.replace(',', '.'),
+        'IOF5': f' {simulacao.sim_valoriof5:,.2f}'.replace(',', '.'),
+        'IOF6': f' {simulacao.sim_valoriof6:,.2f}'.replace(',', '.'),
+        'IOFAD1': f' {simulacao.sim_valoriofadicional1:,.2f}'.replace(',', '.'),
+        'IOFAD2': f' {simulacao.sim_valoriofadicional2:,.2f}'.replace(',', '.'),
+        'IOFAD3': f' {simulacao.sim_valoriofadicional3:,.2f}'.replace(',', '.'),
+        'IOFAD4': f' {simulacao.sim_valoriofadicional4:,.2f}'.replace(',', '.'),
+        'IOFAD5': f' {simulacao.sim_valoriofadicional5:,.2f}'.replace(',', '.'),
+        'IOFAD6': f' {simulacao.sim_valoriofadicional6:,.2f}'.replace(',', '.'),
+        'DESP': f' {simulacao.sim_despesas:,.2f}'.replace(',', '.'),
+        'ACRE': f' {simulacao.sim_acrescimos:,.2f}'.replace(',', '.'),
+        'DEDU': f' {(simulacao.sim_despesas - simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
+        'DIFE1': f' {(simulacao.sim_valorcompra1 + simulacao.sim_valoriof1 + simulacao.sim_valoriofadicional1 + simulacao.sim_despesas - simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
+        'DIFE2': f' {(simulacao.sim_valorcompra2 + simulacao.sim_valoriof2 + simulacao.sim_valoriofadicional2):,.2f}'.replace(',', '.'),
+        'DIFE3': f' {(simulacao.sim_valorcompra3 + simulacao.sim_valoriof3 + simulacao.sim_valoriofadicional3):,.2f}'.replace(',', '.'),
+        'DIFE4': f' {(simulacao.sim_valorcompra4 + simulacao.sim_valoriof4 + simulacao.sim_valoriofadicional4):,.2f}'.replace(',', '.'),
+        'DIFE5': f' {(simulacao.sim_valorcompra5 + simulacao.sim_valoriof5 + simulacao.sim_valoriofadicional5):,.2f}'.replace(',', '.'),
+        'DIFE6': f' {(simulacao.sim_valorcompra6 + simulacao.sim_valoriof6 + simulacao.sim_valoriofadicional6):,.2f}'.replace(',', '.'),
+        'LIQUIDO1': f' {simulacao.sim_valorliquido1:,.2f}'.replace(',', '.'),
+        'LIQUIDO2': f' {simulacao.sim_valorliquido2:,.2f}'.replace(',', '.'),
+        'LIQUIDO3': f' {simulacao.sim_valorliquido3:,.2f}'.replace(',', '.'),
+        'LIQUIDO4': f' {simulacao.sim_valorliquido4:,.2f}'.replace(',', '.'),
+        'LIQUIDO5': f' {simulacao.sim_valorliquido5:,.2f}'.replace(',', '.'),
+        'LIQUIDO6': f' {simulacao.sim_valorliquido6:,.2f}'.replace(',', '.'),
+        'VALTT': f' {(simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6):,.2f}'.replace(',', '.'),
+        'COUNT': (sum(1 for valor in [simulacao.sim_valortotal1, simulacao.sim_valortotal2, simulacao.sim_valortotal3, simulacao.sim_valortotal4, simulacao.sim_valortotal5, simulacao.sim_valortotal6] if valor is not None)),
+        'COMPRATT': f' {(simulacao.sim_valorcompra1 + simulacao.sim_valorcompra2 + simulacao.sim_valorcompra3 + simulacao.sim_valorcompra4 + simulacao.sim_valorcompra5 + simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'),
+        'FCOMPRATT': f' {(simulacao.sim_valortotal1 - simulacao.sim_valorcompra1) + (simulacao.sim_valortotal2 - simulacao.sim_valorcompra2) + (simulacao.sim_valortotal3 - simulacao.sim_valorcompra3) + (simulacao.sim_valortotal4 - simulacao.sim_valorcompra4) + (simulacao.sim_valortotal5 - simulacao.sim_valorcompra5) + (simulacao.sim_valortotal6 - simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'), 
+        'IOFTT': f' {(simulacao.sim_valoriof1 + simulacao.sim_valoriof2 + simulacao.sim_valoriof3 + simulacao.sim_valoriof4 + simulacao.sim_valoriof5 + simulacao.sim_valoriof6):,.2f}'.replace(',', '.'),
+        'IOFADTT': f' {(simulacao.sim_valoriofadicional1 + simulacao.sim_valoriofadicional2 + simulacao.sim_valoriofadicional3 + simulacao.sim_valoriofadicional4 + simulacao.sim_valoriofadicional5 + simulacao.sim_valoriofadicional6):,.2f}'.replace(',', '.'), 
+        'DIFETT': f' { ((simulacao.sim_valorcompra1 + simulacao.sim_valoriof1 + simulacao.sim_valoriofadicional1 + simulacao.sim_despesas - simulacao.sim_acrescimos) + (simulacao.sim_valorcompra2 + simulacao.sim_valoriof2 + simulacao.sim_valoriofadicional2) + (simulacao.sim_valorcompra3 + simulacao.sim_valoriof3 + simulacao.sim_valoriofadicional3) + (simulacao.sim_valorcompra4 + simulacao.sim_valoriof4 + simulacao.sim_valoriofadicional4) + (simulacao.sim_valorcompra5 + simulacao.sim_valoriof5 + simulacao.sim_valoriofadicional5) + (simulacao.sim_valorcompra6 + simulacao.sim_valoriof6 + simulacao.sim_valoriofadicional6)):,.2f}'.replace(',', '.'),
+        'LIQTT': f' {(simulacao.sim_valorliquido1 + simulacao.sim_valorliquido2 + simulacao.sim_valorliquido3 + simulacao.sim_valorliquido4 + simulacao.sim_valorliquido5 + simulacao.sim_valorliquido6):,.2f}'.replace(',', '.'),
+        'VLIQUIDOTT': f' {((simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6) - (simulacao.sim_valorcompra1 + simulacao.sim_valorcompra2 + simulacao.sim_valorcompra3 + simulacao.sim_valorcompra4 + simulacao.sim_valorcompra5 + simulacao.sim_valorcompra6) - (simulacao.sim_valoriof1 + simulacao.sim_valoriof2 + simulacao.sim_valoriof3 + simulacao.sim_valoriof4 + simulacao.sim_valoriof5 + simulacao.sim_valoriof6) - (simulacao.sim_valoriofadicional1 + simulacao.sim_valoriofadicional2 + simulacao.sim_valoriofadicional3 + simulacao.sim_valoriofadicional4 + simulacao.sim_valoriofadicional5 + simulacao.sim_valoriofadicional6)):,.2f}'.replace(',', '.'),
+    }
+    doc.render(context)
+    doc.save(output_path)
+    with open(output_path, 'rb') as doc_file:
+        response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        response['Content-Disposition'] = f'attachment; filename=SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx'
+    return response
+def editar_simulacao2(request, id):
+    simulacao=Dsimulacao.objects.get(sim_id=id)
+    form = DsimulacaoForm(request.POST or None, instance=simulacao)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_simulacaocopy')
+    return render(request, 'inserir_simulacao.html', {'form':form})
+
+def inserir_operacao(request, id):
+    if request.method == 'POST':
+        form = DoperacaoForm(request.POST)
+        if form.is_valid():
+            nova_operacao = form.save()
+            # Obtém o ID da nova_operacao
+            novo_id = nova_operacao.ope_id
+            # Redireciona para 'listar_operacaoid' com o novo ID
+            return redirect('listar_operacaoid', id=novo_id)
+    else:
+        form = DoperacaoForm()
+    return render(request, 'inserir_operacao.html', {'form': form})
+def listar_operacao(request):
+    operacao=Doperacao.objects.all()
+    return render(request, 'listar_operacao.html', {'operacao':operacao})
+def listar_operacaoid(request, id):
+    operacao_id=Doperacao.objects.get(ope_id=id)
+    return render(request, 'listar_operacaoid.html', {'operacao_id':operacao_id})
+def editar_operacao(request, id):
+    operacao=Doperacao.objects.get(sim_id=id)
+    form = DoperacaoForm(request.POST or None, instance=operacao)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_operacao')
+    return render(request, 'inserir_operacao.html', {'form':form})
+def gerar_operacao_word(request, sim_id):
+    simulacao = Dsimulacao.objects.get(sim_id=sim_id)
+    cliente_associado = simulacao.cli_id
+    factoring_associado = simulacao.fac_id
+    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\OperacaoPadrao.docx"     
+    # Caminho de saída do documento gerado
+    output_path = f"SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx"
+    doc = DocxTemplate(template_path)
+    # Defina os dados a serem inseridos no modelo
+    context = {
+        'ID_SIM': simulacao.sim_id,
+        'DATASIMULACAO': simulacao.sim_datasimulacao.strftime('%d/%m/%Y'),
+        'PRAZOME': f'{((simulacao.sim_prazo1 * simulacao.sim_valortotal1) + (simulacao.sim_prazo2 * simulacao.sim_valortotal2) + (simulacao.sim_prazo3 * simulacao.sim_valortotal3) + (simulacao.sim_prazo4 * simulacao.sim_valortotal4) + (simulacao.sim_prazo5 * simulacao.sim_valortotal5) +  (simulacao.sim_prazo6 * simulacao.sim_valortotal6)) /  (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6)}'.replace('.', ','),
+        'FATORNOM': f'{simulacao.sim_taxadecompra}%'.replace('.', ','),
+        'TAXAEFE': f'{simulacao.sim_taxadecompraefetiva1}%'.replace('.', ','),
+        'FATORPERI': f'{round(((simulacao.sim_taxaperiodo1 * simulacao.sim_valortotal1) + (simulacao.sim_taxaperiodo2 * simulacao.sim_valortotal2) + (simulacao.sim_taxaperiodo3 * simulacao.sim_valortotal3) + (simulacao.sim_taxaperiodo4 * simulacao.sim_valortotal4) + (simulacao.sim_taxaperiodo5 * simulacao.sim_valortotal5) + (simulacao.sim_taxaperiodo6 * simulacao.sim_valortotal6)) / (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6), 2):.2f}%'.replace('.', ','),    
+        'IOF': f'{round((simulacao.sim_iof), 2):.2f}%',
+        'IOFA': f'{round((simulacao.sim_iofadicional), 2):.2f}%',
+        'TAXA': f'{round((simulacao.sim_taxadecompra), 2):.2f}%',
+        # 'ID_CLIENTE
+        'ID_CLIENTE': cliente_associado.cli_id,
+        'RAZAOSOCIAL_CLIENTE': cliente_associado.cli_razaosocial,
+        'CNPJ_CLIENTE': cliente_associado.cli_cnpj,
+        'EMAIL1_CLIENTE': cliente_associado.cli_email1,
+        'TELEFONE1_CLIENTE': cliente_associado.cli_telefone1,
+        'ENDERECO_CLIENTE': cliente_associado.cli_enderereco,
+        'COMPLEMENTO_CLIENTE': cliente_associado.cli_complementoenderereco,
+        'CEP': f'CEP: ' + cliente_associado.cli_cep,
+        'BAIRRO': f'BAIRRO: ' + cliente_associado.cli_bairro,
+        'CIDADE': f'CIDADE: ' + cliente_associado.cli_cidade,
+        'ESTADO': f'ESTADO: ' + cliente_associado.cli_estado,
+        # 'ID_FACTORING'
+        'ID_FACTORING': factoring_associado.fac_id,
+        'RAZAOSOCIAL_FACTORING': factoring_associado.fac_razaosocial,        
+        # 'SIMULACOES 1 A 6'
+        'VALTT1': f' {simulacao.sim_valortotal1:,.2f}'.replace(',', '.'),
+        'VALTT2': f' {simulacao.sim_valortotal2:,.2f}'.replace(',', '.'),
+        'VALTT3': f' {simulacao.sim_valortotal3:,.2f}'.replace(',', '.'),
+        'VALTT4': f' {simulacao.sim_valortotal4:,.2f}'.replace(',', '.'),
+        'VALTT5': f' {simulacao.sim_valortotal5:,.2f}'.replace(',', '.'),
+        'VALTT6': f' {simulacao.sim_valortotal6:,.2f}'.replace(',', '.'),
+        'VENC1': simulacao.sim_vencimento1.strftime('%d/%m/%Y'),
+        'VENC2': simulacao.sim_vencimento2.strftime('%d/%m/%Y'),
+        'VENC3': simulacao.sim_vencimento3.strftime('%d/%m/%Y'),
+        'VENC4': simulacao.sim_vencimento4.strftime('%d/%m/%Y'),
+        'VENC5': simulacao.sim_vencimento5.strftime('%d/%m/%Y'),
+        'VENC6': simulacao.sim_vencimento6.strftime('%d/%m/%Y'),
+        'FLOAT': simulacao.sim_myfloat,
+        'PRAZO1': simulacao.sim_prazo1,
+        'PRAZO2': simulacao.sim_prazo2,
+        'PRAZO3': simulacao.sim_prazo3,
+        'PRAZO4': simulacao.sim_prazo4,
+        'PRAZO5': simulacao.sim_prazo5,
+        'PRAZO6': simulacao.sim_prazo6,
+        'COMPRA1': f' {simulacao.sim_valorcompra1:,.2f}'.replace(',', '.'),
+        'COMPRA2': f' {simulacao.sim_valorcompra2:,.2f}'.replace(',', '.'),
+        'COMPRA3': f' {simulacao.sim_valorcompra3:,.2f}'.replace(',', '.'),
+        'COMPRA4': f' {simulacao.sim_valorcompra4:,.2f}'.replace(',', '.'),
+        'COMPRA5': f' {simulacao.sim_valorcompra5:,.2f}'.replace(',', '.'),
+        'COMPRA6': f' {simulacao.sim_valorcompra6:,.2f}'.replace(',', '.'),
+        'FATOR1': simulacao.sim_taxaperiodo1,
+        'FATOR2': simulacao.sim_taxaperiodo2,
+        'FATOR3': simulacao.sim_taxaperiodo3,
+        'FATOR4': simulacao.sim_taxaperiodo4,
+        'FATOR5': simulacao.sim_taxaperiodo5,
+        'FATOR6': simulacao.sim_taxaperiodo6,
+        'FCOMPRA1': f' {(simulacao.sim_valortotal1 - simulacao.sim_valorcompra1):,.2f}'.replace(',', '.'),
+        'FCOMPRA2': f' {(simulacao.sim_valortotal2 - simulacao.sim_valorcompra2):,.2f}'.replace(',', '.'),
+        'FCOMPRA3': f' {(simulacao.sim_valortotal3 - simulacao.sim_valorcompra3):,.2f}'.replace(',', '.'),
+        'FCOMPRA4': f' {(simulacao.sim_valortotal4 - simulacao.sim_valorcompra4):,.2f}'.replace(',', '.'),
+        'FCOMPRA5': f' {(simulacao.sim_valortotal5 - simulacao.sim_valorcompra5):,.2f}'.replace(',', '.'),
+        'FCOMPRA6': f' {(simulacao.sim_valortotal6 - simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'),
+        'IOF1': f' {simulacao.sim_valoriof1:,.2f}'.replace(',', '.'),
+        'IOF2': f' {simulacao.sim_valoriof2:,.2f}'.replace(',', '.'),
+        'IOF3': f' {simulacao.sim_valoriof3:,.2f}'.replace(',', '.'),
+        'IOF4': f' {simulacao.sim_valoriof4:,.2f}'.replace(',', '.'),
+        'IOF5': f' {simulacao.sim_valoriof5:,.2f}'.replace(',', '.'),
+        'IOF6': f' {simulacao.sim_valoriof6:,.2f}'.replace(',', '.'),
+        'IOFAD1': f' {simulacao.sim_valoriofadicional1:,.2f}'.replace(',', '.'),
+        'IOFAD2': f' {simulacao.sim_valoriofadicional2:,.2f}'.replace(',', '.'),
+        'IOFAD3': f' {simulacao.sim_valoriofadicional3:,.2f}'.replace(',', '.'),
+        'IOFAD4': f' {simulacao.sim_valoriofadicional4:,.2f}'.replace(',', '.'),
+        'IOFAD5': f' {simulacao.sim_valoriofadicional5:,.2f}'.replace(',', '.'),
+        'IOFAD6': f' {simulacao.sim_valoriofadicional6:,.2f}'.replace(',', '.'),
+        'DESP': f' {simulacao.sim_despesas:,.2f}'.replace(',', '.'),
+        'ACRE': f' {simulacao.sim_acrescimos:,.2f}'.replace(',', '.'),
+        'DEDU': f' {(simulacao.sim_despesas - simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
+        'DIFE1': f' {(simulacao.sim_valorcompra1 + simulacao.sim_valoriof1 + simulacao.sim_valoriofadicional1 + simulacao.sim_despesas - simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
+        'DIFE2': f' {(simulacao.sim_valorcompra2 + simulacao.sim_valoriof2 + simulacao.sim_valoriofadicional2):,.2f}'.replace(',', '.'),
+        'DIFE3': f' {(simulacao.sim_valorcompra3 + simulacao.sim_valoriof3 + simulacao.sim_valoriofadicional3):,.2f}'.replace(',', '.'),
+        'DIFE4': f' {(simulacao.sim_valorcompra4 + simulacao.sim_valoriof4 + simulacao.sim_valoriofadicional4):,.2f}'.replace(',', '.'),
+        'DIFE5': f' {(simulacao.sim_valorcompra5 + simulacao.sim_valoriof5 + simulacao.sim_valoriofadicional5):,.2f}'.replace(',', '.'),
+        'DIFE6': f' {(simulacao.sim_valorcompra6 + simulacao.sim_valoriof6 + simulacao.sim_valoriofadicional6):,.2f}'.replace(',', '.'),
+        'LIQUIDO1': f' {simulacao.sim_valorliquido1:,.2f}'.replace(',', '.'),
+        'LIQUIDO2': f' {simulacao.sim_valorliquido2:,.2f}'.replace(',', '.'),
+        'LIQUIDO3': f' {simulacao.sim_valorliquido3:,.2f}'.replace(',', '.'),
+        'LIQUIDO4': f' {simulacao.sim_valorliquido4:,.2f}'.replace(',', '.'),
+        'LIQUIDO5': f' {simulacao.sim_valorliquido5:,.2f}'.replace(',', '.'),
+        'LIQUIDO6': f' {simulacao.sim_valorliquido6:,.2f}'.replace(',', '.'),
+        'VALTT': f' {(simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6):,.2f}'.replace(',', '.'),
+        'COUNT': (sum(1 for valor in [simulacao.sim_valortotal1, simulacao.sim_valortotal2, simulacao.sim_valortotal3, simulacao.sim_valortotal4, simulacao.sim_valortotal5, simulacao.sim_valortotal6] if valor is not None)),
+        'COMPRATT': f' {(simulacao.sim_valorcompra1 + simulacao.sim_valorcompra2 + simulacao.sim_valorcompra3 + simulacao.sim_valorcompra4 + simulacao.sim_valorcompra5 + simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'),
+        'FCOMPRATT': f' {(simulacao.sim_valortotal1 - simulacao.sim_valorcompra1) + (simulacao.sim_valortotal2 - simulacao.sim_valorcompra2) + (simulacao.sim_valortotal3 - simulacao.sim_valorcompra3) + (simulacao.sim_valortotal4 - simulacao.sim_valorcompra4) + (simulacao.sim_valortotal5 - simulacao.sim_valorcompra5) + (simulacao.sim_valortotal6 - simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'), 
+        'IOFTT': f' {(simulacao.sim_valoriof1 + simulacao.sim_valoriof2 + simulacao.sim_valoriof3 + simulacao.sim_valoriof4 + simulacao.sim_valoriof5 + simulacao.sim_valoriof6):,.2f}'.replace(',', '.'),
+        'IOFADTT': f' {(simulacao.sim_valoriofadicional1 + simulacao.sim_valoriofadicional2 + simulacao.sim_valoriofadicional3 + simulacao.sim_valoriofadicional4 + simulacao.sim_valoriofadicional5 + simulacao.sim_valoriofadicional6):,.2f}'.replace(',', '.'), 
+        'DIFETT': f' { ((simulacao.sim_valorcompra1 + simulacao.sim_valoriof1 + simulacao.sim_valoriofadicional1 + simulacao.sim_despesas - simulacao.sim_acrescimos) + (simulacao.sim_valorcompra2 + simulacao.sim_valoriof2 + simulacao.sim_valoriofadicional2) + (simulacao.sim_valorcompra3 + simulacao.sim_valoriof3 + simulacao.sim_valoriofadicional3) + (simulacao.sim_valorcompra4 + simulacao.sim_valoriof4 + simulacao.sim_valoriofadicional4) + (simulacao.sim_valorcompra5 + simulacao.sim_valoriof5 + simulacao.sim_valoriofadicional5) + (simulacao.sim_valorcompra6 + simulacao.sim_valoriof6 + simulacao.sim_valoriofadicional6)):,.2f}'.replace(',', '.'),
+        'LIQTT': f' {(simulacao.sim_valorliquido1 + simulacao.sim_valorliquido2 + simulacao.sim_valorliquido3 + simulacao.sim_valorliquido4 + simulacao.sim_valorliquido5 + simulacao.sim_valorliquido6):,.2f}'.replace(',', '.'),
+        'VLIQUIDOTT': f' {((simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6) - (simulacao.sim_valorcompra1 + simulacao.sim_valorcompra2 + simulacao.sim_valorcompra3 + simulacao.sim_valorcompra4 + simulacao.sim_valorcompra5 + simulacao.sim_valorcompra6) - (simulacao.sim_valoriof1 + simulacao.sim_valoriof2 + simulacao.sim_valoriof3 + simulacao.sim_valoriof4 + simulacao.sim_valoriof5 + simulacao.sim_valoriof6) - (simulacao.sim_valoriofadicional1 + simulacao.sim_valoriofadicional2 + simulacao.sim_valoriofadicional3 + simulacao.sim_valoriofadicional4 + simulacao.sim_valoriofadicional5 + simulacao.sim_valoriofadicional6)):,.2f}'.replace(',', '.'),
+    }
+    doc.render(context)
+    doc.save(output_path)
+    with open(output_path, 'rb') as doc_file:
+        response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        response['Content-Disposition'] = f'attachment; filename=SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx'
     return response

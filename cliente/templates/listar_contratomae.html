@@ -6,6 +6,7 @@
     <title>Listar Contratos Mãe</title>
   </head>
   <body>
+    <h1>Listar Contrato Mãe</h1>
     <table class="table">
       <thead>
         <tr>
@@ -24,10 +25,10 @@
           <td>{{i.fac_id}}</td>
           <td>{{i.cma_validadecontrato}}</td>
           <td>{{i.cma_datacadastro}}</td>
-          
           <td>
             <form method="post" action="{% url 'gerar_contrato_word' i.cma_id %}">
               {% csrf_token %}
+              <a href="{% url 'editar_contratomae2' i.cma_id %}">Editar 2</a>
               <button type="submit" class="btn btn-secondary">Gerar Word</button>
             </form>
           </td>

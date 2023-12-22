@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Listar Simulações</title>
+</head>
+<body>
+  <h1>Listar Simulações</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID SIMULAÇÃO:</th>
+        <th>DATA SIMULAÇÃO</th>
+        <th>ID CLIENTE:</th>
+        <th>ID FACTORING:</th>
+        <th>TAXA DE COMPRA:</th>
+        <th>IOF ANUAL %:</th>
+        <th>IOF ADICIONAL %:</th>
+        <th>DESPESAS $:</th>
+        <th>ACRÉSCIMOS $:</th>
+        <th>FLOAT:</th>
+        <th>STATUS:</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in simulacao %}
+      {% if i.sim_status == '1' %}
+      <tr>
+        <td>{{i.sim_id}}</td>
+        <td>{{i.sim_datasimulacao}}</td>
+        <td>{{i.cli_id}}</td>
+        <td>{{i.fac_id}}</td>
+        <td>{{i.sim_taxadecompra}}</td>
+        <td>{{i.sim_iof}}</td>
+        <td>{{i.sim_iofadicional}}</td>
+        <td>{{i.sim_despesas}}</td>
+        <td>{{i.sim_acrescimos}}</td>
+        <td>{{i.sim_myfloat}}</td>
+        <td>{{i.sim_status}}</td>
+        <td>
+          <form method="post" action="{% url 'gerar_simulacao_word' i.sim_id %}">
+            {% csrf_token %}
+            <a href="{% url 'editar_simulacao2' i.sim_id %}">Editar 2</a>
+            <a href="{% url 'inserir_operacao' i.sim_id %}">Incluir Operação</a>
+            <button type="submit" class="btn btn-secondary">Gerar Word</button> 
+          </form>
+        </td>
+      </tr>
+      </tr>
+        {% endif %}
+      {% endfor %}
+    </body>
+  </table>
+  <a href="{% url 'inserir_simulacao' %}"> <button class="btn btn-primary">Cadastrar Simulação</button> </a>
+</body>
+</html>

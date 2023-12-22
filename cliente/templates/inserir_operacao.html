@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Operação</title>
+</head>
+<body>
+    <h1>Gerar Operação</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="ope_datasimulacao">Data Simulação:</label>
+        <!-- <input type="date" name="ope_datasimulacao" value="{{ form.instance.ope_datasimulacao }}" required> -->
+        <input type="date" name="ope_datasimulacao" value="2023-12-15" required>
+
+        <label for="ope_status">Status:</label>
+        <select name="ope_status" id="ope_status" required>
+            {% for value, label in form.fields.ope_status.choices %}
+                <option value="{{ value }}" {% if form.instance.ope_status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>   
+
+        <label for="cli_id">ID Cliente:</label>
+        <!-- <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required> -->
+        <input type="text" name="cli_id" value="202108" required>
+
+        <label for="fac_id">ID Factoring:</label>
+        <!-- <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required> -->
+        <input type="text" name="fac_id" value="202101" required>
+
+        <label for="ope_taxadecompra">Taxa de Compra %:</label>
+        <!-- <input type="text" name="ope_taxadecompra" value="{{ form.instance.ope_taxadecompra }}" required> -->
+        <input type="text" name="ope_taxadecompra" value="7.15" required>
+
+        <label for="ope_iof">IOF Anual %:</label>
+        <!-- <input type="text" name="ope_iof" value="{{ form.instance.ope_iof }}" required> -->
+        <input type="text" name="ope_iof" value="1.50" required>
+
+        <label for="ope_iofadicional">IOF Adicional %:</label>
+        <!-- <input type="text" name="ope_iofadicional" value="{{ form.instance.ope_iofadicional }}" required> -->
+        <input type="text" name="ope_iofadicional" value="0.38" required>
+
+        <label for="ope_despesas">Despesas $ (-):</label>
+        <!-- <input type="text" name="ope_despesas" value="{{ form.instance.ope_despesas }}" required> -->
+        <input type="text" name="ope_despesas" value="100" required>
+
+        <label for="ope_acrescimos">Acréscimos $ (+):</label>
+        <!-- <input type="text" name="ope_acrescimos" value="{{ form.instance.ope_acrescimos }}" required> -->
+        <input type="text" name="ope_acrescimos" value="200" required>
+
+        <label for="ope_myfloat">MyFloat:</label>
+        <!-- <input type="text" name="ope_myfloat" value="{{ form.instance.ope_myfloat }}" required> -->
+        <input type="text" name="ope_myfloat" value="2" required>
+       
+        <table>
+            <tr>
+              <th colspan="2">Detalhes da Simulação</th>
+            </tr>
+            <tr>
+              <td><label for="ope_vencimento1">Vencimento:</label></td>
+              <!-- <td><input type="date" name="ope_vencimento1" value="{{ form.instance.ope_vencimento1 }}" required></td>
+              <td><input type="date" name="ope_vencimento2" value="{{ form.instance.ope_vencimento2 }}" required></td>
+              <td><input type="date" name="ope_vencimento3" value="{{ form.instance.ope_vencimento3 }}" required></td>
+              <td><input type="date" name="ope_vencimento4" value="{{ form.instance.ope_vencimento4 }}" required></td>
+              <td><input type="date" name="ope_vencimento5" value="{{ form.instance.ope_vencimento5 }}" required></td>
+              <td><input type="date" name="ope_vencimento6" value="{{ form.instance.ope_vencimento6 }}" required></td> -->
+              <td><input type="date" name="ope_vencimento1" value="2024-01-16" required></td>
+              <td><input type="date" name="ope_vencimento2" value="2024-01-17" required></td>
+              <td><input type="date" name="ope_vencimento3" value="2024-01-18" required></td>
+              <td><input type="date" name="ope_vencimento4" value="2024-01-19" required></td>
+              <td><input type="date" name="ope_vencimento5" value="2024-01-20" required></td>
+              <td><input type="date" name="ope_vencimento6" value="2024-01-21" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_valortotal1">Valor Total:</label></td>
+              <!-- <td><input type="text" name="ope_valortotal1" value="{{ form.instance.ope_valortotal1 }}" required></td>
+              <td><input type="text" name="ope_valortotal2" value="{{ form.instance.ope_valortotal2 }}" required></td>
+              <td><input type="text" name="ope_valortotal3" value="{{ form.instance.ope_valortotal3 }}" required></td>
+              <td><input type="text" name="ope_valortotal4" value="{{ form.instance.ope_valortotal4 }}" required></td>
+              <td><input type="text" name="ope_valortotal5" value="{{ form.instance.ope_valortotal5 }}" required></td>
+              <td><input type="text" name="ope_valortotal6" value="{{ form.instance.ope_valortotal6 }}" required></td> -->
+              <td><input type="text" name="ope_valortotal1" value="10000" required></td>
+              <td><input type="text" name="ope_valortotal2" value="10000" required></td>
+              <td><input type="text" name="ope_valortotal3" value="10000" required></td>
+              <td><input type="text" name="ope_valortotal4" value="10000"required></td>
+              <td><input type="text" name="ope_valortotal5" value="10000" required></td>
+              <td><input type="text" name="ope_valortotal6" value="10000" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_prazo1">Prazo:</label></td>
+              <td><input type="text" name="ope_prazo1" value="{{ form.instance.ope_prazo1 }}" required></td>
+              <td><input type="text" name="ope_prazo2" value="{{ form.instance.ope_prazo2 }}" required></td>
+              <td><input type="text" name="ope_prazo3" value="{{ form.instance.ope_prazo3 }}" required></td>
+              <td><input type="text" name="ope_prazo4" value="{{ form.instance.ope_prazo4 }}" required></td>
+              <td><input type="text" name="ope_prazo5" value="{{ form.instance.ope_prazo5 }}" required></td>
+              <td><input type="text" name="ope_prazo6" value="{{ form.instance.ope_prazo6 }}" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_taxadecompraefetiva1">Taxa de Compra Efetiva:</label></td>
+              <td><input type="text" name="ope_taxadecompraefetiva1" value="{{ form.instance.ope_taxadecompraefetiva1 }}" required></td>
+              <td><input type="text" name="ope_taxadecompraefetiva2" value="{{ form.instance.ope_taxadecompraefetiva2 }}" required></td>
+              <td><input type="text" name="ope_taxadecompraefetiva3" value="{{ form.instance.ope_taxadecompraefetiva3 }}" required></td>
+              <td><input type="text" name="ope_taxadecompraefetiva4" value="{{ form.instance.ope_taxadecompraefetiva4 }}" required></td>
+              <td><input type="text" name="ope_taxadecompraefetiva5" value="{{ form.instance.ope_taxadecompraefetiva5 }}" required></td>
+              <td><input type="text" name="ope_taxadecompraefetiva6" value="{{ form.instance.ope_taxadecompraefetiva6 }}" required></td>              
+            </tr>
+            <tr>
+              <td><label for="ope_taxaperiodo1">Taxa Período:</label></td>
+              <td><input type="text" name="ope_taxaperiodo1" value="{{ form.instance.ope_taxaperiodo1 }}" required></td>
+              <td><input type="text" name="ope_taxaperiodo2" value="{{ form.instance.ope_taxaperiodo2 }}" required></td>
+              <td><input type="text" name="ope_taxaperiodo3" value="{{ form.instance.ope_taxaperiodo3 }}" required></td>
+              <td><input type="text" name="ope_taxaperiodo4" value="{{ form.instance.ope_taxaperiodo4 }}" required></td>
+              <td><input type="text" name="ope_taxaperiodo5" value="{{ form.instance.ope_taxaperiodo5 }}" required></td>
+              <td><input type="text" name="ope_taxaperiodo6" value="{{ form.instance.ope_taxaperiodo6 }}" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_valorcompra1">Valor de Compra:</label></td>
+              <td><input type="text" name="ope_valorcompra1" value="{{ form.instance.ope_valorcompra1 }}" required></td>
+              <td><input type="text" name="ope_valorcompra2" value="{{ form.instance.ope_valorcompra2 }}" required></td>
+              <td><input type="text" name="ope_valorcompra3" value="{{ form.instance.ope_valorcompra3 }}" required></td>
+              <td><input type="text" name="ope_valorcompra4" value="{{ form.instance.ope_valorcompra4 }}" required></td>
+              <td><input type="text" name="ope_valorcompra5" value="{{ form.instance.ope_valorcompra5 }}" required></td>
+              <td><input type="text" name="ope_valorcompra6" value="{{ form.instance.ope_valorcompra6 }}" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_valoriof1">Valor IOF:</label></td>
+              <td><input type="text" name="ope_valoriof1" value="{{ form.instance.ope_valoriof1 }}" required></td>
+              <td><input type="text" name="ope_valoriof2" value="{{ form.instance.ope_valoriof2 }}" required></td>
+              <td><input type="text" name="ope_valoriof3" value="{{ form.instance.ope_valoriof3 }}" required></td>
+              <td><input type="text" name="ope_valoriof4" value="{{ form.instance.ope_valoriof4 }}" required></td>
+              <td><input type="text" name="ope_valoriof5" value="{{ form.instance.ope_valoriof5 }}" required></td>
+              <td><input type="text" name="ope_valoriof6" value="{{ form.instance.ope_valoriof6 }}" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_valoriofadicional1">Valor IOF Adicional:</label></td>
+              <td><input type="text" name="ope_valoriofadicional1" value="{{ form.instance.ope_valoriofadicional1 }}" required></td>
+              <td><input type="text" name="ope_valoriofadicional2" value="{{ form.instance.ope_valoriofadicional2 }}" required></td>
+              <td><input type="text" name="ope_valoriofadicional3" value="{{ form.instance.ope_valoriofadicional3 }}" required></td>
+              <td><input type="text" name="ope_valoriofadicional4" value="{{ form.instance.ope_valoriofadicional4 }}" required></td>
+              <td><input type="text" name="ope_valoriofadicional5" value="{{ form.instance.ope_valoriofadicional5 }}" required></td>
+              <td><input type="text" name="ope_valoriofadicional6" value="{{ form.instance.ope_valoriofadicional6 }}" required></td>
+            </tr>
+            <tr>
+              <td><label for="ope_valorliquido1">Valor Líquido:</label></td>
+              <td><input type="text" name="ope_valorliquido1" value="{{ form.instance.ope_valorliquido1 }}" required></td>
+              <td><input type="text" name="ope_valorliquido2" value="{{ form.instance.ope_valorliquido2 }}" required></td>
+              <td><input type="text" name="ope_valorliquido3" value="{{ form.instance.ope_valorliquido3 }}" required></td>
+              <td><input type="text" name="ope_valorliquido4" value="{{ form.instance.ope_valorliquido4 }}" required></td>
+              <td><input type="text" name="ope_valorliquido5" value="{{ form.instance.ope_valorliquido5 }}" required></td>
+              <td><input type="text" name="ope_valorliquido6" value="{{ form.instance.ope_valorliquido6 }}" required></td>
+            </tr>    
+        </table>    
+        <button type="submit">Salvar</button>
+        <button type="button" onclick="calcular()">Calcular</button> 
+    </form>
+    <script>
+      function calcular() {
+        // Calcula ope_prazo de 1 até 6
+        var dataSimulacao = new Date(document.getElementsByName('ope_datasimulacao')[0].value);
+        var myFloat = parseFloat(document.getElementsByName('ope_myfloat')[0].value) || 0;
+    
+        for (var i = 1; i <= 6; i++) {
+          var campoVencimento = document.getElementsByName('ope_vencimento' + i)[0];
+          var campoPrazo = document.getElementsByName('ope_prazo' + i)[0];
+          var campoTaxaPeriodo = document.getElementsByName('ope_taxaperiodo' + i)[0];
+          var campoValorCompra = document.getElementsByName('ope_valorcompra' + i)[0];
+          var campoValorIOF = document.getElementsByName('ope_valoriof' + i)[0];
+          var campoValorIOFadicional = document.getElementsByName('ope_valoriofadicional' + i)[0];
+          var campoValorLiquido = document.getElementsByName('ope_valorliquido' + i)[0];
+          var campoDespesas = document.getElementsByName('ope_despesas')[0];
+          var campoAcrescimos = document.getElementsByName('ope_acrescimos')[0];
+    
+          if (campoVencimento && campoPrazo && campoTaxaPeriodo && campoValorCompra && campoValorIOF && campoValorIOFadicional && campoValorLiquido && campoDespesas && campoAcrescimos) {
+            var vencimento = new Date(campoVencimento.value);
+            var diferencaEmDias = Math.ceil((vencimento - dataSimulacao) / (1000 * 60 * 60 * 24));
+            var resultadoComFloat = diferencaEmDias + myFloat + 1;
+            campoPrazo.value = resultadoComFloat;
+            // Calcula ope_taxaperiodo
+            var taxaCompra = parseFloat(document.getElementsByName('ope_taxadecompra')[0].value) || 0;
+            var taxaPeriodo = (taxaCompra / 30) * resultadoComFloat;
+            campoTaxaPeriodo.value = taxaPeriodo.toFixed(2);
+            // Calcula ope_valorcompra
+            var valortotal = parseFloat(document.getElementsByName('ope_valortotal' + i)[0].value) || 0;
+            var valorCompra = (valortotal * taxaPeriodo) / 100;
+            campoValorCompra.value = valorCompra.toFixed(2);
+            // Calcula ope_valoriof
+            var iof = parseFloat(document.getElementsByName('ope_iof')[0].value) || 0;
+            var valoriof = (((iof / 365) * resultadoComFloat) * (valortotal - valorCompra)) / 100;
+            campoValorIOF.value = valoriof.toFixed(2);
+            // Calcula ope_valoriofadicional
+            var iofadicional = parseFloat(document.getElementsByName('ope_iofadicional')[0].value) || 0;
+            var valoriofadicional = (iofadicional * (valortotal - valorCompra)) / 100;
+            campoValorIOFadicional.value = valoriofadicional.toFixed(2);
+            // Calcula ope_valorliquido1 com débito e acréscimo
+            if (i === 1) {
+              var despesas = parseFloat(campoDespesas.value) || 0;
+              var acrescimos = parseFloat(campoAcrescimos.value) || 0;
+              var valorLiquido1 = valortotal - valorCompra - valoriof - valoriofadicional - despesas + acrescimos;
+              campoValorLiquido.value = valorLiquido1.toFixed(2);
+            } else {
+              // Para os outros índices, utiliza a fórmula anterior
+              var valorLiquido = valortotal - valorCompra - valoriof - valoriofadicional;
+              campoValorLiquido.value = valorLiquido.toFixed(2);
+            }
+          }          
+          // Calcula ope_taxadecompraefetiva de 1 até 6
+          var campoValortotal = document.getElementsByName('ope_valortotal' + i)[0];
+          var campoTaxaCompra = document.getElementsByName('ope_taxadecompra')[0];
+          var campoTaxaCompraEfetiva = document.getElementsByName('ope_taxadecompraefetiva' + i)[0];
+    
+          if (campoValortotal && campoTaxaCompra && campoTaxaCompraEfetiva) {
+            var valortotal = parseFloat(campoValortotal.value) || 0;
+            var taxaCompra = parseFloat(campoTaxaCompra.value) || 0;
+            var taxaCompraEfetiva = ((valortotal * (taxaCompra / 100)) / (valortotal - (valortotal * (taxaCompra / 100)))) * 100;
+            campoTaxaCompraEfetiva.value = taxaCompraEfetiva.toFixed(2);
+          }
+        }
+      }
+    </script>
+</body>
+</html>

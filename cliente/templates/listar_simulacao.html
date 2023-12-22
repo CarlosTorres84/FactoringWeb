@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Listar Simulações</title>
+</head>
+<body>
+  <h1>Listar Simulações</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID SIMULAÇÃO:</th>
+        <th>DATA SIMULAÇÃO</th>
+        <th>ID CLIENTE:</th>
+        <th>ID FACTORING:</th>
+        <th>TAXA DE COMPRA:</th>
+        <th>IOF ANUAL %:</th>
+        <th>IOF ADICIONAL %:</th>
+        <th>DESPESAS $:</th>
+        <th>ACRÉSCIMOS $:</th>
+        <th>FLOAT:</th>
+        <th>STATUS:</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in simulacao %}
+      <tr>
+        <td>{{i.sim_id}}</td>
+        <td>{{i.sim_datasimulacao}}</td>
+        <td>{{i.cli_id}}</td>
+        <td>{{i.fac_id}}</td>
+        <td>{{i.sim_taxadecompra}}</td>
+        <td>{{i.sim_iof}}</td>
+        <td>{{i.sim_iofadicional}}</td>
+        <td>{{i.sim_despesas}}</td>
+        <td>{{i.sim_acrescimos}}</td>
+        <td>{{i.sim_myfloat}}</td>
+        <td>{{i.sim_status}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <table>
+    <tr>
+      <th>Detalhes da Simulação</th>
+    </tr>
+    <tr>
+      <td>VENCIMENTO</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_vencimento1 }}</td>
+        <td>{{ i.sim_vencimento2 }}</td>
+        <td>{{ i.sim_vencimento3 }}</td>
+        <td>{{ i.sim_vencimento4 }}</td>
+        <td>{{ i.sim_vencimento5 }}</td>
+        <td>{{ i.sim_vencimento6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>VALOR TOTAL</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_valortotal1 }}</td>
+        <td>{{ i.sim_valortotal2 }}</td>
+        <td>{{ i.sim_valortotal3 }}</td>
+        <td>{{ i.sim_valortotal4 }}</td>
+        <td>{{ i.sim_valortotal5 }}</td>
+        <td>{{ i.sim_valortotal6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>PRAZO</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_prazo1 }}</td>
+        <td>{{ i.sim_prazo2 }}</td>
+        <td>{{ i.sim_prazo3 }}</td>
+        <td>{{ i.sim_prazo4 }}</td>
+        <td>{{ i.sim_prazo5 }}</td>
+        <td>{{ i.sim_prazo6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>TAXA DE COMPRA EFETIVA</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_taxadecompraefetiva1 }}</td>
+        <td>{{ i.sim_taxadecompraefetiva2 }}</td>
+        <td>{{ i.sim_taxadecompraefetiva3 }}</td>
+        <td>{{ i.sim_taxadecompraefetiva4 }}</td>
+        <td>{{ i.sim_taxadecompraefetiva5 }}</td>
+        <td>{{ i.sim_taxadecompraefetiva6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>TAXA PERÍODO</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_taxaperiodo1 }}</td>
+        <td>{{ i.sim_taxaperiodo2 }}</td>
+        <td>{{ i.sim_taxaperiodo3 }}</td>
+        <td>{{ i.sim_taxaperiodo4 }}</td>
+        <td>{{ i.sim_taxaperiodo5 }}</td>
+        <td>{{ i.sim_taxaperiodo6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>VALOR DE COMPRA</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_valorcompra1 }}</td>
+        <td>{{ i.sim_valorcompra2 }}</td>
+        <td>{{ i.sim_valorcompra3 }}</td>
+        <td>{{ i.sim_valorcompra4 }}</td>
+        <td>{{ i.sim_valorcompra5 }}</td>
+        <td>{{ i.sim_valorcompra6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>VALOR IOF</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_valoriof1 }}</td>
+        <td>{{ i.sim_valoriof2 }}</td>
+        <td>{{ i.sim_valoriof3 }}</td>
+        <td>{{ i.sim_valoriof4 }}</td>
+        <td>{{ i.sim_valoriof5 }}</td>
+        <td>{{ i.sim_valoriof6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>VALOR IOF ADIC</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_valoriofadicional1 }}</td>
+        <td>{{ i.sim_valoriofadicional2 }}</td>
+        <td>{{ i.sim_valoriofadicional3 }}</td>
+        <td>{{ i.sim_valoriofadicional4 }}</td>
+        <td>{{ i.sim_valoriofadicional5 }}</td>
+        <td>{{ i.sim_valoriofadicional6 }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>VALOR LÍQUIDO</td>
+      {% for i in simulacao %}
+        <td>{{ i.sim_valorliquido1 }}</td>
+        <td>{{ i.sim_valorliquido2 }}</td>
+        <td>{{ i.sim_valorliquido3 }}</td>
+        <td>{{ i.sim_valorliquido4 }}</td>
+        <td>{{ i.sim_valorliquido5 }}</td>
+        <td>{{ i.sim_valorliquido6 }}</td>
+      {% endfor %}
+    </tr>
+  </table>
+
+  <a href="{% url 'inserir_simulacao' %}">
+    <button class="btn btn-primary">Cadastrar Simulação</button>
+  </a>
+</body>
+</html>

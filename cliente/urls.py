@@ -34,5 +34,19 @@ urlpatterns= [
     path('cliente/inserir_contratomae', inserir_contratomae, name='inserir_contratomae'),
     path('cliente/listar_contratomae', listar_contratomae, name='listar_contratomae'),
     path('gerar_contrato_word/<int:cma_id>/', gerar_contrato_word, name='gerar_contrato_word'),
-             
+    path('cliente/editar_contratomae2/<str:id>', editar_contratomae2, name='editar_contratomae2'),
+
+    #Simulação
+    path('cliente/inserir_simulacao', inserir_simulacao, name='inserir_simulacao'),    
+    path('cliente/listar_simulacaoid/<str:id>', listar_simulacaoid, name='listar_simulacaoid'),
+    path('gerar_simulacao_word/<int:sim_id>/', gerar_simulacao_word, name='gerar_simulacao_word'),
+    path('cliente/listar_simulacao', listar_simulacao, name='listar_simulacao'),
+    path('cliente/listar_simulacaocopy', listar_simulacaocopy, name='listar_simulacaocopy'),
+    path('cliente/editar_simulacao2/<str:id>', editar_simulacao2, name='editar_simulacao2'),
+    
+    #Simulação
+    path('cliente/inserir_operacao/<int:id>/', inserir_operacao, name='inserir_operacao'),
+    path('cliente/listar_operacao', listar_operacao, name='listar_operacao'),
+    path('cliente/listar_operacaoid/<str:id>', listar_operacaoid, name='listar_operacaoid'),
+    path('cliente/editar_operacao/<str:id>', editar_operacao, name='editar_operacao'),
 ]
