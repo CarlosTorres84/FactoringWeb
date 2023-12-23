@@ -158,8 +158,7 @@ class Dsimulacao(models.Model):
     sim_valoriofadicional6 = models.DecimalField(max_digits=10, decimal_places=2)
     sim_valorliquido6 = models.DecimalField(max_digits=10, decimal_places=2)
     status_CHOICES=(
-        ('1', 'SIMULAÇÃO'),
-        ('2', 'OPERAÇÃO'),        
+        ('1', 'SIMULAÇÃO'),        
     )
     sim_status=models.CharField(max_length=1, choices=status_CHOICES)
     def __str__(self):

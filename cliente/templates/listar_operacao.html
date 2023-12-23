@@ -24,24 +24,24 @@
       </tr>
     </thead>
     <tbody>
-      {% for i in simulacao %}
-      {% if i.sim_status == '2' %}
+      {% for i in operacao %}
+      {% if i.ope_status == '2' %}
       <tr>
-        <td>{{i.sim_id}}</td>
-        <td>{{i.sim_datasimulacao}}</td>
+        <td>{{i.ope_id}}</td>
+        <td>{{i.ope_datasimulacao}}</td>
         <td>{{i.cli_id}}</td>
         <td>{{i.fac_id}}</td>
-        <td>{{i.sim_taxadecompra}}</td>
-        <td>{{i.sim_iof}}</td>
-        <td>{{i.sim_iofadicional}}</td>
-        <td>{{i.sim_despesas}}</td>
-        <td>{{i.sim_acrescimos}}</td>
-        <td>{{i.sim_myfloat}}</td>
-        <td>{{i.sim_status}}</td>
+        <td>{{i.ope_taxadecompra}}</td>
+        <td>{{i.ope_iof}}</td>
+        <td>{{i.ope_iofadicional}}</td>
+        <td>{{i.ope_despesas}}</td>
+        <td>{{i.ope_acrescimos}}</td>
+        <td>{{i.ope_myfloat}}</td>
+        <td>{{i.ope_status}}</td>
         <td>
-          <form method="post" action="{% url 'gerar_operacao_word' i.sim_id %}">
+          <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">
             {% csrf_token %}
-            <a href="{% url 'editar_simulacao2' i.sim_id %}">Editar 2</a>
+            <a href="{% url 'editar_operacao' i.ope_id %}">Editar 2</a>
             <button type="submit" class="btn btn-secondary">Gerar Word</button> 
           </form>
         </td>
