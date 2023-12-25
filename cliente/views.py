@@ -4,9 +4,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from django.http import JsonResponse, HttpResponse
 from docx import Document
+import logging
 from docx.shared import Pt
 from django.core.serializers.json import DjangoJSONEncoder
 import json
+from num2words import num2words
 from datetime import datetime
 from django.conf import settings
 import os
@@ -397,7 +399,7 @@ def gerar_simulacao_word(request, sim_id):
     context = {
         'ID_SIM': simulacao.sim_id,
         'DATASIMULACAO': simulacao.sim_datasimulacao.strftime('%d/%m/%Y'),
-        'PRAZOME': f'{((simulacao.sim_prazo1 * simulacao.sim_valortotal1) + (simulacao.sim_prazo2 * simulacao.sim_valortotal2) + (simulacao.sim_prazo3 * simulacao.sim_valortotal3) + (simulacao.sim_prazo4 * simulacao.sim_valortotal4) + (simulacao.sim_prazo5 * simulacao.sim_valortotal5) +  (simulacao.sim_prazo6 * simulacao.sim_valortotal6)) /  (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6)}'.replace('.', ','),
+        'PRAZOME': f'{round(((simulacao.sim_prazo1 * simulacao.sim_valortotal1) + (simulacao.sim_prazo2 * simulacao.sim_valortotal2) + (simulacao.sim_prazo3 * simulacao.sim_valortotal3) + (simulacao.sim_prazo4 * simulacao.sim_valortotal4) + (simulacao.sim_prazo5 * simulacao.sim_valortotal5) +  (simulacao.sim_prazo6 * simulacao.sim_valortotal6)) /  (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6),0):.0f}'.replace('.', ','),
         'FATORNOM': f'{simulacao.sim_taxadecompra}%'.replace('.', ','),
         'TAXAEFE': f'{simulacao.sim_taxadecompraefetiva1}%'.replace('.', ','),
         'FATORPERI': f'{round(((simulacao.sim_taxaperiodo1 * simulacao.sim_valortotal1) + (simulacao.sim_taxaperiodo2 * simulacao.sim_valortotal2) + (simulacao.sim_taxaperiodo3 * simulacao.sim_valortotal3) + (simulacao.sim_taxaperiodo4 * simulacao.sim_valortotal4) + (simulacao.sim_taxaperiodo5 * simulacao.sim_valortotal5) + (simulacao.sim_taxaperiodo6 * simulacao.sim_valortotal6)) / (simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6), 2):.2f}%'.replace('.', ','),    
@@ -471,7 +473,7 @@ def gerar_simulacao_word(request, sim_id):
         'IOFAD6': f' {simulacao.sim_valoriofadicional6:,.2f}'.replace(',', '.'),
         'DESP': f' {simulacao.sim_despesas:,.2f}'.replace(',', '.'),
         'ACRE': f' {simulacao.sim_acrescimos:,.2f}'.replace(',', '.'),
-        'DEDU': f' {(simulacao.sim_despesas - simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
+        'DEDU': f' {(-simulacao.sim_despesas + simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
         'DIFE1': f' {(simulacao.sim_valorcompra1 + simulacao.sim_valoriof1 + simulacao.sim_valoriofadicional1 + simulacao.sim_despesas - simulacao.sim_acrescimos):,.2f}'.replace(',', '.'),
         'DIFE2': f' {(simulacao.sim_valorcompra2 + simulacao.sim_valoriof2 + simulacao.sim_valoriofadicional2):,.2f}'.replace(',', '.'),
         'DIFE3': f' {(simulacao.sim_valorcompra3 + simulacao.sim_valoriof3 + simulacao.sim_valoriofadicional3):,.2f}'.replace(',', '.'),
@@ -509,23 +511,39 @@ def editar_simulacao2(request, id):
     return render(request, 'inserir_simulacao.html', {'form':form})
 
 def inserir_operacao(request, id):
-    if request.method == 'POST':
-        form = DoperacaoForm(request.POST)
-        if form.is_valid():
-            nova_operacao = form.save()
-            # Obtém o ID da nova_operacao
-            novo_id = nova_operacao.ope_id
-            # Redireciona para 'listar_operacaoid' com o novo ID
-            return redirect('listar_operacaoid', id=novo_id)
-    else:
-        form = DoperacaoForm()
+    try:
+        print("Entrou na função inserir_operacao")
+
+        if request.method == 'POST':
+            print("Método é POST")
+
+            form = DoperacaoForm(request.POST)
+            if form.is_valid():
+                nova_operacao = form.save()
+                novo_id = nova_operacao.ope_id
+
+                print(f"Nova operação inserida com ID: {novo_id}")
+
+                return redirect('listar_operacaoid', id=novo_id)
+            else:
+                print("Formulário não é válido")
+                print(f"Erros no formulário: {form.errors}")
+        else:
+            print("Método não é POST")
+
+            form = DoperacaoForm()
+    except Exception as e:
+        print(f"Erro ao inserir operação: {e}")
+        raise
+
+    print("Saindo da função inserir_operacao")
     return render(request, 'inserir_operacao.html', {'form': form})
 def listar_operacao(request):
     operacao=Doperacao.objects.all()
     return render(request, 'listar_operacao.html', {'operacao':operacao})
 def listar_operacaoid(request, id):
-    operacao_id=Doperacao.objects.get(ope_id=id)
-    return render(request, 'listar_operacaoid.html', {'operacao_id':operacao_id})
+    operacao_id = Doperacao.objects.get(ope_id=id)
+    return render(request, 'listar_operacaoid.html', {'i': operacao_id})
 def editar_operacao(request, id):
     operacao=Doperacao.objects.get(ope_id=id)
     form = DoperacaoForm(request.POST or None, instance=operacao)
@@ -535,6 +553,7 @@ def editar_operacao(request, id):
     return render(request, 'inserir_operacao.html', {'form':form})
 def gerar_operacao_word(request, ope_id):
     operacao = Doperacao.objects.get(ope_id=ope_id)
+    contratomae_associado = operacao.cma_id
     cliente_associado = operacao.cli_id
     factoring_associado = operacao.fac_id       
     pessoas_associadas_rs = Dpessoas.objects.filter(cli_id_id=operacao.cli_id.cli_id, pes_tipopessoa='RS')
@@ -546,31 +565,31 @@ def gerar_operacao_word(request, ope_id):
     # Defina os dados a serem inseridos no modelo
     context = {        
         'ID_OPE': operacao.ope_id,
-        'DATAOPERACAO': operacao.ope_datasimulacao.strftime('%d/%m/%Y'),
-        'PRAZOME': f'{((operacao.ope_prazo1 * operacao.ope_valortotal1) + (operacao.ope_prazo2 * operacao.ope_valortotal2) + (operacao.ope_prazo3 * operacao.ope_valortotal3) + (operacao.ope_prazo4 * operacao.ope_valortotal4) + (operacao.ope_prazo5 * operacao.ope_valortotal5) +  (operacao.ope_prazo6 * operacao.ope_valortotal6)) /  (operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6)}'.replace('.', ','),
-        'FATORNOM': f'{operacao.ope_taxadecompra}%'.replace('.', ','),
-        'TAXAEFE': f'{operacao.ope_taxadecompraefetiva1}%'.replace('.', ','),
-        'FATORPERI': f'{round(((operacao.ope_taxaperiodo1 * operacao.ope_valortotal1) + (operacao.ope_taxaperiodo2 * operacao.ope_valortotal2) + (operacao.ope_taxaperiodo3 * operacao.ope_valortotal3) + (operacao.ope_taxaperiodo4 * operacao.ope_valortotal4) + (operacao.ope_taxaperiodo5 * operacao.ope_valortotal5) + (operacao.ope_taxaperiodo6 * operacao.ope_valortotal6)) / (operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6), 2):.2f}%'.replace('.', ','),    
-        'IOF': f'{round((operacao.ope_iof), 2):.2f}%',
-        'IOFA': f'{round((operacao.ope_iofadicional), 2):.2f}%',
-        'TAXA': f'{round((operacao.ope_taxadecompra), 2):.2f}%',
+        'DATAOPERACAO': operacao.ope_dataoperacao.strftime('%d/%m/%Y'),
+        # 'ID_CONTRATOMAE
+        "CONTRATOMAE" : contratomae_associado.cma_id,
+        "DATACONTRATOMAE" : contratomae_associado.cma_datacadastro.strftime('%d/%m/%Y'),
         # 'ID_CLIENTE
         'ID_CLIENTE': cliente_associado.cli_id,
         'RAZAOSOCIAL_CLIENTE': f'Empresa: ' + cliente_associado.cli_razaosocial,
-        'CNPJ_CLIENTE': f'CNPJ: ' + cliente_associado.cli_cnpj,
-        'EMAIL1_CLIENTE': cliente_associado.cli_email1,
-        'TELEFONE1_CLIENTE': cliente_associado.cli_telefone1,
-        'ENDERECO_CLIENTE': cliente_associado.cli_enderereco,
-        'COMPLEMENTO_CLIENTE': cliente_associado.cli_complementoenderereco,
-        'CEP': f'CEP: ' + cliente_associado.cli_cep,
-        'BAIRRO': f'BAIRRO: ' + cliente_associado.cli_bairro,
-        'CIDADE': f'CIDADE: ' + cliente_associado.cli_cidade,
-        'ESTADO': f'ESTADO: ' + cliente_associado.cli_estado,
+        'CNPJ_CLIENTE': f'CNPJ: ' + cliente_associado.cli_cnpj,        
         # 'ID_FACTORING'
         'ID_FACTORING': factoring_associado.fac_id,
         'RAZAOSOCIAL_FACTORING': f'Empresa: ' + factoring_associado.fac_razaosocial,
         'CNPJ_FACTORING': f'CNPJ: ' + factoring_associado.fac_cnpj,
-        # 'SIMULACOES 1 A 6'
+        # 'OPERAÇÕES1 A 6'
+        'NUMTITULO1': operacao.ope_numtitulo1,
+        'NUMTITULO2': operacao.ope_numtitulo2,
+        'NUMTITULO3': operacao.ope_numtitulo3,
+        'NUMTITULO4': operacao.ope_numtitulo4,
+        'NUMTITULO5': operacao.ope_numtitulo5,
+        'NUMTITULO6': operacao.ope_numtitulo6,
+        'NOMESACADO1': operacao.ope_razaosocial1,
+        'NOMESACADO2': operacao.ope_razaosocial2,
+        'NOMESACADO3': operacao.ope_razaosocial3,
+        'NOMESACADO4': operacao.ope_razaosocial4,
+        'NOMESACADO5': operacao.ope_razaosocial5,
+        'NOMESACADO6': operacao.ope_razaosocial6,        
         'VALTT1': f' {operacao.ope_valortotal1:,.2f}'.replace(',', '.'),
         'VALTT2': f' {operacao.ope_valortotal2:,.2f}'.replace(',', '.'),
         'VALTT3': f' {operacao.ope_valortotal3:,.2f}'.replace(',', '.'),
@@ -583,67 +602,14 @@ def gerar_operacao_word(request, ope_id):
         'VENC4': operacao.ope_vencimento4.strftime('%d/%m/%Y'),
         'VENC5': operacao.ope_vencimento5.strftime('%d/%m/%Y'),
         'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y'),
-        'FLOAT': operacao.ope_myfloat,
-        'PRAZO1': operacao.ope_prazo1,
-        'PRAZO2': operacao.ope_prazo2,
-        'PRAZO3': operacao.ope_prazo3,
-        'PRAZO4': operacao.ope_prazo4,
-        'PRAZO5': operacao.ope_prazo5,
-        'PRAZO6': operacao.ope_prazo6,
-        'COMPRA1': f' {operacao.ope_valorcompra1:,.2f}'.replace(',', '.'),
-        'COMPRA2': f' {operacao.ope_valorcompra2:,.2f}'.replace(',', '.'),
-        'COMPRA3': f' {operacao.ope_valorcompra3:,.2f}'.replace(',', '.'),
-        'COMPRA4': f' {operacao.ope_valorcompra4:,.2f}'.replace(',', '.'),
-        'COMPRA5': f' {operacao.ope_valorcompra5:,.2f}'.replace(',', '.'),
-        'COMPRA6': f' {operacao.ope_valorcompra6:,.2f}'.replace(',', '.'),
-        'FATOR1': operacao.ope_taxaperiodo1,
-        'FATOR2': operacao.ope_taxaperiodo2,
-        'FATOR3': operacao.ope_taxaperiodo3,
-        'FATOR4': operacao.ope_taxaperiodo4,
-        'FATOR5': operacao.ope_taxaperiodo5,
-        'FATOR6': operacao.ope_taxaperiodo6,
-        'FCOMPRA1': f' {(operacao.ope_valortotal1 - operacao.ope_valorcompra1):,.2f}'.replace(',', '.'),
-        'FCOMPRA2': f' {(operacao.ope_valortotal2 - operacao.ope_valorcompra2):,.2f}'.replace(',', '.'),
-        'FCOMPRA3': f' {(operacao.ope_valortotal3 - operacao.ope_valorcompra3):,.2f}'.replace(',', '.'),
-        'FCOMPRA4': f' {(operacao.ope_valortotal4 - operacao.ope_valorcompra4):,.2f}'.replace(',', '.'),
-        'FCOMPRA5': f' {(operacao.ope_valortotal5 - operacao.ope_valorcompra5):,.2f}'.replace(',', '.'),
-        'FCOMPRA6': f' {(operacao.ope_valortotal6 - operacao.ope_valorcompra6):,.2f}'.replace(',', '.'),
-        'IOF1': f' {operacao.ope_valoriof1:,.2f}'.replace(',', '.'),
-        'IOF2': f' {operacao.ope_valoriof2:,.2f}'.replace(',', '.'),
-        'IOF3': f' {operacao.ope_valoriof3:,.2f}'.replace(',', '.'),
-        'IOF4': f' {operacao.ope_valoriof4:,.2f}'.replace(',', '.'),
-        'IOF5': f' {operacao.ope_valoriof5:,.2f}'.replace(',', '.'),
-        'IOF6': f' {operacao.ope_valoriof6:,.2f}'.replace(',', '.'),
-        'IOFAD1': f' {operacao.ope_valoriofadicional1:,.2f}'.replace(',', '.'),
-        'IOFAD2': f' {operacao.ope_valoriofadicional2:,.2f}'.replace(',', '.'),
-        'IOFAD3': f' {operacao.ope_valoriofadicional3:,.2f}'.replace(',', '.'),
-        'IOFAD4': f' {operacao.ope_valoriofadicional4:,.2f}'.replace(',', '.'),
-        'IOFAD5': f' {operacao.ope_valoriofadicional5:,.2f}'.replace(',', '.'),
-        'IOFAD6': f' {operacao.ope_valoriofadicional6:,.2f}'.replace(',', '.'),
         'DESP': f' {operacao.ope_despesas:,.2f}'.replace(',', '.'),
         'ACRE': f' {operacao.ope_acrescimos:,.2f}'.replace(',', '.'),
-        'DEDU': f' {(operacao.ope_despesas - operacao.ope_acrescimos):,.2f}'.replace(',', '.'),
-        'DIFE1': f' {(operacao.ope_valorcompra1 + operacao.ope_valoriof1 + operacao.ope_valoriofadicional1 + operacao.ope_despesas - operacao.ope_acrescimos):,.2f}'.replace(',', '.'),
-        'DIFE2': f' {(operacao.ope_valorcompra2 + operacao.ope_valoriof2 + operacao.ope_valoriofadicional2):,.2f}'.replace(',', '.'),
-        'DIFE3': f' {(operacao.ope_valorcompra3 + operacao.ope_valoriof3 + operacao.ope_valoriofadicional3):,.2f}'.replace(',', '.'),
-        'DIFE4': f' {(operacao.ope_valorcompra4 + operacao.ope_valoriof4 + operacao.ope_valoriofadicional4):,.2f}'.replace(',', '.'),
-        'DIFE5': f' {(operacao.ope_valorcompra5 + operacao.ope_valoriof5 + operacao.ope_valoriofadicional5):,.2f}'.replace(',', '.'),
-        'DIFE6': f' {(operacao.ope_valorcompra6 + operacao.ope_valoriof6 + operacao.ope_valoriofadicional6):,.2f}'.replace(',', '.'),
-        'LIQUIDO1': f' {operacao.ope_valorliquido1:,.2f}'.replace(',', '.'),
-        'LIQUIDO2': f' {operacao.ope_valorliquido2:,.2f}'.replace(',', '.'),
-        'LIQUIDO3': f' {operacao.ope_valorliquido3:,.2f}'.replace(',', '.'),
-        'LIQUIDO4': f' {operacao.ope_valorliquido4:,.2f}'.replace(',', '.'),
-        'LIQUIDO5': f' {operacao.ope_valorliquido5:,.2f}'.replace(',', '.'),
-        'LIQUIDO6': f' {operacao.ope_valorliquido6:,.2f}'.replace(',', '.'),
         'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),
         'COUNT': (sum(1 for valor in [operacao.ope_valortotal1, operacao.ope_valortotal2, operacao.ope_valortotal3, operacao.ope_valortotal4, operacao.ope_valortotal5, operacao.ope_valortotal6] if valor is not None)),
         'COMPRATT': f' {(operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6):,.2f}'.replace(',', '.'),
-        'FCOMPRATT': f' {(operacao.ope_valortotal1 - operacao.ope_valorcompra1) + (operacao.ope_valortotal2 - operacao.ope_valorcompra2) + (operacao.ope_valortotal3 - operacao.ope_valorcompra3) + (operacao.ope_valortotal4 - operacao.ope_valorcompra4) + (operacao.ope_valortotal5 - operacao.ope_valorcompra5) + (operacao.ope_valortotal6 - operacao.ope_valorcompra6):,.2f}'.replace(',', '.'), 
         'IOFTT': f' {(operacao.ope_valoriof1 + operacao.ope_valoriof2 + operacao.ope_valoriof3 + operacao.ope_valoriof4 + operacao.ope_valoriof5 + operacao.ope_valoriof6):,.2f}'.replace(',', '.'),
         'IOFADTT': f' {(operacao.ope_valoriofadicional1 + operacao.ope_valoriofadicional2 + operacao.ope_valoriofadicional3 + operacao.ope_valoriofadicional4 + operacao.ope_valoriofadicional5 + operacao.ope_valoriofadicional6):,.2f}'.replace(',', '.'), 
-        'DIFETT': f' { ((operacao.ope_valorcompra1 + operacao.ope_valoriof1 + operacao.ope_valoriofadicional1 + operacao.ope_despesas - operacao.ope_acrescimos) + (operacao.ope_valorcompra2 + operacao.ope_valoriof2 + operacao.ope_valoriofadicional2) + (operacao.ope_valorcompra3 + operacao.ope_valoriof3 + operacao.ope_valoriofadicional3) + (operacao.ope_valorcompra4 + operacao.ope_valoriof4 + operacao.ope_valoriofadicional4) + (operacao.ope_valorcompra5 + operacao.ope_valoriof5 + operacao.ope_valoriofadicional5) + (operacao.ope_valorcompra6 + operacao.ope_valoriof6 + operacao.ope_valoriofadicional6)):,.2f}'.replace(',', '.'),
         'LIQTT': f' {(operacao.ope_valorliquido1 + operacao.ope_valorliquido2 + operacao.ope_valorliquido3 + operacao.ope_valorliquido4 + operacao.ope_valorliquido5 + operacao.ope_valorliquido6):,.2f}'.replace(',', '.'),
-        'VLIQUIDOTT': f' {((operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6) - (operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6) - (operacao.ope_valoriof1 + operacao.ope_valoriof2 + operacao.ope_valoriof3 + operacao.ope_valoriof4 + operacao.ope_valoriof5 + operacao.ope_valoriof6) - (operacao.ope_valoriofadicional1 + operacao.ope_valoriofadicional2 + operacao.ope_valoriofadicional3 + operacao.ope_valoriofadicional4 + operacao.ope_valoriofadicional5 + operacao.ope_valoriofadicional6)):,.2f}'.replace(',', '.'),
         # 'PES_ID'
         'NOME_PESSOA00': f'NOME: ' + pessoas_associadas_rs[0].pes_nome if pessoas_associadas_rs else '',
         'NOME_PESSOA01': f'NOME: ' + pessoas_associadas_rs[1].pes_nome if len(pessoas_associadas_rs) > 1 else '',
@@ -660,4 +626,86 @@ def gerar_operacao_word(request, ope_id):
     with open(output_path, 'rb') as doc_file:
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
         response['Content-Disposition'] = f'attachment; filename=OPERACAO DE FOMENTO MERCANTIL - {ope_id}.docx'
+    return response
+def gerar_promissoria_word(request, ope_id):
+    operacao = Doperacao.objects.get(ope_id=ope_id)    
+    cliente_associado = operacao.cli_id
+    factoring_associado = operacao.fac_id       
+    pessoas_associadas_rs = Dpessoas.objects.filter(cli_id_id=operacao.cli_id.cli_id, pes_tipopessoa='RS')
+    pessoas_associadas_rt = Dpessoas.objects.filter(fac_id_id=operacao.fac_id.fac_id, pes_tipopessoa='RT')
+    COMPRATT = (operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6)       
+    parte_inteira = COMPRATT('.')[0]
+    numero = int(parte_inteira)
+    numero_por_extenso = num2words(numero, lang='pt_BR')
+    if '.' in COMPRATT:
+        parte_decimal = COMPRATT.split('.')[1]
+        numero_por_extenso += f" vírgula {num2words(parte_decimal, lang='pt_BR')}"
+
+
+    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\NotaPromissoriaPadrao.docx"     
+    # Caminho de saída do documento gerado
+    output_path = f"NOTA PROMISSORIA - {ope_id}.docx"
+    doc = DocxTemplate(template_path)
+    # Defina os dados a serem inseridos no modelo
+    context = {        
+        'ID_OPE': operacao.ope_id,
+        'DATAOPERACAO': operacao.ope_dataoperacao.strftime('%d/%m/%Y'),        
+        # 'ID_CLIENTE
+        'ID_CLIENTE': cliente_associado.cli_id,
+        'RAZAOSOCIAL_CLIENTE': f'Empresa: ' + cliente_associado.cli_razaosocial,
+        'CNPJ_CLIENTE': f'CNPJ: ' + cliente_associado.cli_cnpj,        
+        # 'ID_FACTORING'
+        'ID_FACTORING': factoring_associado.fac_id,
+        'RAZAOSOCIAL_FACTORING': f'Empresa: ' + factoring_associado.fac_razaosocial,
+        'CNPJ_FACTORING': f'CNPJ: ' + factoring_associado.fac_cnpj,
+        # 'OPERAÇÕES1 A 6'
+        'NUMTITULO1': operacao.ope_numtitulo1,
+        'NUMTITULO2': operacao.ope_numtitulo2,
+        'NUMTITULO3': operacao.ope_numtitulo3,
+        'NUMTITULO4': operacao.ope_numtitulo4,
+        'NUMTITULO5': operacao.ope_numtitulo5,
+        'NUMTITULO6': operacao.ope_numtitulo6,
+        'NOMESACADO1': operacao.ope_razaosocial1,
+        'NOMESACADO2': operacao.ope_razaosocial2,
+        'NOMESACADO3': operacao.ope_razaosocial3,
+        'NOMESACADO4': operacao.ope_razaosocial4,
+        'NOMESACADO5': operacao.ope_razaosocial5,
+        'NOMESACADO6': operacao.ope_razaosocial6,        
+        'VALTT1': f' {operacao.ope_valortotal1:,.2f}'.replace(',', '.'),
+        'VALTT2': f' {operacao.ope_valortotal2:,.2f}'.replace(',', '.'),
+        'VALTT3': f' {operacao.ope_valortotal3:,.2f}'.replace(',', '.'),
+        'VALTT4': f' {operacao.ope_valortotal4:,.2f}'.replace(',', '.'),
+        'VALTT5': f' {operacao.ope_valortotal5:,.2f}'.replace(',', '.'),
+        'VALTT6': f' {operacao.ope_valortotal6:,.2f}'.replace(',', '.'),
+        'VENC1': operacao.ope_vencimento1.strftime('%d/%m/%Y'),
+        'VENC2': operacao.ope_vencimento2.strftime('%d/%m/%Y'),
+        'VENC3': operacao.ope_vencimento3.strftime('%d/%m/%Y'),
+        'VENC4': operacao.ope_vencimento4.strftime('%d/%m/%Y'),
+        'VENC5': operacao.ope_vencimento5.strftime('%d/%m/%Y'),
+        'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y'),
+        'DESP': f' {operacao.ope_despesas:,.2f}'.replace(',', '.'),
+        'ACRE': f' {operacao.ope_acrescimos:,.2f}'.replace(',', '.'),
+        'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),
+        'COUNT': (sum(1 for valor in [operacao.ope_valortotal1, operacao.ope_valortotal2, operacao.ope_valortotal3, operacao.ope_valortotal4, operacao.ope_valortotal5, operacao.ope_valortotal6] if valor is not None)),
+        'COMPRATT': f' {(operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6):,.2f}'.replace(',', '.'),       
+        'COMPRATT_POR_EXTENSO': numero_por_extenso,
+        'IOFTT': f' {(operacao.ope_valoriof1 + operacao.ope_valoriof2 + operacao.ope_valoriof3 + operacao.ope_valoriof4 + operacao.ope_valoriof5 + operacao.ope_valoriof6):,.2f}'.replace(',', '.'),
+        'IOFADTT': f' {(operacao.ope_valoriofadicional1 + operacao.ope_valoriofadicional2 + operacao.ope_valoriofadicional3 + operacao.ope_valoriofadicional4 + operacao.ope_valoriofadicional5 + operacao.ope_valoriofadicional6):,.2f}'.replace(',', '.'), 
+        'LIQTT': f' {(operacao.ope_valorliquido1 + operacao.ope_valorliquido2 + operacao.ope_valorliquido3 + operacao.ope_valorliquido4 + operacao.ope_valorliquido5 + operacao.ope_valorliquido6):,.2f}'.replace(',', '.'),
+        # 'PES_ID'
+        'NOME_PESSOA00': f'NOME: ' + pessoas_associadas_rs[0].pes_nome if pessoas_associadas_rs else '',
+        'NOME_PESSOA01': f'NOME: ' + pessoas_associadas_rs[1].pes_nome if len(pessoas_associadas_rs) > 1 else '',
+        'NOME_PESSOA000': f'NOME: ' + pessoas_associadas_rt[0].pes_nome if len(pessoas_associadas_rt) > 1 else '',
+        'NOME_PESSOA001': f'NOME: ' + pessoas_associadas_rt[1].pes_nome if len(pessoas_associadas_rt) > 1 else '',
+        'CPF_PESSOA00': f'CPF: ' + pessoas_associadas_rs[0].pes_cpf if pessoas_associadas_rs else '',
+        'CPF_PESSOA01': f'CPF: ' + pessoas_associadas_rs[1].pes_cpf if len(pessoas_associadas_rs) > 1 else '',
+        'CPF_PESSOA000': f'CPF: ' + pessoas_associadas_rt[0].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
+        'CPF_PESSOA001': f'CPF: ' + pessoas_associadas_rt[1].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
+
+    }
+    doc.render(context)
+    doc.save(output_path)
+    with open(output_path, 'rb') as doc_file:
+        response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        response['Content-Disposition'] = f'attachment; filename=NOTA PROMISSORIA - {ope_id}.docx'
     return response

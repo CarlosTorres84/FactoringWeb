@@ -8,11 +8,11 @@
 <body>
     <h1>Gerar Operação</h1>
     <form method="post">
-        {% csrf_token %}
+      {% csrf_token %}
 
-        <label for="ope_datasimulacao">Data Simulação:</label>
-        <!-- <input type="date" name="ope_datasimulacao" value="{{ form.instance.ope_datasimulacao }}" required> -->
-        <input type="date" name="ope_datasimulacao" value="2023-12-15" required>
+        <label for="ope_dataoperacao">Data Operação:</label>
+        <!-- <input type="date" name="ope_dataoperacao" value="{{ form.instance.ope_dataoperacao }}" required> -->
+        <input type="date" id="ope_dataoperacao" name="ope_dataoperacao" value="2023-12-15" required="">
 
         <label for="ope_status">Status:</label>
         <select name="ope_status" id="ope_status" required>
@@ -22,40 +22,224 @@
         </select>   
 
         <label for="cli_id">ID Cliente:</label>
-        <!-- <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required> -->
-        <input type="text" name="cli_id" value="202108" required>
+        <!-- <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required> -->        
+        <input type="text" id="cli_id" name="cli_id" value="202108" required="">
 
         <label for="fac_id">ID Factoring:</label>
         <!-- <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required> -->
-        <input type="text" name="fac_id" value="202101" required>
+        <input type="text" id="fac_id" name="fac_id" value="202101" required="">
+
+        <label for="cma_id">ID Contrato Mãe:</label>
+        <!-- <input type="text" name="cma_id" value="{{ form.instance.cma_id }}" required> -->
+        <input type="text" id="cma_id" name="cma_id" value="202302" required="">
 
         <label for="ope_taxadecompra">Taxa de Compra %:</label>
         <!-- <input type="text" name="ope_taxadecompra" value="{{ form.instance.ope_taxadecompra }}" required> -->
-        <input type="text" name="ope_taxadecompra" value="7.15" required>
+        <input type="text" id="ope_taxadecompra" name="ope_taxadecompra" value="7.15" required>
 
         <label for="ope_iof">IOF Anual %:</label>
         <!-- <input type="text" name="ope_iof" value="{{ form.instance.ope_iof }}" required> -->
-        <input type="text" name="ope_iof" value="1.50" required>
+        <input type="text" id="ope_iof" name="ope_iof" value="1.50" required>
 
         <label for="ope_iofadicional">IOF Adicional %:</label>
         <!-- <input type="text" name="ope_iofadicional" value="{{ form.instance.ope_iofadicional }}" required> -->
-        <input type="text" name="ope_iofadicional" value="0.38" required>
+        <input type="text" id="ope_iofadicional" name="ope_iofadicional" value="0.38" required>
 
         <label for="ope_despesas">Despesas $ (-):</label>
         <!-- <input type="text" name="ope_despesas" value="{{ form.instance.ope_despesas }}" required> -->
-        <input type="text" name="ope_despesas" value="100" required>
+        <input type="text" id="ope_despesas" name="ope_despesas" value="100" required>
 
         <label for="ope_acrescimos">Acréscimos $ (+):</label>
         <!-- <input type="text" name="ope_acrescimos" value="{{ form.instance.ope_acrescimos }}" required> -->
-        <input type="text" name="ope_acrescimos" value="200" required>
+        <input type="text" id="ope_acrescimos" name="ope_acrescimos" value="200" required>
 
         <label for="ope_myfloat">MyFloat:</label>
         <!-- <input type="text" name="ope_myfloat" value="{{ form.instance.ope_myfloat }}" required> -->
-        <input type="text" name="ope_myfloat" value="2" required>
+        <input type="text" id="ope_myfloat" name="ope_myfloat" value="2" required>
        
         <table>
             <tr>
-              <th colspan="2">Detalhes da Simulação</th>
+              <th colspan="2">Detalhes da Operação</th>
+            </tr>
+            <tr>
+              <td><label for="ope_numtitulo1">Nº Título:</label></td>
+              <!-- <td><input type="text" name="ope_numtitulo1" value="{{ form.instance.ope_numtitulo1 }}" required></td>
+              <td><input type="text" name="ope_numtitulo2" value="{{ form.instance.ope_numtitulo2 }}" required></td>
+              <td><input type="text" name="ope_numtitulo3" value="{{ form.instance.ope_numtitulo3 }}" required></td>
+              <td><input type="text" name="ope_numtitulo4" value="{{ form.instance.ope_numtitulo4 }}" required></td>
+              <td><input type="text" name="ope_numtitulo5" value="{{ form.instance.ope_numtitulo5 }}" required></td>
+              <td><input type="text" name="ope_numtitulo6" value="{{ form.instance.ope_numtitulo6 }}" required></td> -->
+              <td><input type="text" id="ope_numtitulo1" name="ope_numtitulo1" value="1" required></td>
+              <td><input type="text" id="ope_numtitulo2" name="ope_numtitulo2" value="2" required="" aria-label="Número do Título 2"></td>
+              <td><input type="text" id="ope_numtitulo3" name="ope_numtitulo3" value="3" required="" aria-label="Número do Título 3"></td>
+              <td><input type="text" id="ope_numtitulo4" name="ope_numtitulo4" value="4" required="" aria-label="Número do Título 4"></td>
+              <td><input type="text" id="ope_numtitulo5" name="ope_numtitulo5" value="5" required="" aria-label="Número do Título 5"></td>
+              <td><input type="text" id="ope_numtitulo6" name="ope_numtitulo6" value="6" required="" aria-label="Número do Título 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_razaosocial1">Razão Social:</label></td>
+              <!-- <td><input type="text" name="ope_razaosocial1" value="{{ form.instance.ope_razaosocial1 }}" required></td>
+              <td><input type="text" name="ope_razaosocial2" value="{{ form.instance.ope_razaosocial2 }}" required></td>
+              <td><input type="text" name="ope_razaosocial3" value="{{ form.instance.ope_razaosocial3 }}" required></td>
+              <td><input type="text" name="ope_razaosocial4" value="{{ form.instance.ope_razaosocial4 }}" required></td>
+              <td><input type="text" name="ope_razaosocial5" value="{{ form.instance.ope_razaosocial5 }}" required></td>
+              <td><input type="text" name="ope_razaosocial6" value="{{ form.instance.ope_razaosocial6 }}" required></td> -->
+              <td><input type="text" id="ope_razaosocial1" name="ope_razaosocial1" value="SubCliente1" required></td>
+              <td><input type="text" name="ope_razaosocial2" value="SubCliente2" required aria-label="Razão Social 2"></td>
+              <td><input type="text" name="ope_razaosocial3" value="SubCliente13" required aria-label="Razão Social 3"></td>
+              <td><input type="text" name="ope_razaosocial4" value="SubCliente14" required aria-label="Razão Social 4"></td>
+              <td><input type="text" name="ope_razaosocial5" value="SubCliente15" required aria-label="Razão Social 5"></td>
+              <td><input type="text" name="ope_razaosocial6" value="SubCliente16" required aria-label="Razão Social 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_cnpj1">CNPJ:</label></td>
+              <!-- <td><input type="text" name="ope_cnpj1" value="{{ form.instance.ope_cnpj1 }}" required></td>
+              <td><input type="text" name="ope_cnpj2" value="{{ form.instance.ope_cnpj2 }}" required></td>
+              <td><input type="text" name="ope_cnpj3" value="{{ form.instance.ope_cnpj3 }}" required></td>
+              <td><input type="text" name="ope_cnpj4" value="{{ form.instance.ope_cnpj4 }}" required></td>
+              <td><input type="text" name="ope_cnpj5" value="{{ form.instance.ope_cnpj5 }}" required></td>
+              <td><input type="text" name="ope_cnpj6" value="{{ form.instance.ope_cnpj6 }}" required></td> -->
+              <td><input type="text" id="ope_cnpj1" name="ope_cnpj1" value="56.980.198.01" required></td>
+              <td><input type="text" name="ope_cnpj2" value="56.980.198.02" required aria-label="CNPJ 2"></td>
+              <td><input type="text" name="ope_cnpj3" value="56.980.198.03" required aria-label="CNPJ 3"></td>
+              <td><input type="text" name="ope_cnpj4" value="56.980.198.04" required aria-label="CNPJ 4"></td>
+              <td><input type="text" name="ope_cnpj5" value="56.980.198.05" required aria-label="CNPJ 5"></td>
+              <td><input type="text" name="ope_cnpj6" value="56.980.198.06" required aria-label="CNPJ 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_email1">E-mail:</label></td>
+              <!-- <td><input type="text" name="ope_email1" value="{{ form.instance.ope_email1 }}" required></td>
+              <td><input type="email" name="ope_email2" value="{{ form.instance.ope_email2 }}" required></td>
+              <td><input type="email" name="ope_email3" value="{{ form.instance.ope_email3 }}" required></td>
+              <td><input type="email" name="ope_email4" value="{{ form.instance.ope_email4 }}" required></td>
+              <td><input type="email" name="ope_email5" value="{{ form.instance.ope_email5 }}" required></td>
+              <td><input type="email" name="ope_email6" value="{{ form.instance.ope_email6 }}" required></td> -->
+              <td><input type="email" id="ope_email1" name="ope_email1" value="teste@uol.com.br1" required></td>
+              <td><input type="email" name="ope_email2" value="teste@uol.com.br2" required aria-label="E-mail 2"></td>
+              <td><input type="email" name="ope_email3" value="teste@uol.com.br3" required aria-label="E-mail 3"></td>
+              <td><input type="email" name="ope_email4" value="teste@uol.com.br4" required aria-label="E-mail 4"></td>
+              <td><input type="email" name="ope_email5" value="teste@uol.com.br5" required aria-label="E-mail 5"></td>
+              <td><input type="email" name="ope_email6" value="teste@uol.com.br6" required aria-label="E-mail 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_telefone1">Telefone:</label></td>
+              <!-- <td><input type="text" name="ope_telefone1" value="{{ form.instance.ope_telefone1 }}" required></td>
+              <td><input type="text" name="ope_telefone2" value="{{ form.instance.ope_telefone2 }}" required></td>
+              <td><input type="text" name="ope_telefone3" value="{{ form.instance.ope_telefone3 }}" required></td>
+              <td><input type="text" name="ope_telefone4" value="{{ form.instance.ope_telefone4 }}" required></td>
+              <td><input type="text" name="ope_telefone5" value="{{ form.instance.ope_telefone5 }}" required></td>
+              <td><input type="text" name="ope_telefone6" value="{{ form.instance.ope_telefone6 }}" required></td> -->
+              <td><input type="text" id="ope_telefone1" name="ope_telefone1" value="99114 57971" required></td>
+              <td><input type="text" name="ope_telefone2" value="99114 57972" required aria-label="Telefone 2"></td>
+              <td><input type="text" name="ope_telefone3" value="99114 57973" required aria-label="Telefone 3"></td>
+              <td><input type="text" name="ope_telefone4" value="99114 57974" required aria-label="Telefone 4"></td>
+              <td><input type="text" name="ope_telefone5" value="99114 57975" required aria-label="Telefone 5"></td>
+              <td><input type="text" name="ope_telefone6" value="99114 57976" required aria-label="Telefone 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_nomecontato1">Nome Contato:</label></td>
+              <!-- <td><input type="text" name="ope_nomecontato1" value="{{ form.instance.ope_nomecontato1 }}" required></td>
+              <td><input type="text" name="ope_nomecontato2" value="{{ form.instance.ope_nomecontato2 }}" required></td>
+              <td><input type="text" name="ope_nomecontato3" value="{{ form.instance.ope_nomecontato3 }}" required></td>
+              <td><input type="text" name="ope_nomecontato4" value="{{ form.instance.ope_nomecontato4 }}" required></td>
+              <td><input type="text" name="ope_nomecontato5" value="{{ form.instance.ope_nomecontato5 }}" required></td>
+              <td><input type="text" name="ope_nomecontato6" value="{{ form.instance.ope_nomecontato6 }}" required></td> -->
+              <td><input type="text" id="ope_nomecontato1" name="ope_nomecontato1" value="Carlos1" required></td>
+              <td><input type="text" name="ope_nomecontato2" value="Carlos2" required aria-label="Nome de Contato 2"></td>
+              <td><input type="text" name="ope_nomecontato3" value="Carlos3" required aria-label="Nome de Contato 3"></td>
+              <td><input type="text" name="ope_nomecontato4" value="Carlos4" required aria-label="Nome de Contato 4"></td>
+              <td><input type="text" name="ope_nomecontato5" value="Carlos5" required aria-label="Nome de Contato 5"></td>
+              <td><input type="text" name="ope_nomecontato6" value="Carlos6" required aria-label="Nome de Contato 6"></td>              
+            </tr>
+            <tr>
+              <td><label for="ope_endereco1">Endereço:</label></td>
+              <!-- <td><input type="text" name="ope_endereco1" value="{{ form.instance.ope_endereco1 }}" required></td>
+              <td><input type="text" name="ope_endereco2" value="{{ form.instance.ope_endereco2 }}" required></td>
+              <td><input type="text" name="ope_endereco3" value="{{ form.instance.ope_endereco3 }}" required></td>
+              <td><input type="text" name="ope_endereco4" value="{{ form.instance.ope_endereco4 }}" required></td>
+              <td><input type="text" name="ope_endereco5" value="{{ form.instance.ope_endereco5 }}" required></td>
+              <td><input type="text" name="ope_endereco6" value="{{ form.instance.ope_endereco6 }}" required></td> -->
+              <td><input type="text" id="ope_endereco1" name="ope_endereco1" value="Endereco1" required></td>
+              <td><input type="text" name="ope_endereco2" value="Endereco2" required aria-label="Endereço 2"></td>
+              <td><input type="text" name="ope_endereco3" value="Endereco3" required aria-label="Endereço 3"></td>
+              <td><input type="text" name="ope_endereco4" value="Endereco4" required aria-label="Endereço 4"></td>
+              <td><input type="text" name="ope_endereco5" value="Endereco5" required aria-label="Endereço 5"></td>
+              <td><input type="text" name="ope_endereco6" value="Endereco6" required aria-label="Endereço 6"></td>              
+            </tr>
+            <tr>
+              <td><label for="ope_complementoendereco1">Complemento Endereço:</label></td>
+              <!-- <td><input type="text" name="ope_complementoendereco1" value="{{ form.instance.ope_complementoendereco1 }}" required></td>
+              <td><input type="text" name="ope_complementoendereco2" value="{{ form.instance.ope_complementoendereco2 }}" required></td>
+              <td><input type="text" name="ope_complementoendereco3" value="{{ form.instance.ope_complementoendereco3 }}" required></td>
+              <td><input type="text" name="ope_complementoendereco4" value="{{ form.instance.ope_complementoendereco4 }}" required></td>
+              <td><input type="text" name="ope_complementoendereco5" value="{{ form.instance.ope_complementoendereco5 }}" required></td>
+              <td><input type="text" name="ope_complementoendereco6" value="{{ form.instance.ope_complementoendereco6 }}" required></td> -->
+              <td><input type="text" id="ope_complementoendereco1" name="ope_complementoendereco1" value="Complementoendereco1" required></td>
+              <td><input type="text" name="ope_complementoendereco2" value="Complementoendereco2" required aria-label="Complemento do Endereço 2"></td>
+              <td><input type="text" name="ope_complementoendereco3" value="Complementoendereco3" required aria-label="Complemento do Endereço 3"></td>
+              <td><input type="text" name="ope_complementoendereco4" value="Complementoendereco4" required aria-label="Complemento do Endereço 4"></td>
+              <td><input type="text" name="ope_complementoendereco5" value="Complementoendereco5" required aria-label="Complemento do Endereço 5"></td>
+              <td><input type="text" name="ope_complementoendereco6" value="Complementoendereco6" required aria-label="Complemento do Endereço 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_cep1">CEP:</label></td>
+              <!-- <td><input type="text" name="ope_cep1" value="{{ form.instance.ope_cep1 }}" required></td>
+              <td><input type="text" name="ope_cep2" value="{{ form.instance.ope_cep2 }}" required></td>
+              <td><input type="text" name="ope_cep3" value="{{ form.instance.ope_cep3 }}" required></td>
+              <td><input type="text" name="ope_cep4" value="{{ form.instance.ope_cep4 }}" required></td>
+              <td><input type="text" name="ope_cep5" value="{{ form.instance.ope_cep5 }}" required></td>
+              <td><input type="text" name="ope_cep6" value="{{ form.instance.ope_cep6 }}" required></td> -->
+              <td><input type="text" id="ope_cep1" name="ope_cep1" value="59082551" required></td>
+              <td><input type="text" name="ope_cep2" value="59082552" required aria-label="CEP 2"></td>
+              <td><input type="text" name="ope_cep3" value="59082553" required aria-label="CEP 3"></td>
+              <td><input type="text" name="ope_cep4" value="59082554" required aria-label="CEP 4"></td>
+              <td><input type="text" name="ope_cep5" value="59082555" required aria-label="CEP 5"></td>
+              <td><input type="text" name="ope_cep6" value="59082556" required aria-label="CEP 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_bairro1">Bairro:</label></td>
+              <!-- <td><input type="text" name="ope_bairro1" value="{{ form.instance.ope_bairro1 }}" required></td>
+              <td><input type="text" name="ope_bairro2" value="{{ form.instance.ope_bairro2 }}" required></td>
+              <td><input type="text" name="ope_bairro3" value="{{ form.instance.ope_bairro3 }}" required></td>
+              <td><input type="text" name="ope_bairro4" value="{{ form.instance.ope_bairro4 }}" required></td>
+              <td><input type="text" name="ope_bairro5" value="{{ form.instance.ope_bairro5 }}" required></td>
+              <td><input type="text" name="ope_bairro6" value="{{ form.instance.ope_bairro6 }}" required></td> -->
+              <td><input type="text" id="ope_bairro1" name="ope_bairro1" value="bairro1" required></td>
+              <td><input type="text" name="ope_bairro2" value="bairro2" required aria-label="Bairro 2"></td>
+              <td><input type="text" name="ope_bairro3" value="bairro3" required aria-label="Bairro 3"></td>
+              <td><input type="text" name="ope_bairro4" value="bairro4" required aria-label="Bairro 4"></td>
+              <td><input type="text" name="ope_bairro5" value="bairro5" required aria-label="Bairro 5"></td>
+              <td><input type="text" name="ope_bairro6" value="bairro6" required aria-label="Bairro 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_cidade1">Cidade:</label></td>
+              <!-- <td><input type="text" name="ope_cidade1" value="{{ form.instance.ope_cidade1 }}" required></td>
+              <td><input type="text" name="ope_cidade2" value="{{ form.instance.ope_cidade2 }}" required></td>
+              <td><input type="text" name="ope_cidade3" value="{{ form.instance.ope_cidade3 }}" required></td>
+              <td><input type="text" name="ope_cidade4" value="{{ form.instance.ope_cidade4 }}" required></td>
+              <td><input type="text" name="ope_cidade5" value="{{ form.instance.ope_cidade5 }}" required></td>
+              <td><input type="text" name="ope_cidade6" value="{{ form.instance.ope_cidade6 }}" required></td> -->
+              <td><input type="text" id="ope_cidade1" name="ope_cidade1" value="cidade1" required></td>
+              <td><input type="text" name="ope_cidade2" value="cidade2" required aria-label="Cidade 2"></td>
+              <td><input type="text" name="ope_cidade3" value="cidade3" required aria-label="Cidade 3"></td>
+              <td><input type="text" name="ope_cidade4" value="cidade4" required aria-label="Cidade 4"></td>
+              <td><input type="text" name="ope_cidade5" value="cidade5" required aria-label="Cidade 5"></td>
+              <td><input type="text" name="ope_cidade6" value="cidade6" required aria-label="Cidade 6"></td>
+            </tr>
+            <tr>
+              <td><label for="ope_estado1">Estado:</label></td>
+              <!-- <td><input type="text" name="ope_estado1" value="{{ form.instance.ope_estado1 }}" required></td>
+              <td><input type="text" name="ope_estado2" value="{{ form.instance.ope_estado2 }}" required></td>
+              <td><input type="text" name="ope_estado3" value="{{ form.instance.ope_estado3 }}" required></td>
+              <td><input type="text" name="ope_estado4" value="{{ form.instance.ope_estado4 }}" required></td>
+              <td><input type="text" name="ope_estado5" value="{{ form.instance.ope_estado5 }}" required></td>
+              <td><input type="text" name="ope_estado6" value="{{ form.instance.ope_estado6 }}" required></td> -->
+              <td><input type="text" id="ope_estado1" name="ope_estado1" value="estado1" required></td>
+              <td><input type="text" name="ope_estado2" value="estado2" required aria-label="Estado 2"></td>
+              <td><input type="text" name="ope_estado3" value="estado3" required aria-label="Estado 3"></td>
+              <td><input type="text" name="ope_estado4" value="estado4" required aria-label="Estado 4"></td>
+              <td><input type="text" name="ope_estado5" value="estado5" required aria-label="Estado 5"></td>
+              <td><input type="text" name="ope_estado6" value="estado6" required aria-label="Estado 6"></td>
             </tr>
             <tr>
               <td><label for="ope_vencimento1">Vencimento:</label></td>
@@ -65,12 +249,12 @@
               <td><input type="date" name="ope_vencimento4" value="{{ form.instance.ope_vencimento4 }}" required></td>
               <td><input type="date" name="ope_vencimento5" value="{{ form.instance.ope_vencimento5 }}" required></td>
               <td><input type="date" name="ope_vencimento6" value="{{ form.instance.ope_vencimento6 }}" required></td> -->
-              <td><input type="date" name="ope_vencimento1" value="2024-01-16" required></td>
-              <td><input type="date" name="ope_vencimento2" value="2024-01-17" required></td>
-              <td><input type="date" name="ope_vencimento3" value="2024-01-18" required></td>
-              <td><input type="date" name="ope_vencimento4" value="2024-01-19" required></td>
-              <td><input type="date" name="ope_vencimento5" value="2024-01-20" required></td>
-              <td><input type="date" name="ope_vencimento6" value="2024-01-21" required></td>
+              <td><input type="date" id="ope_vencimento1" name="ope_vencimento1" value="2024-01-16" required></td>
+              <td><input type="date" name="ope_vencimento2" value="2024-01-17" required aria-label="Data de Vencimento 2"></td>
+              <td><input type="date" name="ope_vencimento3" value="2024-01-18" required aria-label="Data de Vencimento 3"></td>
+              <td><input type="date" name="ope_vencimento4" value="2024-01-19" required aria-label="Data de Vencimento 4"></td>
+              <td><input type="date" name="ope_vencimento5" value="2024-01-20" required aria-label="Data de Vencimento 5"></td>
+              <td><input type="date" name="ope_vencimento6" value="2024-01-21" required aria-label="Data de Vencimento 6"></td>
             </tr>
             <tr>
               <td><label for="ope_valortotal1">Valor Total:</label></td>
@@ -80,75 +264,75 @@
               <td><input type="text" name="ope_valortotal4" value="{{ form.instance.ope_valortotal4 }}" required></td>
               <td><input type="text" name="ope_valortotal5" value="{{ form.instance.ope_valortotal5 }}" required></td>
               <td><input type="text" name="ope_valortotal6" value="{{ form.instance.ope_valortotal6 }}" required></td> -->
-              <td><input type="text" name="ope_valortotal1" value="10000" required></td>
-              <td><input type="text" name="ope_valortotal2" value="10000" required></td>
-              <td><input type="text" name="ope_valortotal3" value="10000" required></td>
-              <td><input type="text" name="ope_valortotal4" value="10000"required></td>
-              <td><input type="text" name="ope_valortotal5" value="10000" required></td>
-              <td><input type="text" name="ope_valortotal6" value="10000" required></td>
+              <td><input type="text" id="ope_valortotal1" name="ope_valortotal1" value="10000" required></td>
+              <td><input type="text" name="ope_valortotal2" value="10000" required aria-label="Valor Total 2"></td>
+              <td><input type="text" name="ope_valortotal3" value="10000" required aria-label="Valor Total 3"></td>
+              <td><input type="text" name="ope_valortotal4" value="10000" required aria-label="Valor Total 4"></td>
+              <td><input type="text" name="ope_valortotal5" value="10000" required aria-label="Valor Total 5"></td>
+              <td><input type="text" name="ope_valortotal6" value="10000" required aria-label="Valor Total 6"></td>
             </tr>
             <tr>
               <td><label for="ope_prazo1">Prazo:</label></td>
-              <td><input type="text" name="ope_prazo1" value="{{ form.instance.ope_prazo1 }}" required></td>
-              <td><input type="text" name="ope_prazo2" value="{{ form.instance.ope_prazo2 }}" required></td>
-              <td><input type="text" name="ope_prazo3" value="{{ form.instance.ope_prazo3 }}" required></td>
-              <td><input type="text" name="ope_prazo4" value="{{ form.instance.ope_prazo4 }}" required></td>
-              <td><input type="text" name="ope_prazo5" value="{{ form.instance.ope_prazo5 }}" required></td>
-              <td><input type="text" name="ope_prazo6" value="{{ form.instance.ope_prazo6 }}" required></td>
+              <td><input type="text" id="ope_prazo1" name="ope_prazo1" value="{{ form.instance.ope_prazo1 }}" required></td>
+              <td><input type="text" name="ope_prazo2" value="{{ form.instance.ope_prazo2 }}" required aria-label="Prazo 2"></td>
+              <td><input type="text" name="ope_prazo3" value="{{ form.instance.ope_prazo3 }}" required aria-label="Prazo 3"></td>
+              <td><input type="text" name="ope_prazo4" value="{{ form.instance.ope_prazo4 }}" required aria-label="Prazo 4"></td>
+              <td><input type="text" name="ope_prazo5" value="{{ form.instance.ope_prazo5 }}" required aria-label="Prazo 5"></td>
+              <td><input type="text" name="ope_prazo6" value="{{ form.instance.ope_prazo6 }}" required aria-label="Prazo 6"></td>              
             </tr>
             <tr>
               <td><label for="ope_taxadecompraefetiva1">Taxa de Compra Efetiva:</label></td>
-              <td><input type="text" name="ope_taxadecompraefetiva1" value="{{ form.instance.ope_taxadecompraefetiva1 }}" required></td>
-              <td><input type="text" name="ope_taxadecompraefetiva2" value="{{ form.instance.ope_taxadecompraefetiva2 }}" required></td>
-              <td><input type="text" name="ope_taxadecompraefetiva3" value="{{ form.instance.ope_taxadecompraefetiva3 }}" required></td>
-              <td><input type="text" name="ope_taxadecompraefetiva4" value="{{ form.instance.ope_taxadecompraefetiva4 }}" required></td>
-              <td><input type="text" name="ope_taxadecompraefetiva5" value="{{ form.instance.ope_taxadecompraefetiva5 }}" required></td>
-              <td><input type="text" name="ope_taxadecompraefetiva6" value="{{ form.instance.ope_taxadecompraefetiva6 }}" required></td>              
+              <td><input type="text" id="ope_taxadecompraefetiva1" name="ope_taxadecompraefetiva1" value="{{ form.instance.ope_taxadecompraefetiva1 }}" required></td>
+              <td><input type="text" name="ope_taxadecompraefetiva2" value="{{ form.instance.ope_taxadecompraefetiva2 }}" required aria-label="Taxa de Compra Efetiva 2"></td>
+              <td><input type="text" name="ope_taxadecompraefetiva3" value="{{ form.instance.ope_taxadecompraefetiva3 }}" required aria-label="Taxa de Compra Efetiva 3"></td>
+              <td><input type="text" name="ope_taxadecompraefetiva4" value="{{ form.instance.ope_taxadecompraefetiva4 }}" required aria-label="Taxa de Compra Efetiva 4"></td>
+              <td><input type="text" name="ope_taxadecompraefetiva5" value="{{ form.instance.ope_taxadecompraefetiva5 }}" required aria-label="Taxa de Compra Efetiva 5"></td>
+              <td><input type="text" name="ope_taxadecompraefetiva6" value="{{ form.instance.ope_taxadecompraefetiva6 }}" required aria-label="Taxa de Compra Efetiva 6"></td>              
             </tr>
             <tr>
               <td><label for="ope_taxaperiodo1">Taxa Período:</label></td>
-              <td><input type="text" name="ope_taxaperiodo1" value="{{ form.instance.ope_taxaperiodo1 }}" required></td>
-              <td><input type="text" name="ope_taxaperiodo2" value="{{ form.instance.ope_taxaperiodo2 }}" required></td>
-              <td><input type="text" name="ope_taxaperiodo3" value="{{ form.instance.ope_taxaperiodo3 }}" required></td>
-              <td><input type="text" name="ope_taxaperiodo4" value="{{ form.instance.ope_taxaperiodo4 }}" required></td>
-              <td><input type="text" name="ope_taxaperiodo5" value="{{ form.instance.ope_taxaperiodo5 }}" required></td>
-              <td><input type="text" name="ope_taxaperiodo6" value="{{ form.instance.ope_taxaperiodo6 }}" required></td>
+              <td><input type="text" id="ope_taxaperiodo1" name="ope_taxaperiodo1" value="{{ form.instance.ope_taxaperiodo1 }}" required></td>
+              <td><input type="text" name="ope_taxaperiodo2" value="{{ form.instance.ope_taxaperiodo2 }}" required aria-label="Taxa por Período 2"></td>
+              <td><input type="text" name="ope_taxaperiodo3" value="{{ form.instance.ope_taxaperiodo3 }}" required aria-label="Taxa por Período 3"></td>
+              <td><input type="text" name="ope_taxaperiodo4" value="{{ form.instance.ope_taxaperiodo4 }}" required aria-label="Taxa por Período 4"></td>
+              <td><input type="text" name="ope_taxaperiodo5" value="{{ form.instance.ope_taxaperiodo5 }}" required aria-label="Taxa por Período 5"></td>
+              <td><input type="text" name="ope_taxaperiodo6" value="{{ form.instance.ope_taxaperiodo6 }}" required aria-label="Taxa por Período 6"></td>
             </tr>
             <tr>
               <td><label for="ope_valorcompra1">Valor de Compra:</label></td>
-              <td><input type="text" name="ope_valorcompra1" value="{{ form.instance.ope_valorcompra1 }}" required></td>
-              <td><input type="text" name="ope_valorcompra2" value="{{ form.instance.ope_valorcompra2 }}" required></td>
-              <td><input type="text" name="ope_valorcompra3" value="{{ form.instance.ope_valorcompra3 }}" required></td>
-              <td><input type="text" name="ope_valorcompra4" value="{{ form.instance.ope_valorcompra4 }}" required></td>
-              <td><input type="text" name="ope_valorcompra5" value="{{ form.instance.ope_valorcompra5 }}" required></td>
-              <td><input type="text" name="ope_valorcompra6" value="{{ form.instance.ope_valorcompra6 }}" required></td>
+              <td><input type="text" id="ope_valorcompra1" name="ope_valorcompra1" value="{{ form.instance.ope_valorcompra1 }}" required></td>
+              <td><input type="text" name="ope_valorcompra2" value="{{ form.instance.ope_valorcompra2 }}" required aria-label="Valor de Compra 2"></td>
+              <td><input type="text" name="ope_valorcompra3" value="{{ form.instance.ope_valorcompra3 }}" required aria-label="Valor de Compra 3"></td>
+              <td><input type="text" name="ope_valorcompra4" value="{{ form.instance.ope_valorcompra4 }}" required aria-label="Valor de Compra 4"></td>
+              <td><input type="text" name="ope_valorcompra5" value="{{ form.instance.ope_valorcompra5 }}" required aria-label="Valor de Compra 5"></td>
+              <td><input type="text" name="ope_valorcompra6" value="{{ form.instance.ope_valorcompra6 }}" required aria-label="Valor de Compra 6"></td>
             </tr>
             <tr>
               <td><label for="ope_valoriof1">Valor IOF:</label></td>
-              <td><input type="text" name="ope_valoriof1" value="{{ form.instance.ope_valoriof1 }}" required></td>
-              <td><input type="text" name="ope_valoriof2" value="{{ form.instance.ope_valoriof2 }}" required></td>
-              <td><input type="text" name="ope_valoriof3" value="{{ form.instance.ope_valoriof3 }}" required></td>
-              <td><input type="text" name="ope_valoriof4" value="{{ form.instance.ope_valoriof4 }}" required></td>
-              <td><input type="text" name="ope_valoriof5" value="{{ form.instance.ope_valoriof5 }}" required></td>
-              <td><input type="text" name="ope_valoriof6" value="{{ form.instance.ope_valoriof6 }}" required></td>
+              <td><input type="text" id="ope_valoriof1" name="ope_valoriof1" value="{{ form.instance.ope_valoriof1 }}" required></td>
+              <td><input type="text" name="ope_valoriof2" value="{{ form.instance.ope_valoriof2 }}" required aria-label="Valor do IOF 2"></td>
+              <td><input type="text" name="ope_valoriof3" value="{{ form.instance.ope_valoriof3 }}" required aria-label="Valor do IOF 3"></td>
+              <td><input type="text" name="ope_valoriof4" value="{{ form.instance.ope_valoriof4 }}" required aria-label="Valor do IOF 4"></td>
+              <td><input type="text" name="ope_valoriof5" value="{{ form.instance.ope_valoriof5 }}" required aria-label="Valor do IOF 5"></td>
+              <td><input type="text" name="ope_valoriof6" value="{{ form.instance.ope_valoriof6 }}" required aria-label="Valor do IOF 6"></td>
             </tr>
             <tr>
               <td><label for="ope_valoriofadicional1">Valor IOF Adicional:</label></td>
-              <td><input type="text" name="ope_valoriofadicional1" value="{{ form.instance.ope_valoriofadicional1 }}" required></td>
-              <td><input type="text" name="ope_valoriofadicional2" value="{{ form.instance.ope_valoriofadicional2 }}" required></td>
-              <td><input type="text" name="ope_valoriofadicional3" value="{{ form.instance.ope_valoriofadicional3 }}" required></td>
-              <td><input type="text" name="ope_valoriofadicional4" value="{{ form.instance.ope_valoriofadicional4 }}" required></td>
-              <td><input type="text" name="ope_valoriofadicional5" value="{{ form.instance.ope_valoriofadicional5 }}" required></td>
-              <td><input type="text" name="ope_valoriofadicional6" value="{{ form.instance.ope_valoriofadicional6 }}" required></td>
+              <td><input type="text" id="ope_valoriofadicional1" name="ope_valoriofadicional1" value="{{ form.instance.ope_valoriofadicional1 }}" required></td>
+              <td><input type="text" name="ope_valoriofadicional2" value="{{ form.instance.ope_valoriofadicional2 }}" required aria-label="Valor Adicional do IOF 2"></td>
+              <td><input type="text" name="ope_valoriofadicional3" value="{{ form.instance.ope_valoriofadicional3 }}" required aria-label="Valor Adicional do IOF 3"></td>
+              <td><input type="text" name="ope_valoriofadicional4" value="{{ form.instance.ope_valoriofadicional4 }}" required aria-label="Valor Adicional do IOF 4"></td>
+              <td><input type="text" name="ope_valoriofadicional5" value="{{ form.instance.ope_valoriofadicional5 }}" required aria-label="Valor Adicional do IOF 5"></td>
+              <td><input type="text" name="ope_valoriofadicional6" value="{{ form.instance.ope_valoriofadicional6 }}" required aria-label="Valor Adicional do IOF 6"></td>
             </tr>
             <tr>
               <td><label for="ope_valorliquido1">Valor Líquido:</label></td>
-              <td><input type="text" name="ope_valorliquido1" value="{{ form.instance.ope_valorliquido1 }}" required></td>
-              <td><input type="text" name="ope_valorliquido2" value="{{ form.instance.ope_valorliquido2 }}" required></td>
-              <td><input type="text" name="ope_valorliquido3" value="{{ form.instance.ope_valorliquido3 }}" required></td>
-              <td><input type="text" name="ope_valorliquido4" value="{{ form.instance.ope_valorliquido4 }}" required></td>
-              <td><input type="text" name="ope_valorliquido5" value="{{ form.instance.ope_valorliquido5 }}" required></td>
-              <td><input type="text" name="ope_valorliquido6" value="{{ form.instance.ope_valorliquido6 }}" required></td>
+              <td><input type="text" id="ope_valorliquido1" name="ope_valorliquido1" value="{{ form.instance.ope_valorliquido1 }}" required></td>
+              <td><input type="text" name="ope_valorliquido2" value="{{ form.instance.ope_valorliquido2 }}" required aria-label="Valor Líquido 2"></td>
+              <td><input type="text" name="ope_valorliquido3" value="{{ form.instance.ope_valorliquido3 }}" required aria-label="Valor Líquido 3"></td>
+              <td><input type="text" name="ope_valorliquido4" value="{{ form.instance.ope_valorliquido4 }}" required aria-label="Valor Líquido 4"></td>
+              <td><input type="text" name="ope_valorliquido5" value="{{ form.instance.ope_valorliquido5 }}" required aria-label="Valor Líquido 5"></td>
+              <td><input type="text" name="ope_valorliquido6" value="{{ form.instance.ope_valorliquido6 }}" required aria-label="Valor Líquido 6"></td>
             </tr>    
         </table>    
         <button type="submit">Salvar</button>
@@ -157,7 +341,7 @@
     <script>
       function calcular() {
         // Calcula ope_prazo de 1 até 6
-        var dataSimulacao = new Date(document.getElementsByName('ope_datasimulacao')[0].value);
+        var dataSimulacao = new Date(document.getElementsByName('ope_dataoperacao')[0].value);
         var myFloat = parseFloat(document.getElementsByName('ope_myfloat')[0].value) || 0;
     
         for (var i = 1; i <= 6; i++) {

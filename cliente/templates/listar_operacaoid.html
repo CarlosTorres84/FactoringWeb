@@ -12,11 +12,20 @@
             Dados Operação
         </div>
         <div class="card-body">
-            <h5 class="card-title">ID SIMULAÇÃO: {{operacao_id.ope_id}}</h5>
-            <h5 class="card-title">DATA SIMULAÇÃO: {{operacao_id.ope_datasimulacao}}</h5>
-            <h5 class="card-title">CLIENTE ID: {{operacao_id.cli_id}}</h5>
-            <h5 class="card-title">FACTORING ID: {{operacao_id.fac_id}}</h5>
+            <h5 class="card-title">ID SIMULAÇÃO: {{i.ope_id}}</h5>
+            <h5 class="card-title">DATA SIMULAÇÃO: {{i.ope_dataoperacao}}</h5>
+            <h5 class="card-title">CLIENTE ID: {{i.cli_id}}</h5>
+            <h5 class="card-title">FACTORING ID: {{i.fac_id}}</h5>
         </div>
+        {% if i.ope_id %}
+            <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">
+                {% csrf_token %}
+                <a href="{% url 'editar_operacao' i.ope_id %}">Editar 2</a>
+                <button type="submit" class="btn btn-secondary">Gerar Word</button>
+            </form>
+        {% else %}
+            <p>Operação ID não disponível.</p>
+        {% endif %}
     </div>
 </body>
 </html>
