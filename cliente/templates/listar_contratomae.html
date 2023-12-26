@@ -1,41 +1,99 @@
 <!DOCTYPE html>
 
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>Listar Contratos Mãe</title>
-  </head>
-  <body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0066cc;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
     <h1>Listar Contrato Mãe</h1>
+
     <table class="table">
-      <thead>
-        <tr>
-          <th>ID CONTRATO Mãe:</th>
-          <th>ID CLIENTE:</th>
-          <th>ID FACTORING:</th>
-          <th>VALIDADE CONTRATO:</th>
-          <th>DATA CADASTRO:</th>
-        </tr>
-      </thead>
-      <body>
-        {% for i in contratomae %}
-        <tr>
-          <td>{{i.cma_id}}</td>
-          <td>{{i.cli_id}}</td>
-          <td>{{i.fac_id}}</td>
-          <td>{{i.cma_validadecontrato}}</td>
-          <td>{{i.cma_datacadastro}}</td>
-          <td>
-            <form method="post" action="{% url 'gerar_contrato_word' i.cma_id %}">
-              {% csrf_token %}
-              <a href="{% url 'editar_contratomae2' i.cma_id %}">Editar 2</a>
-              <button type="submit" class="btn btn-secondary">Gerar Word</button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </body>
+        <thead>
+            <tr>
+                <th>ID CONTRATO Mãe</th>
+                <th>ID CLIENTE</th>
+                <th>ID FACTORING</th>
+                <th>VALIDADE CONTRATO</th>
+                <th>DATA CADASTRO</th>
+                <th>AÇÕES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in contratomae %}
+                <tr>
+                    <td>{{i.cma_id}}</td>
+                    <td>{{i.cli_id}}</td>
+                    <td>{{i.fac_id}}</td>
+                    <td>{{i.cma_validadecontrato}}</td>
+                    <td>{{i.cma_datacadastro}}</td>
+                    <td>
+                        <form method="post" action="{% url 'gerar_contrato_word' i.cma_id %}">
+                            {% csrf_token %}
+                            <a href="{% url 'editar_contratomae2' i.cma_id %}">Editar 2</a>
+                            <button type="submit">Gerar Word Contrato Mãe</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
-    <a href="{% url 'inserir_contratomae' %}"> <button class="btn btn-primary">Cadastrar Contrato Mãe</button></a>
-  </body>
+    
+    <a href="{% url 'inserir_contratomae' %}">
+        <button>Cadastrar Contrato Mãe</button>
+    </a>
+</body>
 </html>

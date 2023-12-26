@@ -1,181 +1,233 @@
 <!DOCTYPE html>
 {% load meus_filtros %}
-<html lang = "pt-br">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Factorings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #0066cc;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+
 <body>
     <h1>Inserir Factorings</h1>
     <main class="container">
-    <form method="post">
-    {% csrf_token %}
-        <div class="form-group">
-            {{form.fac_id.erros}}
-            <label> ID FACTORING: </label>
-            {{form.fac_id|addclass:'form-control'}}
-        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{form.fac_id.erros}}
+                <label> ID FACTORING: </label>
+                {{form.fac_id|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_razaosocial.erros}}
-            <label> RAZÃO SOCIAL: </label>
-            {{form.fac_razaosocial|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_razaosocial.erros}}
+                <label> RAZÃO SOCIAL: </label>
+                {{form.fac_razaosocial|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_nomefantasia.erros}}
-            <label> NOME FANTASIA: </label>
-            {{form.fac_nomefantasia|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_nomefantasia.erros}}
+                <label> NOME FANTASIA: </label>
+                {{form.fac_nomefantasia|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_cnpj.erros}}
-            <label> CNPJ: </label>
-            {{form.fac_cnpj|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_cnpj.erros}}
+                <label> CNPJ: </label>
+                {{form.fac_cnpj|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_im.erros}}
-            <label> INSCRIÇÃO MUNICIPAL: </label>
-            {{form.fac_im|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_im.erros}}
+                <label> INSCRIÇÃO MUNICIPAL: </label>
+                {{form.fac_im|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_ie.erros}}
-            <label> INSCRIÇÃO ESTADUAL: </label>
-            {{form.fac_ie|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_ie.erros}}
+                <label> INSCRIÇÃO ESTADUAL: </label>
+                {{form.fac_ie|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_email1.erros}}
-            <label> E-MAIL: </label>
-            {{form.fac_email1|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_email1.erros}}
+                <label> E-MAIL: </label>
+                {{form.fac_email1|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_email2.erros}}
-            <label> E-MAIL2: </label>
-            {{form.fac_email2|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_email2.erros}}
+                <label> E-MAIL2: </label>
+                {{form.fac_email2|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_telefone1.erros}}
-            <label> TELEFONE: </label>
-            {{form.fac_telefone1|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_telefone1.erros}}
+                <label> TELEFONE: </label>
+                {{form.fac_telefone1|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_telefone2.erros}}
-            <label> TELEFONE2: </label>
-            {{form.fac_telefone2|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_telefone2.erros}}
+                <label> TELEFONE2: </label>
+                {{form.fac_telefone2|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_enderereco.erros}}
-            <label> ENDEREÇO: </label>
-            {{form.fac_enderereco|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_enderereco.erros}}
+                <label> ENDEREÇO: </label>
+                {{form.fac_enderereco|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_complementoenderereco.erros}}
-            <label> COMPLEMENTO: </label>
-            {{form.fac_complementoenderereco|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_complementoenderereco.erros}}
+                <label> COMPLEMENTO: </label>
+                {{form.fac_complementoenderereco|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_cep.erros}}
-            <label> CEP: </label>
-            {{form.fac_cep|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_cep.erros}}
+                <label> CEP: </label>
+                {{form.fac_cep|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_bairro.erros}}
-            <label> BAIRRO: </label>
-            {{form.fac_bairro|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_bairro.erros}}
+                <label> BAIRRO: </label>
+                {{form.fac_bairro|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_cidade.erros}}
-            <label> CIDADE: </label>
-            {{form.fac_cidade|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_cidade.erros}}
+                <label> CIDADE: </label>
+                {{form.fac_cidade|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_estado.erros}}
-            <label> ESTADO: </label>
-            {{form.fac_estado|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_estado.erros}}
+                <label> ESTADO: </label>
+                {{form.fac_estado|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_taxacompra.erros}}
-            <label> TAXA DE COMPRA %: </label>
-            {{form.fac_taxacompra|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_taxacompra.erros}}
+                <label> TAXA DE COMPRA %: </label>
+                {{form.fac_taxacompra|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_iof.erros}}
-            <label> IOF %: </label>
-            {{form.fac_iof|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_iof.erros}}
+                <label> IOF ANUAL%: </label>
+                {{form.fac_iof|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_iofadicional.erros}}
-            <label> IOF ADICIONAL%: </label>
-            {{form.fac_iofadicional|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_iofadicional.erros}}
+                <label> IOF ADICIONAL%: </label>
+                {{form.fac_iofadicional|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_pis.erros}}
-            <label> PIS %: </label>
-            {{form.fac_pis|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_pis.erros}}
+                <label> PIS %: </label>
+                {{form.fac_pis|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_cofins.erros}}
-            <label> COFINS %: </label>
-            {{form.fac_cofins|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_cofins.erros}}
+                <label> COFINS %: </label>
+                {{form.fac_cofins|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_float.erros}}
-            <label> FLOAT: </label>
-            {{form.fac_float|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_float.erros}}
+                <label> FLOAT: </label>
+                {{form.fac_float|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_multa.erros}}
-            <label> MULTA %: </label>
-            {{form.fac_multa|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_multa.erros}}
+                <label> MULTA %: </label>
+                {{form.fac_multa|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_juros.erros}}
-            <label> JUROS %: </label>
-            {{form.fac_juros|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_juros.erros}}
+                <label> JUROS %: </label>
+                {{form.fac_juros|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_taxarecompra.erros}}
-            <label> TAXA RECOMPRA $: </label>
-            {{form.fac_taxarecompra|addclass:'form-control'}}
-        </div>
+            <div class="form-group">
+                {{form.fac_taxarecompra.erros}}
+                <label> TAXA RECOMPRA $: </label>
+                {{form.fac_taxarecompra|addclass:'form-control'}}
+            </div>
 
-        <div class="form-group">
-            {{form.fac_valortotaloperacao.erros}}
-            <label> VALOR TOTAL OPERAÇÃO: </label>
-            {{form.fac_valortotaloperacao|addclass:'form-control'}}
-        </div>
-
-        <div class="form-group">
-            {{form.fac_datacadastro.erros}}
-            <label> DATA CADASTRO: </label>
-            {{form.fac_datacadastro|addclass:'form-control'}}
-        </div>
-        
-        <div>
-            <input type="submit" name="Cadastrar FACTORING">
-        </div>
-    </form>
+            <div class="form-group">
+                {{form.fac_valortotaloperacao.erros}}
+                <label> VALOR TOTAL OPERAÇÃO: </label>
+                {{form.fac_valortotaloperacao|addclass:'form-control'}}
+            </div>
+            
+            <div class="form-group">
+                <label>DATA CADASTRO:</label>
+                <input type="date" name="fac_datacadastro" class="form-control">
+            </div>
+            
+            <div>
+                <input type="submit" name="Cadastrar FACTORING">
+            </div>
+        </form>
     </main>
 </body>
-</head>    
+
 </html>

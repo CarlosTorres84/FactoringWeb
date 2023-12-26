@@ -1,15 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Listar Operações</title>
+    <meta charset="UTF-8">
+    <title>Listar Operações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0066cc;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit {
+            background-color: #534caf;
+        }
+
+        .operation {
+            background-color: #ff9800;
+        }
+
+        .generate-word {
+            background-color: #007bff;
+        }
+
+        .create-simulation {
+            background-color: #28a745;
+        }
+
+        .actions a:hover, .actions button:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-  <h1>Listar Operações</h1>
+<h1>Listar Operações</h1>
 
-  <table class="table">
+<table class="table">
     <thead>
-      <tr>
+    <tr>
         <th>ID OPERAÇÃO:</th>
         <th>DATA OPERAÇÃO:</th>
         <th>ID CLIENTE:</th>
@@ -21,14 +84,15 @@
         <th>ACRÉSCIMOS $:</th>
         <th>FLOAT:</th>
         <th>STATUS:</th>
-      </tr>
+        <th>AÇÕES</th>
+    </tr>
     </thead>
     <tbody>
-      {% for i in operacao %}
-      {% if i.ope_status == '2' %}
-      <tr>
+    {% for i in operacao %}
+    {% if i.ope_status == '2' %}
+    <tr>
         <td>{{i.ope_id}}</td>
-        <td>{{i.ope_datasimulacao}}</td>
+        <td>{{i.ope_dataoperacao}}</td>
         <td>{{i.cli_id}}</td>
         <td>{{i.fac_id}}</td>
         <td>{{i.ope_taxadecompra}}</td>
@@ -38,18 +102,21 @@
         <td>{{i.ope_acrescimos}}</td>
         <td>{{i.ope_myfloat}}</td>
         <td>{{i.ope_status}}</td>
-        <td>
-          <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">
-            {% csrf_token %}
-            <a href="{% url 'editar_operacao' i.ope_id %}">Editar 2</a>
-            <button type="submit" class="btn btn-secondary">Gerar Word</button> 
-          </form>
+        <td class="actions">
+            <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">
+                {% csrf_token %}
+                <a href="{% url 'editar_operacao' i.ope_id %}" class="edit">Editar 2</a>
+                <button type="submit" class="generate-word">Gerar Word Aditivo</button>
+            </form>
+            <form method="post" action="{% url 'gerar_promissoria_word' i.ope_id %}">
+                {% csrf_token %}
+                <button type="submit" class="generate-word">Gerar Promissória Word</button>
+            </form>
         </td>
-      </tr>
-      </tr>
-        {% endif %}
-      {% endfor %}
-    </body>
-  </table>  
+    </tr>
+    {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>

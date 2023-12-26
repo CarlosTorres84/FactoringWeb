@@ -1,57 +1,130 @@
 <!DOCTYPE html>
+{% load meus_filtros %}
 <html lang="pt-br">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Listar Simulações</title>
+    <meta charset="UTF-8">
+    <title>Listar Simulações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0066cc;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .actions a, .actions button {
+            padding: 8px;
+            text-decoration: none;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .edit {
+            background-color: #534caf;
+        }
+
+        .operation {
+            background-color: #ff9800;
+        }
+
+        .generate-word {
+            background-color: #007bff;
+        }
+
+        .create-simulation {
+            background-color: #28a745;
+        }
+
+        .actions a:hover, .actions button:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-  <h1>Listar Simulações</h1>
+    <h1>Listar Simulações</h1>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID SIMULAÇÃO:</th>
-        <th>DATA SIMULAÇÃO</th>
-        <th>ID CLIENTE:</th>
-        <th>ID FACTORING:</th>
-        <th>TAXA DE COMPRA:</th>
-        <th>IOF ANUAL %:</th>
-        <th>IOF ADICIONAL %:</th>
-        <th>DESPESAS $:</th>
-        <th>ACRÉSCIMOS $:</th>
-        <th>FLOAT:</th>
-        <th>STATUS:</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for i in simulacao %}
-      {% if i.sim_status == '1' %}
-      <tr>
-        <td>{{i.sim_id}}</td>
-        <td>{{i.sim_datasimulacao}}</td>
-        <td>{{i.cli_id}}</td>
-        <td>{{i.fac_id}}</td>
-        <td>{{i.sim_taxadecompra}}</td>
-        <td>{{i.sim_iof}}</td>
-        <td>{{i.sim_iofadicional}}</td>
-        <td>{{i.sim_despesas}}</td>
-        <td>{{i.sim_acrescimos}}</td>
-        <td>{{i.sim_myfloat}}</td>
-        <td>{{i.sim_status}}</td>
-        <td>
-          <form method="post" action="{% url 'gerar_simulacao_word' i.sim_id %}">
-            {% csrf_token %}
-            <a href="{% url 'editar_simulacao2' i.sim_id %}">Editar 2</a>
-            <a href="{% url 'inserir_operacao' i.sim_id %}">Incluir Operação</a>
-            <button type="submit" class="btn btn-secondary">Gerar Word</button> 
-          </form>
-        </td>
-      </tr>
-      </tr>
-        {% endif %}
-      {% endfor %}
-    </body>
-  </table>
-  <a href="{% url 'inserir_simulacao' %}"> <button class="btn btn-primary">Cadastrar Simulação</button> </a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID SIMULAÇÃO</th>
+                <th>DATA SIMULAÇÃO</th>
+                <th>ID CLIENTE</th>
+                <th>ID FACTORING</th>
+                <th>TAXA DE COMPRA</th>
+                <th>DESPESAS $</th>
+                <th>ACRÉSCIMOS $</th>
+                <th>FLOAT</th>
+                <th>STATUS</th>
+                <th>AÇÕES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in simulacao %}
+                {% if i.sim_status == '1' %}
+                    <tr>
+                        <td>{{i.sim_id}}</td>
+                        <td>{{i.sim_datasimulacao}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.fac_id}}</td>
+                        <td>{{i.sim_taxadecompra}}</td>       
+                        <td>{{i.sim_despesas}}</td>
+                        <td>{{i.sim_acrescimos}}</td>
+                        <td>{{i.sim_myfloat}}</td>
+                        <td>{{i.sim_status}}</td>
+                        <td class="actions">
+                            <a href="{% url 'editar_simulacao2' i.sim_id %}" class="edit">Editar 2</a>
+                            <a href="{% url 'inserir_operacao' i.sim_id %}" class="operation">Incluir Operação</a>
+                            <form method="post" action="{% url 'gerar_simulacao_word' i.sim_id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="generate-word">Gerar Word Simulação</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'inserir_simulacao' %}" class="create-simulation">
+        <button>Cadastrar Simulação</button>
+    </a>
 </body>
 </html>

@@ -370,10 +370,8 @@ def inserir_simulacao(request):
     if request.method == 'POST':
         form = DsimulacaoForm(request.POST)
         if form.is_valid():
-            nova_simulacao = form.save()
-            # Obtém o ID da nova_simulacao
-            novo_id = nova_simulacao.sim_id
-            # Redireciona para 'listar_simulacaoid' com o novo ID
+            nova_simulacao = form.save()            
+            novo_id = nova_simulacao.sim_id            
             return redirect('listar_simulacaoid', id=novo_id)
     else:
         form = DsimulacaoForm()
@@ -513,29 +511,23 @@ def editar_simulacao2(request, id):
 def inserir_operacao(request, id):
     try:
         print("Entrou na função inserir_operacao")
-
         if request.method == 'POST':
             print("Método é POST")
-
             form = DoperacaoForm(request.POST)
             if form.is_valid():
                 nova_operacao = form.save()
                 novo_id = nova_operacao.ope_id
-
                 print(f"Nova operação inserida com ID: {novo_id}")
-
                 return redirect('listar_operacaoid', id=novo_id)
             else:
                 print("Formulário não é válido")
                 print(f"Erros no formulário: {form.errors}")
         else:
             print("Método não é POST")
-
             form = DoperacaoForm()
     except Exception as e:
         print(f"Erro ao inserir operação: {e}")
         raise
-
     print("Saindo da função inserir_operacao")
     return render(request, 'inserir_operacao.html', {'form': form})
 def listar_operacao(request):
@@ -633,17 +625,14 @@ def gerar_promissoria_word(request, ope_id):
     factoring_associado = operacao.fac_id       
     pessoas_associadas_rs = Dpessoas.objects.filter(cli_id_id=operacao.cli_id.cli_id, pes_tipopessoa='RS')
     pessoas_associadas_rt = Dpessoas.objects.filter(fac_id_id=operacao.fac_id.fac_id, pes_tipopessoa='RT')
-    COMPRATT = (operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6)       
-    parte_inteira = COMPRATT('.')[0]
+    COMPRATT = (operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6)
+    parte_inteira = str(COMPRATT).split('.')[0]
     numero = int(parte_inteira)
     numero_por_extenso = num2words(numero, lang='pt_BR')
-    if '.' in COMPRATT:
-        parte_decimal = COMPRATT.split('.')[1]
+    if '.' in str(COMPRATT):
+        parte_decimal = str(COMPRATT).split('.')[1]
         numero_por_extenso += f" vírgula {num2words(parte_decimal, lang='pt_BR')}"
-
-
-    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\NotaPromissoriaPadrao.docx"     
-    # Caminho de saída do documento gerado
+    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\NotaPromissoriaPadrao.docx"         
     output_path = f"NOTA PROMISSORIA - {ope_id}.docx"
     doc = DocxTemplate(template_path)
     # Defina os dados a serem inseridos no modelo
@@ -658,40 +647,21 @@ def gerar_promissoria_word(request, ope_id):
         'ID_FACTORING': factoring_associado.fac_id,
         'RAZAOSOCIAL_FACTORING': f'Empresa: ' + factoring_associado.fac_razaosocial,
         'CNPJ_FACTORING': f'CNPJ: ' + factoring_associado.fac_cnpj,
-        # 'OPERAÇÕES1 A 6'
-        'NUMTITULO1': operacao.ope_numtitulo1,
-        'NUMTITULO2': operacao.ope_numtitulo2,
-        'NUMTITULO3': operacao.ope_numtitulo3,
-        'NUMTITULO4': operacao.ope_numtitulo4,
-        'NUMTITULO5': operacao.ope_numtitulo5,
-        'NUMTITULO6': operacao.ope_numtitulo6,
-        'NOMESACADO1': operacao.ope_razaosocial1,
-        'NOMESACADO2': operacao.ope_razaosocial2,
-        'NOMESACADO3': operacao.ope_razaosocial3,
-        'NOMESACADO4': operacao.ope_razaosocial4,
-        'NOMESACADO5': operacao.ope_razaosocial5,
-        'NOMESACADO6': operacao.ope_razaosocial6,        
-        'VALTT1': f' {operacao.ope_valortotal1:,.2f}'.replace(',', '.'),
-        'VALTT2': f' {operacao.ope_valortotal2:,.2f}'.replace(',', '.'),
-        'VALTT3': f' {operacao.ope_valortotal3:,.2f}'.replace(',', '.'),
-        'VALTT4': f' {operacao.ope_valortotal4:,.2f}'.replace(',', '.'),
-        'VALTT5': f' {operacao.ope_valortotal5:,.2f}'.replace(',', '.'),
-        'VALTT6': f' {operacao.ope_valortotal6:,.2f}'.replace(',', '.'),
+        'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_enderereco,
+        'COMPLEMENTOENDERECO_CLIENTE':f'COMPLEMENTO: ' +  cliente_associado.cli_complementoenderereco,
+        'CEP_CLIENTE': f'CEP: ' + cliente_associado.cli_cep,
+        'BAIRRO_CLIENTE': cliente_associado.cli_bairro,
+        'CIDADE_CLIENTE': cliente_associado.cli_cidade,
+        'ESTADO_CLIENTE': cliente_associado.cli_estado,
+        # 'OPERAÇÕES1 A 6'                        
         'VENC1': operacao.ope_vencimento1.strftime('%d/%m/%Y'),
         'VENC2': operacao.ope_vencimento2.strftime('%d/%m/%Y'),
         'VENC3': operacao.ope_vencimento3.strftime('%d/%m/%Y'),
         'VENC4': operacao.ope_vencimento4.strftime('%d/%m/%Y'),
         'VENC5': operacao.ope_vencimento5.strftime('%d/%m/%Y'),
-        'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y'),
-        'DESP': f' {operacao.ope_despesas:,.2f}'.replace(',', '.'),
-        'ACRE': f' {operacao.ope_acrescimos:,.2f}'.replace(',', '.'),
-        'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),
-        'COUNT': (sum(1 for valor in [operacao.ope_valortotal1, operacao.ope_valortotal2, operacao.ope_valortotal3, operacao.ope_valortotal4, operacao.ope_valortotal5, operacao.ope_valortotal6] if valor is not None)),
-        'COMPRATT': f' {(operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6):,.2f}'.replace(',', '.'),       
+        'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y'),        
+        'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),        
         'COMPRATT_POR_EXTENSO': numero_por_extenso,
-        'IOFTT': f' {(operacao.ope_valoriof1 + operacao.ope_valoriof2 + operacao.ope_valoriof3 + operacao.ope_valoriof4 + operacao.ope_valoriof5 + operacao.ope_valoriof6):,.2f}'.replace(',', '.'),
-        'IOFADTT': f' {(operacao.ope_valoriofadicional1 + operacao.ope_valoriofadicional2 + operacao.ope_valoriofadicional3 + operacao.ope_valoriofadicional4 + operacao.ope_valoriofadicional5 + operacao.ope_valoriofadicional6):,.2f}'.replace(',', '.'), 
-        'LIQTT': f' {(operacao.ope_valorliquido1 + operacao.ope_valorliquido2 + operacao.ope_valorliquido3 + operacao.ope_valorliquido4 + operacao.ope_valorliquido5 + operacao.ope_valorliquido6):,.2f}'.replace(',', '.'),
         # 'PES_ID'
         'NOME_PESSOA00': f'NOME: ' + pessoas_associadas_rs[0].pes_nome if pessoas_associadas_rs else '',
         'NOME_PESSOA01': f'NOME: ' + pessoas_associadas_rs[1].pes_nome if len(pessoas_associadas_rs) > 1 else '',
@@ -701,6 +671,18 @@ def gerar_promissoria_word(request, ope_id):
         'CPF_PESSOA01': f'CPF: ' + pessoas_associadas_rs[1].pes_cpf if len(pessoas_associadas_rs) > 1 else '',
         'CPF_PESSOA000': f'CPF: ' + pessoas_associadas_rt[0].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
         'CPF_PESSOA001': f'CPF: ' + pessoas_associadas_rt[1].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
+        'ENDERECO_PES00': f'Endereço:: ' + pessoas_associadas_rs[0].pes_enderereco if pessoas_associadas_rs else '',
+        'ENDERECO_PES01': f'Endereço: ' + pessoas_associadas_rs[1].pes_enderereco if len(pessoas_associadas_rs) > 1 else '',
+        'COMPLEENDE_PES00': pessoas_associadas_rs[0].pes_complementoenderereco if pessoas_associadas_rs else '',
+        'COMPLEENDE_PES01': pessoas_associadas_rs[1].pes_complementoenderereco if len(pessoas_associadas_rs) > 1 else '',
+        'BAIRRO_PES00': pessoas_associadas_rs[0].pes_bairro if pessoas_associadas_rs else '',
+        'BAIRRO_PES01': pessoas_associadas_rs[1].pes_bairro if len(pessoas_associadas_rs) > 1 else '',
+        'CIDADE_PES00': pessoas_associadas_rs[0].pes_cidade if pessoas_associadas_rs else '',
+        'CIDADE_PES01': pessoas_associadas_rs[1].pes_cidade if len(pessoas_associadas_rs) > 1 else '',
+        'ESTADO_PES00': pessoas_associadas_rs[0].pes_estado if pessoas_associadas_rs else '',
+        'ESTADO_PES01': pessoas_associadas_rs[1].pes_estado if len(pessoas_associadas_rs) > 1 else '',
+        'CEP_PES00': f'CEP: ' + pessoas_associadas_rs[0].pes_cep if pessoas_associadas_rs else '',
+        'CEP_PES01': f'CEP: ' + pessoas_associadas_rs[1].pes_cep if len(pessoas_associadas_rs) > 1 else '',
 
     }
     doc.render(context)

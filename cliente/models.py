@@ -78,7 +78,12 @@ class Dpessoas(models.Model):
     pes_estado=models.CharField(max_length=20)
     cli_id=models.ForeignKey(Dcliente, on_delete=models.CASCADE)
     fac_id=models.ForeignKey(Dfactoring, on_delete=models.CASCADE)
-    pes_tipopessoa=models.CharField(max_length=6)
+    status_CHOICES=(
+        ('RE', 'Responsável Empresa'),
+        ('RS', 'Responsável Solidário'),
+        ('RT', 'Responsável Testemunha'),
+    )
+    pes_tipopessoa=models.CharField(max_length=2, choices=status_CHOICES)    
     pes_datacadastro=models.DateField()
     def __str__(self):
         return f'{self.pes_id}'

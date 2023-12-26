@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerar Contrato Mãe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #0066cc;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+    </style>
 </head>
-<body>
+
+<body onload="formatarCamposData()">
     <h1>Gerar Contrato Mãe</h1>
     <form method="post">
         {% csrf_token %}
@@ -18,16 +65,17 @@
 
         <label for="fac_id">ID Factoring:</label>
         <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required>
-        
-        <!-- criado para trazer a data de vencimento automáticamente -->
+
+        <!-- criado para trazer a data de vencimento automaticamente -->
         <label for="{{ form.cma_validadecontrato.id_for_label }}">Validade Contrato:</label>
         {{ form.cma_validadecontrato }}
 
-        <!-- criado para trazer a data de cadastro automáticamente -->
+        <!-- criado para trazer a data de cadastro automaticamente -->
         <label for="{{ form.cma_datacadastro.id_for_label }}">Data Cadastro:</label>
         {{ form.cma_datacadastro }}
 
-        <button type="submit">Salvar</button>        
-    </form>
+        <button type="submit">Salvar</button>
+    </form>        
 </body>
+
 </html>

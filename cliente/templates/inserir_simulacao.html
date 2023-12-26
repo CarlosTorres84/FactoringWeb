@@ -1,159 +1,236 @@
 <!DOCTYPE html>
+{% load meus_filtros %}
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerar Simulação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #0066cc;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #005bb5;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Gerar Simulação</h1>
-    <form method="post">
-        {% csrf_token %}
+    <h1>Gerar Simulação</h1>   
+      <main class="container"> 
+      <form method="post">
+          {% csrf_token %}
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_datasimulacao">Data Simulação:</label>
+          <!-- <input type="date" name="sim_datasimulacao" value="{{ form.instance.sim_datasimulacao }}" required> -->
+          <input type="date" name="sim_datasimulacao" value="2023-12-15" required>
+        </div>
 
-        <label for="sim_datasimulacao">Data Simulação:</label>
-        <!-- <input type="date" name="sim_datasimulacao" value="{{ form.instance.sim_datasimulacao }}" required> -->
-        <input type="date" name="sim_datasimulacao" value="2023-12-15" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_status">Status:</label>
+          <select name="sim_status" id="sim_status" required>
+              {% for value, label in form.fields.sim_status.choices %}
+                  <option value="{{ value }}" {% if form.instance.sim_status == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+          </select>   
+        </div>
 
-        <label for="sim_status">Status:</label>
-        <select name="sim_status" id="sim_status" required>
-            {% for value, label in form.fields.sim_status.choices %}
-                <option value="{{ value }}" {% if form.instance.sim_status == value %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>   
+        <div style="clear: both;"></div>
 
-        <label for="cli_id">ID Cliente:</label>
-        <!-- <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required> -->
-        <input type="text" name="cli_id" value="202108" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="cli_id">ID Cliente:</label>
+          <!-- <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required> -->
+          <input type="text" name="cli_id" value="202108" required>
+        </div>
 
-        <label for="fac_id">ID Factoring:</label>
-        <!-- <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required> -->
-        <input type="text" name="fac_id" value="202101" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="fac_id">ID Factoring:</label>
+          <!-- <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required> -->
+          <input type="text" name="fac_id" value="202101" required>
+        </div>
 
-        <label for="sim_taxadecompra">Taxa de Compra %:</label>
-        <!-- <input type="text" name="sim_taxadecompra" value="{{ form.instance.sim_taxadecompra }}" required> -->
-        <input type="text" name="sim_taxadecompra" value="7.15" required>
+        <div style="clear: both;"></div>
 
-        <label for="sim_iof">IOF Anual %:</label>
-        <!-- <input type="text" name="sim_iof" value="{{ form.instance.sim_iof }}" required> -->
-        <input type="text" name="sim_iof" value="1.50" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_taxadecompra">Taxa de Compra %:</label>
+          <!-- <input type="text" name="sim_taxadecompra" value="{{ form.instance.sim_taxadecompra }}" required> -->
+          <input type="text" name="sim_taxadecompra" value="7.15" required>
+        </div>
 
-        <label for="sim_iofadicional">IOF Adicional %:</label>
-        <!-- <input type="text" name="sim_iofadicional" value="{{ form.instance.sim_iofadicional }}" required> -->
-        <input type="text" name="sim_iofadicional" value="0.38" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_iof">IOF Anual %:</label>
+          <!-- <input type="text" name="sim_iof" value="{{ form.instance.sim_iof }}" required> -->
+          <input type="text" name="sim_iof" value="1.50" required>
+        </div>
 
-        <label for="sim_despesas">Despesas $ (-):</label>
-        <!-- <input type="text" name="sim_despesas" value="{{ form.instance.sim_despesas }}" required> -->
-        <input type="text" name="sim_despesas" value="100" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_iofadicional">IOF Adicional %:</label>
+          <!-- <input type="text" name="sim_iofadicional" value="{{ form.instance.sim_iofadicional }}" required> -->
+          <input type="text" name="sim_iofadicional" value="0.38" required>
+        </div>
 
-        <label for="sim_acrescimos">Acréscimos $ (+):</label>
-        <!-- <input type="text" name="sim_acrescimos" value="{{ form.instance.sim_acrescimos }}" required> -->
-        <input type="text" name="sim_acrescimos" value="200" required>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_despesas">Despesas $ (-):</label>
+          <!-- <input type="text" name="sim_despesas" value="{{ form.instance.sim_despesas }}" required> -->
+          <input type="text" name="sim_despesas" value="100" required>
+        </div>
 
-        <label for="sim_myfloat">MyFloat:</label>
-        <!-- <input type="text" name="sim_myfloat" value="{{ form.instance.sim_myfloat }}" required> -->
-        <input type="text" name="sim_myfloat" value="2" required>
-       
-        <table>
-            <tr>
-              <th colspan="2">Detalhes da Simulação</th>
-            </tr>
-            <tr>
-              <td><label for="sim_vencimento1">Vencimento:</label></td>
-              <!-- <td><input type="date" name="sim_vencimento1" value="{{ form.instance.sim_vencimento1 }}" required></td>
-              <td><input type="date" name="sim_vencimento2" value="{{ form.instance.sim_vencimento2 }}" required></td>
-              <td><input type="date" name="sim_vencimento3" value="{{ form.instance.sim_vencimento3 }}" required></td>
-              <td><input type="date" name="sim_vencimento4" value="{{ form.instance.sim_vencimento4 }}" required></td>
-              <td><input type="date" name="sim_vencimento5" value="{{ form.instance.sim_vencimento5 }}" required></td>
-              <td><input type="date" name="sim_vencimento6" value="{{ form.instance.sim_vencimento6 }}" required></td> -->
-              <td><input type="date" name="sim_vencimento1" value="2024-01-16" required></td>
-              <td><input type="date" name="sim_vencimento2" value="2024-01-17" required></td>
-              <td><input type="date" name="sim_vencimento3" value="2024-01-18" required></td>
-              <td><input type="date" name="sim_vencimento4" value="2024-01-19" required></td>
-              <td><input type="date" name="sim_vencimento5" value="2024-01-20" required></td>
-              <td><input type="date" name="sim_vencimento6" value="2024-01-21" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_valortotal1">Valor Total:</label></td>
-              <!-- <td><input type="text" name="sim_valortotal1" value="{{ form.instance.sim_valortotal1 }}" required></td>
-              <td><input type="text" name="sim_valortotal2" value="{{ form.instance.sim_valortotal2 }}" required></td>
-              <td><input type="text" name="sim_valortotal3" value="{{ form.instance.sim_valortotal3 }}" required></td>
-              <td><input type="text" name="sim_valortotal4" value="{{ form.instance.sim_valortotal4 }}" required></td>
-              <td><input type="text" name="sim_valortotal5" value="{{ form.instance.sim_valortotal5 }}" required></td>
-              <td><input type="text" name="sim_valortotal6" value="{{ form.instance.sim_valortotal6 }}" required></td> -->
-              <td><input type="text" name="sim_valortotal1" value="10000" required></td>
-              <td><input type="text" name="sim_valortotal2" value="10000" required></td>
-              <td><input type="text" name="sim_valortotal3" value="10000" required></td>
-              <td><input type="text" name="sim_valortotal4" value="10000"required></td>
-              <td><input type="text" name="sim_valortotal5" value="10000" required></td>
-              <td><input type="text" name="sim_valortotal6" value="10000" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_prazo1">Prazo:</label></td>
-              <td><input type="text" name="sim_prazo1" value="{{ form.instance.sim_prazo1 }}" required></td>
-              <td><input type="text" name="sim_prazo2" value="{{ form.instance.sim_prazo2 }}" required></td>
-              <td><input type="text" name="sim_prazo3" value="{{ form.instance.sim_prazo3 }}" required></td>
-              <td><input type="text" name="sim_prazo4" value="{{ form.instance.sim_prazo4 }}" required></td>
-              <td><input type="text" name="sim_prazo5" value="{{ form.instance.sim_prazo5 }}" required></td>
-              <td><input type="text" name="sim_prazo6" value="{{ form.instance.sim_prazo6 }}" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_taxadecompraefetiva1">Taxa de Compra Efetiva:</label></td>
-              <td><input type="text" name="sim_taxadecompraefetiva1" value="{{ form.instance.sim_taxadecompraefetiva1 }}" required></td>
-              <td><input type="text" name="sim_taxadecompraefetiva2" value="{{ form.instance.sim_taxadecompraefetiva2 }}" required></td>
-              <td><input type="text" name="sim_taxadecompraefetiva3" value="{{ form.instance.sim_taxadecompraefetiva3 }}" required></td>
-              <td><input type="text" name="sim_taxadecompraefetiva4" value="{{ form.instance.sim_taxadecompraefetiva4 }}" required></td>
-              <td><input type="text" name="sim_taxadecompraefetiva5" value="{{ form.instance.sim_taxadecompraefetiva5 }}" required></td>
-              <td><input type="text" name="sim_taxadecompraefetiva6" value="{{ form.instance.sim_taxadecompraefetiva6 }}" required></td>              
-            </tr>
-            <tr>
-              <td><label for="sim_taxaperiodo1">Taxa Período:</label></td>
-              <td><input type="text" name="sim_taxaperiodo1" value="{{ form.instance.sim_taxaperiodo1 }}" required></td>
-              <td><input type="text" name="sim_taxaperiodo2" value="{{ form.instance.sim_taxaperiodo2 }}" required></td>
-              <td><input type="text" name="sim_taxaperiodo3" value="{{ form.instance.sim_taxaperiodo3 }}" required></td>
-              <td><input type="text" name="sim_taxaperiodo4" value="{{ form.instance.sim_taxaperiodo4 }}" required></td>
-              <td><input type="text" name="sim_taxaperiodo5" value="{{ form.instance.sim_taxaperiodo5 }}" required></td>
-              <td><input type="text" name="sim_taxaperiodo6" value="{{ form.instance.sim_taxaperiodo6 }}" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_valorcompra1">Valor de Compra:</label></td>
-              <td><input type="text" name="sim_valorcompra1" value="{{ form.instance.sim_valorcompra1 }}" required></td>
-              <td><input type="text" name="sim_valorcompra2" value="{{ form.instance.sim_valorcompra2 }}" required></td>
-              <td><input type="text" name="sim_valorcompra3" value="{{ form.instance.sim_valorcompra3 }}" required></td>
-              <td><input type="text" name="sim_valorcompra4" value="{{ form.instance.sim_valorcompra4 }}" required></td>
-              <td><input type="text" name="sim_valorcompra5" value="{{ form.instance.sim_valorcompra5 }}" required></td>
-              <td><input type="text" name="sim_valorcompra6" value="{{ form.instance.sim_valorcompra6 }}" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_valoriof1">Valor IOF:</label></td>
-              <td><input type="text" name="sim_valoriof1" value="{{ form.instance.sim_valoriof1 }}" required></td>
-              <td><input type="text" name="sim_valoriof2" value="{{ form.instance.sim_valoriof2 }}" required></td>
-              <td><input type="text" name="sim_valoriof3" value="{{ form.instance.sim_valoriof3 }}" required></td>
-              <td><input type="text" name="sim_valoriof4" value="{{ form.instance.sim_valoriof4 }}" required></td>
-              <td><input type="text" name="sim_valoriof5" value="{{ form.instance.sim_valoriof5 }}" required></td>
-              <td><input type="text" name="sim_valoriof6" value="{{ form.instance.sim_valoriof6 }}" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_valoriofadicional1">Valor IOF Adicional:</label></td>
-              <td><input type="text" name="sim_valoriofadicional1" value="{{ form.instance.sim_valoriofadicional1 }}" required></td>
-              <td><input type="text" name="sim_valoriofadicional2" value="{{ form.instance.sim_valoriofadicional2 }}" required></td>
-              <td><input type="text" name="sim_valoriofadicional3" value="{{ form.instance.sim_valoriofadicional3 }}" required></td>
-              <td><input type="text" name="sim_valoriofadicional4" value="{{ form.instance.sim_valoriofadicional4 }}" required></td>
-              <td><input type="text" name="sim_valoriofadicional5" value="{{ form.instance.sim_valoriofadicional5 }}" required></td>
-              <td><input type="text" name="sim_valoriofadicional6" value="{{ form.instance.sim_valoriofadicional6 }}" required></td>
-            </tr>
-            <tr>
-              <td><label for="sim_valorliquido1">Valor Líquido:</label></td>
-              <td><input type="text" name="sim_valorliquido1" value="{{ form.instance.sim_valorliquido1 }}" required></td>
-              <td><input type="text" name="sim_valorliquido2" value="{{ form.instance.sim_valorliquido2 }}" required></td>
-              <td><input type="text" name="sim_valorliquido3" value="{{ form.instance.sim_valorliquido3 }}" required></td>
-              <td><input type="text" name="sim_valorliquido4" value="{{ form.instance.sim_valorliquido4 }}" required></td>
-              <td><input type="text" name="sim_valorliquido5" value="{{ form.instance.sim_valorliquido5 }}" required></td>
-              <td><input type="text" name="sim_valorliquido6" value="{{ form.instance.sim_valorliquido6 }}" required></td>
-            </tr>    
-        </table>    
-        <button type="submit">Salvar</button>
-        <button type="button" onclick="calcular()">Calcular</button> 
-    </form>
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+          <label for="sim_acrescimos">Acréscimos $ (+):</label>
+          <!-- <input type="text" name="sim_acrescimos" value="{{ form.instance.sim_acrescimos }}" required> -->
+          <input type="text" name="sim_acrescimos" value="200" required>
+        </div>
+          
+        <div style="display: inline-block; width: 15%; margin-right: 2%;">
+            <label for="sim_myfloat">MyFloat:</label>
+            <!-- <input type="text" name="sim_myfloat" value="{{ form.instance.sim_myfloat }}" required> -->
+            <input type="text" name="sim_myfloat" value="2" required>
+        </div>
+           
+          <table>
+              <tr>
+                <th colspan="2">Detalhes da Simulação</th>
+              </tr>
+              <tr>
+                <td><label for="sim_vencimento1">Vencimento:</label></td>
+                <!-- <td><input type="date" name="sim_vencimento1" value="{{ form.instance.sim_vencimento1 }}" required></td>
+                <td><input type="date" name="sim_vencimento2" value="{{ form.instance.sim_vencimento2 }}" required></td>
+                <td><input type="date" name="sim_vencimento3" value="{{ form.instance.sim_vencimento3 }}" required></td>
+                <td><input type="date" name="sim_vencimento4" value="{{ form.instance.sim_vencimento4 }}" required></td>
+                <td><input type="date" name="sim_vencimento5" value="{{ form.instance.sim_vencimento5 }}" required></td>
+                <td><input type="date" name="sim_vencimento6" value="{{ form.instance.sim_vencimento6 }}" required></td> -->
+                <td><input type="date" name="sim_vencimento1" value="2024-01-16" required></td>
+                <td><input type="date" name="sim_vencimento2" value="2024-01-17" required></td>
+                <td><input type="date" name="sim_vencimento3" value="2024-01-18" required></td>
+                <td><input type="date" name="sim_vencimento4" value="2024-01-19" required></td>
+                <td><input type="date" name="sim_vencimento5" value="2024-01-20" required></td>
+                <td><input type="date" name="sim_vencimento6" value="2024-01-21" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_valortotal1">Valor Total:</label></td>
+                <!-- <td><input type="text" name="sim_valortotal1" value="{{ form.instance.sim_valortotal1 }}" required></td>
+                <td><input type="text" name="sim_valortotal2" value="{{ form.instance.sim_valortotal2 }}" required></td>
+                <td><input type="text" name="sim_valortotal3" value="{{ form.instance.sim_valortotal3 }}" required></td>
+                <td><input type="text" name="sim_valortotal4" value="{{ form.instance.sim_valortotal4 }}" required></td>
+                <td><input type="text" name="sim_valortotal5" value="{{ form.instance.sim_valortotal5 }}" required></td>
+                <td><input type="text" name="sim_valortotal6" value="{{ form.instance.sim_valortotal6 }}" required></td> -->
+                <td><input type="text" name="sim_valortotal1" value="10000" required></td>
+                <td><input type="text" name="sim_valortotal2" value="10000" required></td>
+                <td><input type="text" name="sim_valortotal3" value="10000" required></td>
+                <td><input type="text" name="sim_valortotal4" value="10000"required></td>
+                <td><input type="text" name="sim_valortotal5" value="10000" required></td>
+                <td><input type="text" name="sim_valortotal6" value="10000" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_prazo1">Prazo:</label></td>
+                <td><input type="text" name="sim_prazo1" value="{{ form.instance.sim_prazo1 }}" required></td>
+                <td><input type="text" name="sim_prazo2" value="{{ form.instance.sim_prazo2 }}" required></td>
+                <td><input type="text" name="sim_prazo3" value="{{ form.instance.sim_prazo3 }}" required></td>
+                <td><input type="text" name="sim_prazo4" value="{{ form.instance.sim_prazo4 }}" required></td>
+                <td><input type="text" name="sim_prazo5" value="{{ form.instance.sim_prazo5 }}" required></td>
+                <td><input type="text" name="sim_prazo6" value="{{ form.instance.sim_prazo6 }}" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_taxadecompraefetiva1">Taxa de Compra Efetiva:</label></td>
+                <td><input type="text" name="sim_taxadecompraefetiva1" value="{{ form.instance.sim_taxadecompraefetiva1 }}" required></td>
+                <td><input type="text" name="sim_taxadecompraefetiva2" value="{{ form.instance.sim_taxadecompraefetiva2 }}" required></td>
+                <td><input type="text" name="sim_taxadecompraefetiva3" value="{{ form.instance.sim_taxadecompraefetiva3 }}" required></td>
+                <td><input type="text" name="sim_taxadecompraefetiva4" value="{{ form.instance.sim_taxadecompraefetiva4 }}" required></td>
+                <td><input type="text" name="sim_taxadecompraefetiva5" value="{{ form.instance.sim_taxadecompraefetiva5 }}" required></td>
+                <td><input type="text" name="sim_taxadecompraefetiva6" value="{{ form.instance.sim_taxadecompraefetiva6 }}" required></td>              
+              </tr>
+              <tr>
+                <td><label for="sim_taxaperiodo1">Taxa Período:</label></td>
+                <td><input type="text" name="sim_taxaperiodo1" value="{{ form.instance.sim_taxaperiodo1 }}" required></td>
+                <td><input type="text" name="sim_taxaperiodo2" value="{{ form.instance.sim_taxaperiodo2 }}" required></td>
+                <td><input type="text" name="sim_taxaperiodo3" value="{{ form.instance.sim_taxaperiodo3 }}" required></td>
+                <td><input type="text" name="sim_taxaperiodo4" value="{{ form.instance.sim_taxaperiodo4 }}" required></td>
+                <td><input type="text" name="sim_taxaperiodo5" value="{{ form.instance.sim_taxaperiodo5 }}" required></td>
+                <td><input type="text" name="sim_taxaperiodo6" value="{{ form.instance.sim_taxaperiodo6 }}" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_valorcompra1">Valor de Compra:</label></td>
+                <td><input type="text" name="sim_valorcompra1" value="{{ form.instance.sim_valorcompra1 }}" required></td>
+                <td><input type="text" name="sim_valorcompra2" value="{{ form.instance.sim_valorcompra2 }}" required></td>
+                <td><input type="text" name="sim_valorcompra3" value="{{ form.instance.sim_valorcompra3 }}" required></td>
+                <td><input type="text" name="sim_valorcompra4" value="{{ form.instance.sim_valorcompra4 }}" required></td>
+                <td><input type="text" name="sim_valorcompra5" value="{{ form.instance.sim_valorcompra5 }}" required></td>
+                <td><input type="text" name="sim_valorcompra6" value="{{ form.instance.sim_valorcompra6 }}" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_valoriof1">Valor IOF:</label></td>
+                <td><input type="text" name="sim_valoriof1" value="{{ form.instance.sim_valoriof1 }}" required></td>
+                <td><input type="text" name="sim_valoriof2" value="{{ form.instance.sim_valoriof2 }}" required></td>
+                <td><input type="text" name="sim_valoriof3" value="{{ form.instance.sim_valoriof3 }}" required></td>
+                <td><input type="text" name="sim_valoriof4" value="{{ form.instance.sim_valoriof4 }}" required></td>
+                <td><input type="text" name="sim_valoriof5" value="{{ form.instance.sim_valoriof5 }}" required></td>
+                <td><input type="text" name="sim_valoriof6" value="{{ form.instance.sim_valoriof6 }}" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_valoriofadicional1">Valor IOF Adicional:</label></td>
+                <td><input type="text" name="sim_valoriofadicional1" value="{{ form.instance.sim_valoriofadicional1 }}" required></td>
+                <td><input type="text" name="sim_valoriofadicional2" value="{{ form.instance.sim_valoriofadicional2 }}" required></td>
+                <td><input type="text" name="sim_valoriofadicional3" value="{{ form.instance.sim_valoriofadicional3 }}" required></td>
+                <td><input type="text" name="sim_valoriofadicional4" value="{{ form.instance.sim_valoriofadicional4 }}" required></td>
+                <td><input type="text" name="sim_valoriofadicional5" value="{{ form.instance.sim_valoriofadicional5 }}" required></td>
+                <td><input type="text" name="sim_valoriofadicional6" value="{{ form.instance.sim_valoriofadicional6 }}" required></td>
+              </tr>
+              <tr>
+                <td><label for="sim_valorliquido1">Valor Líquido:</label></td>
+                <td><input type="text" name="sim_valorliquido1" value="{{ form.instance.sim_valorliquido1 }}" required></td>
+                <td><input type="text" name="sim_valorliquido2" value="{{ form.instance.sim_valorliquido2 }}" required></td>
+                <td><input type="text" name="sim_valorliquido3" value="{{ form.instance.sim_valorliquido3 }}" required></td>
+                <td><input type="text" name="sim_valorliquido4" value="{{ form.instance.sim_valorliquido4 }}" required></td>
+                <td><input type="text" name="sim_valorliquido5" value="{{ form.instance.sim_valorliquido5 }}" required></td>
+                <td><input type="text" name="sim_valorliquido6" value="{{ form.instance.sim_valorliquido6 }}" required></td>
+              </tr>    
+          </table>    
+          <button type="submit">Salvar</button>
+          <button type="button" onclick="calcular()">Calcular</button> 
+      </form>
+      </main>
     <script>
       function calcular() {
         // Calcula sim_prazo de 1 até 6
@@ -219,4 +296,5 @@
       }
     </script>
 </body>
+
 </html>
