@@ -427,11 +427,11 @@ def gerar_simulacao_word(request, sim_id):
         'VALTT5': f' {simulacao.sim_valortotal5:,.2f}'.replace(',', '.'),
         'VALTT6': f' {simulacao.sim_valortotal6:,.2f}'.replace(',', '.'),
         'VENC1': simulacao.sim_vencimento1.strftime('%d/%m/%Y'),
-        'VENC2': simulacao.sim_vencimento2.strftime('%d/%m/%Y'),
-        'VENC3': simulacao.sim_vencimento3.strftime('%d/%m/%Y'),
-        'VENC4': simulacao.sim_vencimento4.strftime('%d/%m/%Y'),
-        'VENC5': simulacao.sim_vencimento5.strftime('%d/%m/%Y'),
-        'VENC6': simulacao.sim_vencimento6.strftime('%d/%m/%Y'),
+        'VENC2': simulacao.sim_vencimento2.strftime('%d/%m/%Y') if simulacao.sim_vencimento2 else '',
+        'VENC3': simulacao.sim_vencimento3.strftime('%d/%m/%Y') if simulacao.sim_vencimento3 else '',
+        'VENC4': simulacao.sim_vencimento4.strftime('%d/%m/%Y') if simulacao.sim_vencimento4 else '',
+        'VENC5': simulacao.sim_vencimento5.strftime('%d/%m/%Y') if simulacao.sim_vencimento5 else '',
+        'VENC6': simulacao.sim_vencimento6.strftime('%d/%m/%Y') if simulacao.sim_vencimento6 else '',
         'FLOAT': simulacao.sim_myfloat,
         'PRAZO1': simulacao.sim_prazo1,
         'PRAZO2': simulacao.sim_prazo2,
@@ -479,13 +479,13 @@ def gerar_simulacao_word(request, sim_id):
         'DIFE5': f' {(simulacao.sim_valorcompra5 + simulacao.sim_valoriof5 + simulacao.sim_valoriofadicional5):,.2f}'.replace(',', '.'),
         'DIFE6': f' {(simulacao.sim_valorcompra6 + simulacao.sim_valoriof6 + simulacao.sim_valoriofadicional6):,.2f}'.replace(',', '.'),
         'LIQUIDO1': f' {simulacao.sim_valorliquido1:,.2f}'.replace(',', '.'),
-        'LIQUIDO2': f' {simulacao.sim_valorliquido2:,.2f}'.replace(',', '.'),
-        'LIQUIDO3': f' {simulacao.sim_valorliquido3:,.2f}'.replace(',', '.'),
-        'LIQUIDO4': f' {simulacao.sim_valorliquido4:,.2f}'.replace(',', '.'),
-        'LIQUIDO5': f' {simulacao.sim_valorliquido5:,.2f}'.replace(',', '.'),
-        'LIQUIDO6': f' {simulacao.sim_valorliquido6:,.2f}'.replace(',', '.'),
+        'LIQUIDO2': f' {simulacao.sim_valorliquido2:,.2f}'.replace(',', '.') if simulacao.sim_valorliquido2 != 0 else '',
+        'LIQUIDO3': f' {simulacao.sim_valorliquido3:,.2f}'.replace(',', '.') if simulacao.sim_valorliquido3 != 0 else '',
+        'LIQUIDO4': f' {simulacao.sim_valorliquido4:,.2f}'.replace(',', '.') if simulacao.sim_valorliquido4 != 0 else '',
+        'LIQUIDO5': f' {simulacao.sim_valorliquido5:,.2f}'.replace(',', '.') if simulacao.sim_valorliquido5 != 0 else '',
+        'LIQUIDO6': f' {simulacao.sim_valorliquido6:,.2f}'.replace(',', '.') if simulacao.sim_valorliquido6 != 0 else '',
         'VALTT': f' {(simulacao.sim_valortotal1 + simulacao.sim_valortotal2 + simulacao.sim_valortotal3 + simulacao.sim_valortotal4 + simulacao.sim_valortotal5 + simulacao.sim_valortotal6):,.2f}'.replace(',', '.'),
-        'COUNT': (sum(1 for valor in [simulacao.sim_valortotal1, simulacao.sim_valortotal2, simulacao.sim_valortotal3, simulacao.sim_valortotal4, simulacao.sim_valortotal5, simulacao.sim_valortotal6] if valor is not None)),
+        'COUNT': (sum(1 for valor in [simulacao.sim_valortotal1, simulacao.sim_valortotal2, simulacao.sim_valortotal3, simulacao.sim_valortotal4, simulacao.sim_valortotal5, simulacao.sim_valortotal6] if valor is not None and valor > 0)),
         'COMPRATT': f' {(simulacao.sim_valorcompra1 + simulacao.sim_valorcompra2 + simulacao.sim_valorcompra3 + simulacao.sim_valorcompra4 + simulacao.sim_valorcompra5 + simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'),
         'FCOMPRATT': f' {(simulacao.sim_valortotal1 - simulacao.sim_valorcompra1) + (simulacao.sim_valortotal2 - simulacao.sim_valorcompra2) + (simulacao.sim_valortotal3 - simulacao.sim_valorcompra3) + (simulacao.sim_valortotal4 - simulacao.sim_valorcompra4) + (simulacao.sim_valortotal5 - simulacao.sim_valorcompra5) + (simulacao.sim_valortotal6 - simulacao.sim_valorcompra6):,.2f}'.replace(',', '.'), 
         'IOFTT': f' {(simulacao.sim_valoriof1 + simulacao.sim_valoriof2 + simulacao.sim_valoriof3 + simulacao.sim_valoriof4 + simulacao.sim_valoriof5 + simulacao.sim_valoriof6):,.2f}'.replace(',', '.'),
@@ -508,27 +508,46 @@ def editar_simulacao2(request, id):
         return redirect('listar_simulacaocopy')
     return render(request, 'inserir_simulacao.html', {'form':form})
 
-def inserir_operacao(request, id):
+def inserir_operacao(request, sim_id):
     try:
-        print("Entrou na função inserir_operacao")
+        # Obter informações da simulação
+        simulacao = Dsimulacao.objects.get(sim_id=sim_id)   
         if request.method == 'POST':
-            print("Método é POST")
             form = DoperacaoForm(request.POST)
             if form.is_valid():
                 nova_operacao = form.save()
-                novo_id = nova_operacao.ope_id
-                print(f"Nova operação inserida com ID: {novo_id}")
+                novo_id = nova_operacao.ope_id                
                 return redirect('listar_operacaoid', id=novo_id)
             else:
                 print("Formulário não é válido")
                 print(f"Erros no formulário: {form.errors}")
-        else:
-            print("Método não é POST")
-            form = DoperacaoForm()
+        else:     
+            form = DoperacaoForm(initial={
+                'ope_dataoperacao': simulacao.sim_datasimulacao,
+                'cli_id': simulacao.cli_id,
+                'fac_id': simulacao.fac_id,
+                'ope_taxadecompra': simulacao.sim_taxadecompra,
+                'ope_iof': simulacao.sim_iof,
+                'ope_iofadicional': simulacao.sim_iofadicional,
+                'ope_despesas': simulacao.sim_despesas,
+                'ope_acrescimos': simulacao.sim_acrescimos,
+                'ope_myfloat': simulacao.sim_myfloat,
+                'ope_vencimento1' : simulacao.sim_vencimento1,
+                'ope_vencimento2' : simulacao.sim_vencimento2,
+                'ope_vencimento3' : simulacao.sim_vencimento3,
+                'ope_vencimento4' : simulacao.sim_vencimento4,
+                'ope_vencimento5' : simulacao.sim_vencimento5,
+                'ope_vencimento6' : simulacao.sim_vencimento6,
+                'ope_valortotal1' : simulacao.sim_valortotal1,
+                'ope_valortotal2' : simulacao.sim_valortotal2,
+                'ope_valortotal3' : simulacao.sim_valortotal3,
+                'ope_valortotal4' : simulacao.sim_valortotal4,
+                'ope_valortotal5' : simulacao.sim_valortotal5,
+                'ope_valortotal6' : simulacao.sim_valortotal6
+            })                         
     except Exception as e:
         print(f"Erro ao inserir operação: {e}")
         raise
-    print("Saindo da função inserir_operacao")
     return render(request, 'inserir_operacao.html', {'form': form})
 def listar_operacao(request):
     operacao=Doperacao.objects.all()
@@ -589,15 +608,15 @@ def gerar_operacao_word(request, ope_id):
         'VALTT5': f' {operacao.ope_valortotal5:,.2f}'.replace(',', '.'),
         'VALTT6': f' {operacao.ope_valortotal6:,.2f}'.replace(',', '.'),
         'VENC1': operacao.ope_vencimento1.strftime('%d/%m/%Y'),
-        'VENC2': operacao.ope_vencimento2.strftime('%d/%m/%Y'),
-        'VENC3': operacao.ope_vencimento3.strftime('%d/%m/%Y'),
-        'VENC4': operacao.ope_vencimento4.strftime('%d/%m/%Y'),
-        'VENC5': operacao.ope_vencimento5.strftime('%d/%m/%Y'),
-        'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y'),
+        'VENC2': operacao.ope_vencimento2.strftime('%d/%m/%Y') if operacao.ope_vencimento2 else '',
+        'VENC3': operacao.ope_vencimento3.strftime('%d/%m/%Y') if operacao.ope_vencimento3 else '',
+        'VENC4': operacao.ope_vencimento4.strftime('%d/%m/%Y') if operacao.ope_vencimento4 else '',
+        'VENC5': operacao.ope_vencimento5.strftime('%d/%m/%Y') if operacao.ope_vencimento5 else '',
+        'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y') if operacao.ope_vencimento6 else '',
         'DESP': f' {operacao.ope_despesas:,.2f}'.replace(',', '.'),
         'ACRE': f' {operacao.ope_acrescimos:,.2f}'.replace(',', '.'),
         'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),
-        'COUNT': (sum(1 for valor in [operacao.ope_valortotal1, operacao.ope_valortotal2, operacao.ope_valortotal3, operacao.ope_valortotal4, operacao.ope_valortotal5, operacao.ope_valortotal6] if valor is not None)),
+        'COUNT': (sum(1 for valor in [operacao.ope_valortotal1, operacao.ope_valortotal2, operacao.ope_valortotal3, operacao.ope_valortotal4, operacao.ope_valortotal5, operacao.ope_valortotal6] if valor is not None and valor > 0)),
         'COMPRATT': f' {(operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6):,.2f}'.replace(',', '.'),
         'IOFTT': f' {(operacao.ope_valoriof1 + operacao.ope_valoriof2 + operacao.ope_valoriof3 + operacao.ope_valoriof4 + operacao.ope_valoriof5 + operacao.ope_valoriof6):,.2f}'.replace(',', '.'),
         'IOFADTT': f' {(operacao.ope_valoriofadicional1 + operacao.ope_valoriofadicional2 + operacao.ope_valoriofadicional3 + operacao.ope_valoriofadicional4 + operacao.ope_valoriofadicional5 + operacao.ope_valoriofadicional6):,.2f}'.replace(',', '.'), 

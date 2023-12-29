@@ -44,11 +44,11 @@ urlpatterns= [
     path('cliente/listar_simulacaocopy', listar_simulacaocopy, name='listar_simulacaocopy'),
     path('cliente/editar_simulacao2/<str:id>', editar_simulacao2, name='editar_simulacao2'),
     
-    #Simulação
-    path('cliente/inserir_operacao/<int:id>/', inserir_operacao, name='inserir_operacao'),
+    #Operação
+    path('inserir_operacao/<int:sim_id>/', inserir_operacao, name='inserir_operacao'),
     path('cliente/listar_operacao', listar_operacao, name='listar_operacao'),
     path('gerar_operacao_word/<int:ope_id>/', gerar_operacao_word, name='gerar_operacao_word'),
     path('gerar_promissoria_word/<int:ope_id>/', gerar_promissoria_word, name='gerar_promissoria_word'),
     path('cliente/listar_operacaoid/<str:id>', listar_operacaoid, name='listar_operacaoid'),
     path('cliente/editar_operacao/<str:id>', editar_operacao, name='editar_operacao'),
-]
+    ]

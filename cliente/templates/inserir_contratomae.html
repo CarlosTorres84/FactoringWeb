@@ -54,17 +54,26 @@
 
 <body onload="formatarCamposData()">
     <h1>Gerar Contrato Mãe</h1>
-    <form method="post">
-        {% csrf_token %}
+    <main class="container">
+        <form method="post">
+            {% csrf_token %}            
+            <div class="form-group">
+                {{ form.cma_id.errors }}
+                <label for="{{ form.cma_id.id_for_label }}" class="form-control"> ID : </label>
+                {{ form.cma_id }}
+            </div>
 
-        <label for="cma_id">ID Contrato Mãe:</label>
-        <input type="text" name="cma_id" value="{{ form.instance.cma_id }}" required>
-
-        <label for="cli_id">ID Cliente:</label>
-        <input type="text" name="cli_id" value="{{ form.instance.cli_id }}" required>
-
-        <label for="fac_id">ID Factoring:</label>
-        <input type="text" name="fac_id" value="{{ form.instance.fac_id }}" required>
+            <div class="form-group">
+                {{ form.cli_id.errors }}
+                <label for="{{ form.cli_id.id_for_label }}" class="form-control"> ID Cliente: </label>
+                {{ form.cli_id }}
+            </div>
+            
+            <div class="form-group">
+                {{ form.fac_id.errors }}
+                <label for="{{ form.fac_id.id_for_label }}" class="form-control"> ID Factoring: </label>
+                {{ form.fac_id }}
+            </div>
 
         <!-- criado para trazer a data de vencimento automaticamente -->
         <label for="{{ form.cma_validadecontrato.id_for_label }}">Validade Contrato:</label>
@@ -75,7 +84,8 @@
         {{ form.cma_datacadastro }}
 
         <button type="submit">Salvar</button>
-    </form>        
+    </form>   
+    </main>     
 </body>
 
 </html>

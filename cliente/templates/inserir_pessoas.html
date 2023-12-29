@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Pessoas</title>
     <style>
         body {
@@ -63,121 +64,121 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                {{form.pes_id.erros}}
+                {{form.pes_id.errors}}
                 <label> ID : </label>
                 {{form.pes_id|addclass:'form-control'}}
             </div>
             
             <div class="form-group">
-                {{form.pes_nome.erros}}
+                {{form.pes_nome.errors}}
                 <label> NOME : </label>
                 {{form.pes_nome|addclass:'form-control'}}
             </div>
             
             <div class="form-group">
-                {{form.pes_cpf.erros}}
+                {{form.pes_cpf.errors}}
                 <label> CPF : </label>
                 {{form.pes_cpf|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_rg.erros}}
+                {{form.pes_rg.errors}}
                 <label> RG : </label>
                 {{form.pes_rg|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_estadocivil.erros}}
+                {{form.pes_estadocivil.errors}}
                 <label> ESTADO CIVIL: </label>
                 {{form.pes_estadocivil|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_nacionalidade.erros}}
+                {{form.pes_nacionalidade.errors}}
                 <label> NACIONALIDADE: </label>
                 {{form.pes_nacionalidade|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_email1.erros}}
+                {{form.pes_email1.errors}}
                 <label> EMAIL 1: </label>
                 {{form.pes_email1|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_email2.erros}}
+                {{form.pes_email2.errors}}
                 <label> EMAIL 2: </label>
                 {{form.pes_email2|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_telefone1.erros}}
+                {{form.pes_telefone1.errors}}
                 <label> TELEFONE 1: </label>
                 {{form.pes_telefone1|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_telefone2.erros}}
+                {{form.pes_telefone2.errors}}
                 <label> TELEFONE 2: </label>
                 {{form.pes_telefone2|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_profissao.erros}}
+                {{form.pes_profissao.errors}}
                 <label> PROFISSÃO: </label>
                 {{form.pes_profissao|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_enderereco.erros}}
+                {{form.pes_enderereco.errors}}
                 <label> ENDEREÇO: </label>
                 {{form.pes_enderereco|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_complementoenderereco.erros}}
+                {{form.pes_complementoenderereco.errors}}
                 <label> COMPLEMENTO : </label>
                 {{form.pes_complementoenderereco|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_cep.erros}}
+                {{form.pes_cep.errors}}
                 <label> CEP : </label>
                 {{form.pes_cep|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_bairro.erros}}
+                {{form.pes_bairro.errors}}
                 <label> BAIRRO : </label>
                 {{form.pes_bairro|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_cidade.erros}}
+                {{form.pes_cidade.errors}}
                 <label> CIDADE : </label>
                 {{form.pes_cidade|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_estado.erros}}
+                {{form.pes_estado.errors}}
                 <label> ESTADO : </label>
                 {{form.pes_estado|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.cli_id.erros}}
+                {{form.cli_id.errors}}
                 <label> ID CLIENTE : </label>
                 {{form.cli_id|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.fac_id.erros}}
+                {{form.fac_id.errors}}
                 <label> ID FACTORING : </label>
                 {{form.fac_id|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
-                {{form.pes_tipopessoa.erros}}
+                {{form.pes_tipopessoa.errors}}
                 <label> TIPO PESSOA : </label>
                 {{form.pes_tipopessoa|addclass:'form-control'}}
             </div>
