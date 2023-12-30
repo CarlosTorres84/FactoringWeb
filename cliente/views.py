@@ -544,7 +544,7 @@ def inserir_operacao(request, sim_id):
                 'ope_valortotal4' : simulacao.sim_valortotal4,
                 'ope_valortotal5' : simulacao.sim_valortotal5,
                 'ope_valortotal6' : simulacao.sim_valortotal6
-            })                         
+            })               
     except Exception as e:
         print(f"Erro ao inserir operação: {e}")
         raise
@@ -590,23 +590,23 @@ def gerar_operacao_word(request, ope_id):
         'CNPJ_FACTORING': f'CNPJ: ' + factoring_associado.fac_cnpj,
         # 'OPERAÇÕES1 A 6'
         'NUMTITULO1': operacao.ope_numtitulo1,
-        'NUMTITULO2': operacao.ope_numtitulo2,
-        'NUMTITULO3': operacao.ope_numtitulo3,
-        'NUMTITULO4': operacao.ope_numtitulo4,
-        'NUMTITULO5': operacao.ope_numtitulo5,
-        'NUMTITULO6': operacao.ope_numtitulo6,
+        'NUMTITULO2': operacao.ope_numtitulo2 if operacao.ope_numtitulo2 else '',
+        'NUMTITULO3': operacao.ope_numtitulo3 if operacao.ope_numtitulo3 else '',
+        'NUMTITULO4': operacao.ope_numtitulo4 if operacao.ope_numtitulo4 else '',
+        'NUMTITULO5': operacao.ope_numtitulo5 if operacao.ope_numtitulo5 else '',
+        'NUMTITULO6': operacao.ope_numtitulo6 if operacao.ope_numtitulo6 else '',
         'NOMESACADO1': operacao.ope_razaosocial1,
-        'NOMESACADO2': operacao.ope_razaosocial2,
-        'NOMESACADO3': operacao.ope_razaosocial3,
-        'NOMESACADO4': operacao.ope_razaosocial4,
-        'NOMESACADO5': operacao.ope_razaosocial5,
-        'NOMESACADO6': operacao.ope_razaosocial6,        
+        'NOMESACADO2': operacao.ope_razaosocial2 if operacao.ope_numtitulo2 else '',
+        'NOMESACADO3': operacao.ope_razaosocial3 if operacao.ope_numtitulo3 else '',
+        'NOMESACADO4': operacao.ope_razaosocial4 if operacao.ope_numtitulo4 else '',
+        'NOMESACADO5': operacao.ope_razaosocial5 if operacao.ope_numtitulo5 else '',
+        'NOMESACADO6': operacao.ope_razaosocial6 if operacao.ope_numtitulo6 else '',
         'VALTT1': f' {operacao.ope_valortotal1:,.2f}'.replace(',', '.'),
-        'VALTT2': f' {operacao.ope_valortotal2:,.2f}'.replace(',', '.'),
-        'VALTT3': f' {operacao.ope_valortotal3:,.2f}'.replace(',', '.'),
-        'VALTT4': f' {operacao.ope_valortotal4:,.2f}'.replace(',', '.'),
-        'VALTT5': f' {operacao.ope_valortotal5:,.2f}'.replace(',', '.'),
-        'VALTT6': f' {operacao.ope_valortotal6:,.2f}'.replace(',', '.'),
+        'VALTT2': f' {operacao.ope_valortotal2:,.2f}'.replace(',', '.') if operacao.ope_valortotal2 else '',
+        'VALTT3': f' {operacao.ope_valortotal3:,.2f}'.replace(',', '.') if operacao.ope_valortotal3 else '',
+        'VALTT4': f' {operacao.ope_valortotal4:,.2f}'.replace(',', '.') if operacao.ope_valortotal4 else '',
+        'VALTT5': f' {operacao.ope_valortotal5:,.2f}'.replace(',', '.') if operacao.ope_valortotal5 else '',
+        'VALTT6': f' {operacao.ope_valortotal6:,.2f}'.replace(',', '.') if operacao.ope_valortotal6 else '',
         'VENC1': operacao.ope_vencimento1.strftime('%d/%m/%Y'),
         'VENC2': operacao.ope_vencimento2.strftime('%d/%m/%Y') if operacao.ope_vencimento2 else '',
         'VENC3': operacao.ope_vencimento3.strftime('%d/%m/%Y') if operacao.ope_vencimento3 else '',
@@ -651,6 +651,13 @@ def gerar_promissoria_word(request, ope_id):
     if '.' in str(COMPRATT):
         parte_decimal = str(COMPRATT).split('.')[1]
         numero_por_extenso += f" vírgula {num2words(parte_decimal, lang='pt_BR')}"
+    datas = [operacao.ope_vencimento1, operacao.ope_vencimento2, operacao.ope_vencimento3, operacao.ope_vencimento4, operacao.ope_vencimento5, operacao.ope_vencimento6]
+    datas_validas = filter(None, datas)  # Filtra os valores None
+    maior_data = max(datas_validas, default=None)
+    if maior_data:
+        maior_data_formatada = maior_data.strftime('%d/%m/%Y')
+    else:
+        maior_data_formatada = ''
     template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\NotaPromissoriaPadrao.docx"         
     output_path = f"NOTA PROMISSORIA - {ope_id}.docx"
     doc = DocxTemplate(template_path)
@@ -673,12 +680,7 @@ def gerar_promissoria_word(request, ope_id):
         'CIDADE_CLIENTE': cliente_associado.cli_cidade,
         'ESTADO_CLIENTE': cliente_associado.cli_estado,
         # 'OPERAÇÕES1 A 6'                        
-        'VENC1': operacao.ope_vencimento1.strftime('%d/%m/%Y'),
-        'VENC2': operacao.ope_vencimento2.strftime('%d/%m/%Y'),
-        'VENC3': operacao.ope_vencimento3.strftime('%d/%m/%Y'),
-        'VENC4': operacao.ope_vencimento4.strftime('%d/%m/%Y'),
-        'VENC5': operacao.ope_vencimento5.strftime('%d/%m/%Y'),
-        'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y'),        
+        'VENC1': maior_data_formatada,        
         'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),        
         'COMPRATT_POR_EXTENSO': numero_por_extenso,
         # 'PES_ID'
