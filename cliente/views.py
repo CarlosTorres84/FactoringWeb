@@ -712,3 +712,7 @@ def gerar_promissoria_word(request, ope_id):
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
         response['Content-Disposition'] = f'attachment; filename=NOTA PROMISSORIA - {ope_id}.docx'
     return response
+
+def listar_carteira(request):
+    operacao=Doperacao.objects.all()
+    return render(request, 'listar_carteira.html', {'operacao':operacao})
