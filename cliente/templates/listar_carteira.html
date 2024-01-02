@@ -81,6 +81,7 @@
                 <th>Numero título:</th>
                 <th>Vencimento:</th>
                 <th>Valor:</th>
+                <th>Saldo:</th>
             </tr>
         </thead>
         <tbody>
@@ -94,6 +95,10 @@
                 <td>{{i.ope_numtitulo1}}</td>
                 <td>{{i.ope_vencimento1}}</td>
                 <td>{{i.ope_valortotal1}}</td>
+                <td>{{i.car_saldo}}</td>
+                <td>
+                    <a href="{% url 'incluir_pagamento' ope_id=i.ope_id titulonumero=i.ope_numtitulo1 %}">Incluir Pagamento</a>
+                </td>           
             </tr>
             {% if i.ope_valortotal2 != 0 %}
             <tr>
@@ -104,6 +109,7 @@
                 <td>{{i.ope_numtitulo2}}</td>
                 <td>{{i.ope_vencimento2}}</td>
                 <td>{{i.ope_valortotal2}}</td>
+                <td>{{i.car_saldo}}</td>
             </tr>
             {% endif %}
             {% endif %}
@@ -116,6 +122,7 @@
                 <td>{{i.ope_numtitulo3}}</td>
                 <td>{{i.ope_vencimento3}}</td>
                 <td>{{i.ope_valortotal3}}</td>
+                <td>{{i.car_saldo}}</td>
             </tr>
             {% endif %}
             {% if i.ope_valortotal4 != 0 %}
@@ -127,6 +134,7 @@
                 <td>{{i.ope_numtitulo4}}</td>
                 <td>{{i.ope_vencimento4}}</td>
                 <td>{{i.ope_valortotal4}}</td>
+                <td>{{i.car_saldo}}</td>
             </tr>
             {% endif %}
             {% if i.ope_valortotal5 != 0 %}
@@ -138,6 +146,7 @@
                 <td>{{i.ope_numtitulo5}}</td>
                 <td>{{i.ope_vencimento5}}</td>
                 <td>{{i.ope_valortotal5}}</td>
+                <td>{{i.car_saldo}}</td>
             </tr>
             {% endif %}
             {% if i.ope_valortotal6 != 0 %}
@@ -149,6 +158,7 @@
                 <td>{{i.ope_numtitulo6}}</td>
                 <td>{{i.ope_vencimento6}}</td>
                 <td>{{i.ope_valortotal6}}</td>
+                <td>{{i.car_saldo}}</td>
             </tr>
             {% endif %}
             {% endfor %}

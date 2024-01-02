@@ -54,4 +54,5 @@ urlpatterns= [
 
     #Carteira
     path('listar_carteira', listar_carteira , name='listar_carteira'),
+    path('incluir_pagamento/<int:ope_id>/<int:titulonumero>/', incluir_pagamento, name='incluir_pagamento'),
     ]

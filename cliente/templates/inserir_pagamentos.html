@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Pagamentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0066cc;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit {
+            background-color: #534caf;
+        }
+
+        .operation {
+            background-color: #ff9800;
+        }
+
+        .generate-word {
+            background-color: #007bff;
+        }
+
+        .create-simulation {
+            background-color: #28a745;
+        }
+
+        .actions a:hover, .actions button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registrar Pagamentos</h1>
+    <main class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div style="display: inline-block; width: 15%; margin-right: 2%;">
+                <label for="car_datapgto">Data Pagamento:</label>
+                <input type="date" id="car_datapgto" name="car_datapgto" value="{{ form.initial.car_datapgto|date:'Y-m-d' }}" required>
+            </div>
+            <div class="form-group" style="display: inline-block; width: 15%; margin-right: 2%;">
+                {{ form.ope_id.errors }}
+                <label for="{{ form.ope_id.id_for_label }}" class="form-control">ID Operação:</label>
+                {{ form.ope_id }}
+            </div>
+            <div class="form-group" style="display: inline-block; width: 15%; margin-right: 2%;">
+                {{ form.car_titulonumero.errors }}
+                <label for="{{ form.car_titulonumero.id_for_label }}" class="form-control">Título Número:</label>
+                {{ form.car_titulonumero }}
+            </div> 
+            <div class="form-group" style="display: inline-block; width: 15%; margin-right: 2%;">
+                {{ form.car_valorpgto.errors }}
+                <label for="{{ form.car_valorpgto.id_for_label }}" class="form-control">Valor Pgto Título:</label>
+                {{ form.car_valorpgto }}
+            </div> 
+            <div class="form-group" style="display: inline-block; width: 15%; margin-right: 2%;">
+                <label for="{{ form.car_saldo.id_for_label }}" class="form-control">Saldo:</label>
+                {{ form.car_saldo }}
+            </div>
+            <!-- Botão de salvar -->
+            <div style="margin-top: 20px;">
+                <button type="submit">Salvar</button>
+            </div>
+            <!-- Botão de calcular saldo -->
+            <div style="margin-top: 20px;">
+                <button type="button" id="calcularSaldoBtn">Calcular Saldo</button>
+            </div>
+        </form>
+    </main>
+    <!-- Adicione isso dentro do head do seu HTML -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Adquira referências aos elementos relevantes
+        var valorPgtoInput = document.getElementById('id_car_valorpgto');
+        var saldoInput = document.getElementById('id_car_saldo');
+        var calcularSaldoBtn = document.getElementById('calcularSaldoBtn');
+
+        // Adicione um evento ao botão de calcular saldo
+        calcularSaldoBtn.addEventListener('click', function() {
+            // Lógica do cálculo do saldo
+            var valorPgto = parseFloat(valorPgtoInput.value) || 0;
+            var saldoAtual = parseFloat('{{ saldo_atual_da_carteira }}') || 0;  // Substitua isso pelo valor real da carteira
+
+            // Faça o cálculo do novo saldo
+            var novoSaldo = saldoAtual - valorPgto;
+
+            // Atualize o valor do campo de saldo
+            saldoInput.value = novoSaldo.toFixed(2);
+        });
+    });
+</script>
+    </body>
+</html>

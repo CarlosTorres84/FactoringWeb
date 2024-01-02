@@ -716,3 +716,26 @@ def gerar_promissoria_word(request, ope_id):
 def listar_carteira(request):
     operacao=Doperacao.objects.all()
     return render(request, 'listar_carteira.html', {'operacao':operacao})
+def incluir_pagamento(request, ope_id, titulonumero):
+    try:
+        operacao = Doperacao.objects.get(ope_id=ope_id)   
+        if request.method == 'POST':
+            form = DcarteiraForm(request.POST)
+            if form.is_valid():
+                form.instance.car_titulonumero = titulonumero
+                nova_operacao = form.save()
+                novo_id = nova_operacao.car_id                
+                return redirect('listar_carteira')
+            else:
+                print("Formulário não é válido")
+                print(f"Erros no formulário: {form.errors}")
+        else:     
+            form = DcarteiraForm(initial={
+                'ope_id': operacao.ope_id,
+                'car_titulonumero': titulonumero
+            })               
+    except Exception as e:
+        print(f"Erro ao inserir operação: {e}")
+        raise
+    return render(request, 'inserir_pagamentos.html', {'form': form})
+   
