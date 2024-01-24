@@ -26,62 +26,31 @@ def inserir_clientes(request):
             form.save()
             return redirect('listar_clientes')
     else:
-        form = DClienteForm()
+        dados_dfactoring = Dfactoring.objects.get(fac_id=1)
+        form = DClienteForm(initial={
+            'cli_taxacompra': dados_dfactoring.fac_taxacompra, 
+            'cli_multa': dados_dfactoring.fac_multa,
+            'cli_juros': dados_dfactoring.fac_juros,
+            'cli_taxarecompra': dados_dfactoring.fac_taxarecompra
+        })
+        # Atribui valores padrão vazios para campos nulos
+        form.instance.cli_email2 = form.instance.cli_email2 or ''
+        form.instance.cli_complementoendereco = form.instance.cli_complementoendereco or ''
+        form.instance.cli_telefone2 = form.instance.cli_telefone2 or ''
     return render(request, 'inserir_clientes.html', {'form': form})
 def listar_clientes(request):
     clientes=Dcliente.objects.all()
     return render(request, 'listar_clientes.html', {'clientes':clientes})
 def editar_clientes(request, id):
-    clientes = get_object_or_404(Dcliente, cli_id=id)
-    if request.method == 'POST':
-        clientes.cli_id = request.POST.get('cli_id')
-        clientes.cli_razaosocial = request.POST.get('cli_razaosocial')
-        clientes.cli_nomefantasia = request.POST.get('cli_nomefantasia')
-        clientes.cli_cnpj = request.POST.get('cli_cnpj')
-        clientes.cli_im = request.POST.get('cli_im')
-        clientes.cli_ie = request.POST.get('cli_ie')
-        clientes.cli_email1 = request.POST.get('cli_email1')
-        clientes.cli_email2 = request.POST.get('cli_email2')
-        clientes.cli_telefone1 = request.POST.get('cli_telefone1')
-        clientes.cli_telefone2 = request.POST.get('cli_telefone2')
-        clientes.cli_enderereco = request.POST.get('cli_enderereco')
-        clientes.cli_complementoenderereco = request.POST.get('cli_complementoenderereco')
-        clientes.cli_cep = request.POST.get('cli_cep')
-        clientes.cli_bairro = request.POST.get('cli_bairro')
-        clientes.cli_cidade = request.POST.get('cli_cidade')
-        clientes.cli_estado = request.POST.get('cli_estado')
-        
-        taxacomprastr = request.POST.get('cli_taxacompra')
-        taxacomprastr = taxacomprastr.replace(',', '.')
-        clientes.cli_taxacompra = float(taxacomprastr)
-
-        multastr = request.POST.get('cli_multa')
-        multastr = multastr.replace(',', '.')
-        clientes.cli_multa = float(multastr)
-
-        jurosstr = request.POST.get('cli_juros')
-        jurosstr = jurosstr.replace(',', '.')
-        clientes.cli_juros = float(jurosstr)
-
-        taxarecomprastr = request.POST.get('cli_taxarecompra')
-        taxarecomprastr = taxarecomprastr.replace(',', '.')
-        clientes.cli_taxarecompra = float(taxarecomprastr)
-
-        valortotaloperacaostr = request.POST.get('cli_valortotaloperacao')
-        valortotaloperacaostr = valortotaloperacaostr.replace(',', '.')
-        clientes.cli_valortotaloperacao = float(valortotaloperacaostr)
-        # Certifique-se de que cliente.data_cadastro é um objeto datetime
-        clientes.cli_datacadastro = datetime.strptime(request.POST.get('cli_datacadastro'), '%Y-%m-%d')
-        datacadastro_formatada = clientes.cli_datacadastro.strftime('%Y-%m-%d')
-        clientes.save()
-        return redirect('listar_clientes')
-    return render(request, 'editar_clientes.html', {'clientes': clientes})
-def editar_clientes2(request, id):
     clientes=Dcliente.objects.get(cli_id=id)
     form = DClienteForm(request.POST or None, instance=clientes)
     if form.is_valid():
         form.save()
         return redirect('listar_clientes')
+     # Atribui valores padrão vazios para campos nulos
+    form.instance.cli_email2 = form.instance.cli_email2 or ''
+    form.instance.cli_complementoendereco = form.instance.cli_complementoendereco or ''
+    form.instance.cli_telefone2 = form.instance.cli_telefone2 or ''
     return render(request,'inserir_clientes.html', {'form':form})
 def remover_clientes(request, id):
     clientes=Dcliente.objects.get(cli_id=id)
@@ -98,81 +67,26 @@ def inserir_factorings(request):
             return redirect('listar_factorings')
     else:
         form = DFactoringForm()
+        # Atribui valores padrão vazios para campos nulos
+        form.instance.fac_email2 = form.instance.fac_email2 or ''
+        form.instance.fac_complementoendereco = form.instance.fac_complementoendereco or ''
+        form.instance.fac_float = form.instance.fac_float or ''
+        form.instance.fac_telefone2 = form.instance.fac_telefone2 or ''
     return render(request, 'inserir_factorings.html', {'form': form})
 def listar_factorings(request):
     clientes=Dfactoring.objects.all()
     return render(request, 'listar_factorings.html', {'clientes':clientes})
 def editar_factorings(request, id):
-    clientes = get_object_or_404(Dfactoring, fac_id=id)
-    if request.method == 'POST':
-        clientes.fac_id = request.POST.get('fac_id')
-        clientes.fac_razaosocial = request.POST.get('fac_razaosocial')
-        clientes.fac_nomefantasia = request.POST.get('fac_nomefantasia')
-        clientes.fac_cnpj = request.POST.get('fac_cnpj')
-        clientes.fac_im = request.POST.get('fac_im')
-        clientes.fac_ie = request.POST.get('fac_ie')
-        clientes.fac_email1 = request.POST.get('fac_email1')
-        clientes.fac_email2 = request.POST.get('fac_email2')
-        clientes.fac_telefone1 = request.POST.get('fac_telefone1')
-        clientes.fac_telefone2 = request.POST.get('fac_telefone2')
-        clientes.fac_enderereco = request.POST.get('fac_enderereco')
-        clientes.fac_complementoenderereco = request.POST.get('fac_complementoenderereco')
-        clientes.fac_cep = request.POST.get('fac_cep')
-        clientes.fac_bairro = request.POST.get('fac_bairro')
-        clientes.fac_cidade = request.POST.get('fac_cidade')
-        clientes.fac_estado = request.POST.get('fac_estado')
-        
-        taxacomprastr = request.POST.get('fac_taxacompra')
-        taxacomprastr = taxacomprastr.replace(',', '.')
-        clientes.fac_taxacompra = float(taxacomprastr)
-
-        iofstr = request.POST.get('fac_iof')
-        iofstr = iofstr.replace(',', '.')
-        clientes.fac_iof = float(iofstr)
-
-        iofadicionalstr = request.POST.get('fac_iofadicional')
-        iofadicionalstr = iofadicionalstr.replace(',', '.')
-        clientes.fac_iofadicional = float(iofadicionalstr)
-
-        pisstr = request.POST.get('fac_pis')
-        pisstr = pisstr.replace(',', '.')
-        clientes.fac_pis = float(pisstr)
-
-        cofinsstr = request.POST.get('fac_cofins')
-        cofinsstr = cofinsstr.replace(',', '.')
-        clientes.fac_cofins = float(cofinsstr)
-
-        floatstr = request.POST.get('fac_float')
-        floatstr = floatstr.replace(',', '.')
-        clientes.fac_float = float(floatstr)
-
-        multastr = request.POST.get('fac_multa')
-        multastr = multastr.replace(',', '.')
-        clientes.fac_multa = float(multastr)
-
-        jurosstr = request.POST.get('fac_juros')
-        jurosstr = jurosstr.replace(',', '.')
-        clientes.fac_juros = float(jurosstr)
-
-        taxarecomprastr = request.POST.get('fac_taxarecompra')
-        taxarecomprastr = taxarecomprastr.replace(',', '.')
-        clientes.fac_taxarecompra = float(taxarecomprastr)
-
-        valortotaloperacaostr = request.POST.get('fac_valortotaloperacao')
-        valortotaloperacaostr = valortotaloperacaostr.replace(',', '.')
-        clientes.fac_valortotaloperacao = float(valortotaloperacaostr)
-        # Certifique-se de que factoring.data_cadastro é um objeto datetime
-        clientes.fac_datacadastro = datetime.strptime(request.POST.get('fac_datacadastro'), '%Y-%m-%d')
-        datacadastro_formatada = clientes.fac_datacadastro.strftime('%Y-%m-%d')
-        clientes.save()
-        return redirect('listar_factorings')
-    return render(request, 'editar_factorings.html', {'clientes': clientes})
-def editar_factorings2(request, id):
     clientes=Dfactoring.objects.get(fac_id=id)
     form = DFactoringForm(request.POST or None, instance=clientes)
     if form.is_valid():
         form.save()
         return redirect('listar_factorings')
+    # Atribui valores padrão vazios para campos nulos
+    form.instance.fac_email2 = form.instance.fac_email2 or ''
+    form.instance.fac_complementoendereco = form.instance.fac_complementoendereco or ''
+    form.instance.fac_float = form.instance.fac_float or ''
+    form.instance.fac_telefone2 = form.instance.fac_telefone2 or ''
     return render(request,'inserir_factorings.html', {'form':form})
 def remover_factorings(request, id):
     clientes=Dfactoring.objects.get(fac_id=id)
@@ -189,41 +103,24 @@ def inserir_pessoas(request):
             return redirect('listar_pessoas')
     else:
         form = DpessoasForm()
+        # Atribui valores padrão vazios para campos nulos
+        form.instance.pes_email2 = form.instance.pes_email2 or ''
+        form.instance.pes_complementoendereco = form.instance.pes_complementoendereco or ''
+        form.instance.pes_telefone2 = form.instance.pes_telefone2 or ''
     return render(request, 'inserir_pessoas.html', {'form': form})
 def listar_pessoas(request):
     pessoas=Dpessoas.objects.all()
     return render(request, 'listar_pessoas.html', {'pessoas':pessoas})
 def editar_pessoas(request, id):
-    pessoas = get_object_or_404(Dpessoas, pes_id=id)
-    if request.method == 'POST':
-        pessoas.pes_id = request.POST.get('pes_id')
-        pessoas.pes_nome = request.POST.get('pes_nome')
-        pessoas.pes_cpf = request.POST.get('pes_cpf')
-        pessoas.pes_rg = request.POST.get('pes_rg')
-        pessoas.pes_estadocivil = request.POST.get('pes_estadocivil')
-        pessoas.pes_nacionalidade = request.POST.get('pes_nacionalidade')
-        pessoas.pes_email1 = request.POST.get('pes_email1')
-        pessoas.pes_email2 = request.POST.get('pes_email2')
-        pessoas.pes_telefone1 = request.POST.get('pes_telefone1')
-        pessoas.pes_telefone2 = request.POST.get('pes_telefone2')
-        pessoas.pes_profissao = request.POST.get('pes_profissao')
-        pessoas.pes_enderereco = request.POST.get('pes_enderereco')
-        pessoas.pes_complementoenderereco = request.POST.get('pes_complementoenderereco')
-        pessoas.pes_cep = request.POST.get('pes_cep')
-        pessoas.pes_bairro = request.POST.get('pes_bairro')
-        pessoas.pes_cidade = request.POST.get('pes_cidade')
-        pessoas.pes_estado = request.POST.get('pes_estado')
-        pessoas.pes_datacadastro = datetime.strptime(request.POST.get('pes_datacadastro'), '%Y-%m-%d')
-        datacadastro_formatada = pessoas.pes_datacadastro.strftime('%Y-%m-%d')
-        pessoas.save()
-        return redirect('listar_pessoas')
-    return render(request, 'editar_pessoas.html', {'pessoas': pessoas})
-def editar_pessoas2(request, id):
     clientes=Dpessoas.objects.get(pes_id=id)
     form = DpessoasForm(request.POST or None, instance=clientes)
     if form.is_valid():
         form.save()
         return redirect('listar_pessoas')
+    # Atribui valores padrão vazios para campos nulos
+    form.instance.pes_email2 = form.instance.pes_email2 or ''
+    form.instance.pes_complementoendereco = form.instance.pes_complementoendereco or ''
+    form.instance.pes_telefone2 = form.instance.pes_telefone2 or ''
     return render(request,'inserir_pessoas.html', {'form':form})
 def remover_pessoas(request, id):
     pessoas=Dpessoas.objects.get(pes_id=id)
@@ -260,7 +157,7 @@ def gerar_contrato_word(request, cma_id):
     doc = DocxTemplate(template_path)
     # Defina os dados a serem inseridos no modelo
     context = {
-        'ID_CONTRATO': contrato.cma_id,
+        'ID_CONTRATO': contrato.cma_id2,
         'VALIDADE_CONTRATO': validade_formatada,
         # 'ID_CLIENTE'
         'ID_CLIENTE': cliente_associado.cli_id,
@@ -270,8 +167,8 @@ def gerar_contrato_word(request, cma_id):
         'IE_CLIENTE': f'INSC. ESTADUAL: ' + cliente_associado.cli_ie,
         'EMAIL1_CLIENTE': f'E-MAIL: ' + cliente_associado.cli_email1,
         'TELEFONE1_CLIENTE': f'TELEFONE: ' + cliente_associado.cli_telefone1,
-        'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_enderereco,
-        'COMPLEMENTOENDERECO_CLIENTE':f'COMPLEMENTO: ' +  cliente_associado.cli_complementoenderereco,
+        'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_endereco,
+        'COMPLEMENTOENDERECO_CLIENTE':f'COMPLEMENTO: ' +  cliente_associado.cli_complementoendereco,
         'CEP_CLIENTE': f'CEP: ' + cliente_associado.cli_cep,
         'BAIRRO_CLIENTE': f'BAIRRO: ' + cliente_associado.cli_bairro,
         'CIDADE_CLIENTE': f'CIDADE: ' + cliente_associado.cli_cidade,
@@ -284,8 +181,8 @@ def gerar_contrato_word(request, cma_id):
         'IE_FACTORING': f'INSC. ESTADUAL: ' + factoring_associado.fac_ie,
         'EMAIL1_FACTORING': f'E-MAIL: ' + factoring_associado.fac_email1,
         'TELEFONE1_FACTORING': f'TELEFONE: ' + factoring_associado.fac_telefone1,
-        'ENDERECO_FACTORING': f'ENDEREÇO: ' + factoring_associado.fac_enderereco,
-        'COMPLEMENTOENDERECO_FACTORING': f'COMPLEMENTO: ' + factoring_associado.fac_complementoenderereco,
+        'ENDERECO_FACTORING': f'ENDEREÇO: ' + factoring_associado.fac_endereco,
+        'COMPLEMENTOENDERECO_FACTORING': f'COMPLEMENTO: ' + factoring_associado.fac_complementoendereco,
         'CEP_FACTORING': f'CEP: ' + factoring_associado.fac_cep,
         'BAIRRO_FACTORING': f'BAIRRO: ' + factoring_associado.fac_bairro,
         'CIDADE_FACTORING': f'CIDADE: ' + factoring_associado.fac_cidade,
@@ -307,10 +204,10 @@ def gerar_contrato_word(request, cma_id):
         'TELEFONE1_PESSOA1': f'TELEFONE: ' + pessoas_associadas_re[1].pes_telefone1 if len(pessoas_associadas_re) > 1 else '',
         'PROFISSAO_PESSOA0': f'PROFISSÃO: ' + pessoas_associadas_re[0].pes_profissao if pessoas_associadas_re else '',
         'PROFISSAO_PESSOA1': f'PROFISSÃO: ' + pessoas_associadas_re[1].pes_profissao if len(pessoas_associadas_re) > 1 else '',
-        'ENDERECO_PESSOA0': f'ENDEREÇO: ' + pessoas_associadas_re[0].pes_enderereco if pessoas_associadas_re else '',
-        'ENDERECO_PESSOA1': f'ENDEREÇO: ' + pessoas_associadas_re[1].pes_enderereco if len(pessoas_associadas_re) > 1 else '',
-        'COMPLEMENTOENDERECO_PESSOA0': f'COMPLEMENTO: ' + pessoas_associadas_re[0].pes_complementoenderereco if pessoas_associadas_re else '',
-        'COMPLEMENTOENDERECO_PESSOA1': f'COMPLEMENTO: ' + pessoas_associadas_re[1].pes_complementoenderereco if len(pessoas_associadas_re) > 1 else '',
+        'ENDERECO_PESSOA0': f'ENDEREÇO: ' + pessoas_associadas_re[0].pes_endereco if pessoas_associadas_re else '',
+        'ENDERECO_PESSOA1': f'ENDEREÇO: ' + pessoas_associadas_re[1].pes_endereco if len(pessoas_associadas_re) > 1 else '',
+        'COMPLEMENTOENDERECO_PESSOA0': f'COMPLEMENTO: ' + pessoas_associadas_re[0].pes_complementoendereco if pessoas_associadas_re else '',
+        'COMPLEMENTOENDERECO_PESSOA1': f'COMPLEMENTO: ' + pessoas_associadas_re[1].pes_complementoendereco if len(pessoas_associadas_re) > 1 else '',
         'CEP_PESSOA0': f'CEP: ' + pessoas_associadas_re[0].pes_cep if pessoas_associadas_re else '',
         'CEP_PESSOA1': f'CEP: ' + pessoas_associadas_re[1].pes_cep if len(pessoas_associadas_re) > 1 else '',
         'BAIRRO_PESSOA0': f'BAIRRO: ' + pessoas_associadas_re[0].pes_bairro if pessoas_associadas_re else '',
@@ -339,10 +236,10 @@ def gerar_contrato_word(request, cma_id):
         'TELEFONE1_PESSOA01': f'TELEFONE: ' + pessoas_associadas_rs[1].pes_telefone1 if len(pessoas_associadas_rs) > 1 else '',
         'PROFISSAO_PESSOA00': f'PROFISSÃO: ' + pessoas_associadas_rs[0].pes_profissao if pessoas_associadas_rs else '',
         'PROFISSAO_PESSOA01': f'PROFISSÃO: ' + pessoas_associadas_rs[1].pes_profissao if len(pessoas_associadas_rs) > 1 else '',
-        'ENDERECO_PESSOA00': f'ENDEREÇO: ' + pessoas_associadas_rs[0].pes_enderereco if pessoas_associadas_rs else '',
-        'ENDERECO_PESSOA01': f'ENDEREÇO :' + pessoas_associadas_rs[1].pes_enderereco if len(pessoas_associadas_rs) > 1 else '',
-        'COMPLEMENTOENDERECO_PESSOA00': f'COMPLEMENTO: ' + pessoas_associadas_rs[0].pes_complementoenderereco if pessoas_associadas_rs else '',
-        'COMPLEMENTOENDERECO_PESSOA01': f'COMPLEMENTO: ' + pessoas_associadas_rs[1].pes_complementoenderereco if len(pessoas_associadas_rs) > 1 else '',
+        'ENDERECO_PESSOA00': f'ENDEREÇO: ' + pessoas_associadas_rs[0].pes_endereco if pessoas_associadas_rs else '',
+        'ENDERECO_PESSOA01': f'ENDEREÇO :' + pessoas_associadas_rs[1].pes_endereco if len(pessoas_associadas_rs) > 1 else '',
+        'COMPLEMENTOENDERECO_PESSOA00': f'COMPLEMENTO: ' + pessoas_associadas_rs[0].pes_complementoendereco if pessoas_associadas_rs else '',
+        'COMPLEMENTOENDERECO_PESSOA01': f'COMPLEMENTO: ' + pessoas_associadas_rs[1].pes_complementoendereco if len(pessoas_associadas_rs) > 1 else '',
         'CEP_PESSOA00': f'CEP: ' + pessoas_associadas_rs[0].pes_cep if pessoas_associadas_rs else '',
         'CEP_PESSOA01': f'CEP: ' + pessoas_associadas_rs[1].pes_cep if len(pessoas_associadas_rs) > 1 else '',
         'BAIRRO_PESSOA00': f'BAIRRO: ' + pessoas_associadas_rs[0].pes_bairro if pessoas_associadas_rs else '',
@@ -358,7 +255,7 @@ def gerar_contrato_word(request, cma_id):
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
         response['Content-Disposition'] = f'attachment; filename=CONTRATO FOMENTO MERCANTIL - {cma_id}.docx'
     return response
-def editar_contratomae2(request, id):
+def editar_contratomae(request, id):
     contratomae=Dcontratomae.objects.get(cma_id=id)
     form = DcontratomaeForm(request.POST or None, instance=contratomae)
     if form.is_valid():
@@ -410,8 +307,8 @@ def gerar_simulacao_word(request, sim_id):
         'CNPJ_CLIENTE': cliente_associado.cli_cnpj,
         'EMAIL1_CLIENTE': cliente_associado.cli_email1,
         'TELEFONE1_CLIENTE': cliente_associado.cli_telefone1,
-        'ENDERECO_CLIENTE': cliente_associado.cli_enderereco,
-        'COMPLEMENTO_CLIENTE': cliente_associado.cli_complementoenderereco,
+        'ENDERECO_CLIENTE': cliente_associado.cli_endereco,
+        'COMPLEMENTO_CLIENTE': cliente_associado.cli_complementoendereco,
         'CEP': f'CEP: ' + cliente_associado.cli_cep,
         'BAIRRO': f'BAIRRO: ' + cliente_associado.cli_bairro,
         'CIDADE': f'CIDADE: ' + cliente_associado.cli_cidade,

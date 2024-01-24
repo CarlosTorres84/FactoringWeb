@@ -325,6 +325,7 @@
         </table>    
         <button type="submit">Salvar</button>
         <button type="button" onclick="calcular()">Calcular</button> 
+        <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
     </form>
     <script>
       function calcular() {
@@ -404,6 +405,11 @@
           }
         }
       }
-    </script>   
+    </script>
+    <script>
+      function irParaPaginaPrincipal() {
+          window.location.href = "http://127.0.0.1:8000/Inicio";
+      }
+  </script>   
 </body>
 </html>

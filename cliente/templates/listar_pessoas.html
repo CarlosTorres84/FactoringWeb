@@ -103,8 +103,8 @@
                     <td>{{i.pes_telefone1}}</td>
                     <td>{{i.pes_telefone2}}</td>
                     <td>{{i.pes_profissao}}</td>
-                    <td>{{i.pes_enderereco}}</td>
-                    <td>{{i.pes_complementoenderereco}}</td>
+                    <td>{{i.pes_endereco}}</td>
+                    <td>{{i.pes_complementoendereco}}</td>
                     <td>{{i.pes_cep}}</td>
                     <td>{{i.pes_bairro}}</td>
                     <td>{{i.pes_cidade}}</td>
@@ -115,7 +115,6 @@
                     <td>{{i.pes_datacadastro}}</td>
                     <td>
                         <a href="{% url 'editar_pessoas' i.pes_id %}">Editar</a>
-                        <a href="{% url 'editar_pessoas2' i.pes_id %}">Editar 2</a>
                         <a href="{% url 'remover_pessoas' i.pes_id %}">Remover</a>
                     </td>
                 </tr>
@@ -126,5 +125,10 @@
     <a href="{% url 'inserir_pessoas' %}">
         <button>Cadastrar Pessoas</button>
     </a>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
 </body>
 </html>

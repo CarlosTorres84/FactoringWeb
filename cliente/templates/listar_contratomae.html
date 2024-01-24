@@ -45,6 +45,22 @@
             margin-right: 10px;
         }
 
+        .edit-btn, .remove-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .edit-btn:hover, .remove-btn:hover {
+            background-color: #0056b3;
+        }
+
         button {
             padding: 10px;
             background-color: #28a745;
@@ -82,11 +98,13 @@
                     <td>{{i.cma_validadecontrato}}</td>
                     <td>{{i.cma_datacadastro}}</td>
                     <td>
+                        <div>
                         <form method="post" action="{% url 'gerar_contrato_word' i.cma_id %}">
                             {% csrf_token %}
-                            <a href="{% url 'editar_contratomae2' i.cma_id %}">Editar 2</a>
+                            <a class="edit-btn" href="{% url 'editar_contratomae' i.cma_id %}">Editar</a>
                             <button type="submit">Gerar Word Contrato Mãe</button>
                         </form>
+                    </div>
                     </td>
                 </tr>
             {% endfor %}
@@ -96,5 +114,11 @@
     <a href="{% url 'inserir_contratomae' %}">
         <button>Cadastrar Contrato Mãe</button>
     </a>
+    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
 </body>
 </html>

@@ -44,6 +44,22 @@
             margin-right: 10px;
         }
 
+        .edit-btn, .remove-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .edit-btn:hover, .remove-btn:hover {
+            background-color: #0056b3;
+        }
+
         button {
             padding: 10px;
             background-color: #28a745;
@@ -102,8 +118,8 @@
                     <td>{{i.cli_email2}}</td>
                     <td>{{i.cli_telefone1}}</td>
                     <td>{{i.cli_telefone2}}</td>
-                    <td>{{i.cli_enderereco}}</td>
-                    <td>{{i.cli_complementoenderereco}}</td>
+                    <td>{{i.cli_endereco}}</td>
+                    <td>{{i.cli_complementoendereco}}</td>
                     <td>{{i.cli_cep}}</td>
                     <td>{{i.cli_bairro}}</td>
                     <td>{{i.cli_cidade}}</td>
@@ -115,10 +131,11 @@
                     <td>{{i.cli_valortotaloperacao}}</td>
                     <td>{{i.cli_datacadastro}}</td>
                     <td>
-                        <a href="{% url 'editar_clientes' i.cli_id %}">Editar</a>
-                        <a href="{% url 'editar_clientes2' i.cli_id %}">Editar 2</a>
-                        <a href="{% url 'remover_clientes' i.cli_id %}">Remover</a>
-                    </td>
+                <div>
+                    <a class="edit-btn" href="{% url 'editar_clientes' i.cli_id %}">Editar</a>
+                    <a class="remove-btn" href="{% url 'remover_clientes' i.cli_id %}">Remover</a>
+                </div>
+            </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -127,5 +144,11 @@
     <a href="{% url 'inserir_clientes' %}">
         <button>Cadastrar Clientes</button>
     </a>
+    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
 </body>
 </html>

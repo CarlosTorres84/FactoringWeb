@@ -3,196 +3,195 @@
 <html lang="pt-br">
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Pessoas</title>
+    <title>Cadastrar Pessoa</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
 
-        h1 {
-            color: #333;
-        }
+    color: black;
+    font-family: helvetica;
+}   
 
-        .container {
-            margin-top: 20px;
-        }
+header {    
+    width: 100%;
+    border: 5px black;
+    background: rgb(228, 228, 228);
+    display: flex;
+    justify-content: center;
+    font-size: large;
+}
 
-        form {
-            margin-bottom: 15px;
-            text-align: left;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
+h1 {
+    color: #333;
+}
 
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #0066cc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+.container {
+    margin-top: 20px;
+}
 
-        input[type="submit"] {
-            background-color: #0066cc;
-            color: #fff;
-            cursor: pointer;
-        }
+form {
+    margin-bottom: 15px;
+    text-align: left;
+}
 
-        input[type="submit"]:hover {
-            background-color: #005bb5;
-        }
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #0066cc;
+    color: #fff;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #005bb5;
+}
     </style>
 </head>
 
 <body>
-    <h1>Inserir Pessoas</h1>
+    <header>
+        <section>
+            <h1>Inserir Pessoas</h1>
+        </section>
+    </header>
     <main class="container">
         <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                {{form.pes_id.errors}}
-                <label> ID : </label>
-                {{form.pes_id|addclass:'form-control'}}
-            </div>
+            {% csrf_token %}            
+                <td><label for="pes_nome">Nome:</label></td>
+                <td><input type="text" id="pes_nome" name="pes_nome" value="{{ form.instance.pes_nome }}" oninput="converterParaCaixaAlta(this)" required></td>
             
-            <div class="form-group">
-                {{form.pes_nome.errors}}
-                <label> NOME : </label>
-                {{form.pes_nome|addclass:'form-control'}}
-            </div>
+                <td><label for="pes_cpf">Cpf:</label></td>
+                <td><input type="text" id="pes_cpf" name="pes_cpf" value="{{ form.instance.pes_cpf }}" oninput="converterParaCaixaAlta(this)" required></td>
+                
+                <td><label for="pes_rg">Rg:</label></td>
+                <td><input type="text" id="pes_rg" name="pes_rg" value="{{ form.instance.pes_rg }}" oninput="converterParaCaixaAlta(this)" required></td>
+                
+                <div class="form-group">
+                    {{form.pes_estadocivil.errors}}
+                    <label> Estado Cívil: </label>
+                    {{form.pes_estadocivil|addclass:'form-control'}}
+                </div>
+                
+                <td><label for="pes_nacionalidade">Nacionalidade:</label></td>
+                <td><input type="text" id="pes_nacionalidade" name="pes_nacionalidade" value="{{ form.instance.pes_nacionalidade }}" oninput="converterParaCaixaAlta(this)" required></td>
+                
+                <td><label for="pes_email1">E-mail:</label></td>
+                <td><input type="email" id="pes_email1" name="pes_email1" value="{{ form.instance.pes_email1 }}" required></td>
+                
+                <td><label for="pes_email2">E-mail2:</label></td>
+                <td><input type="email" id="pes_email2" name="pes_email2" value="{{ form.instance.pes_email2 }}"></td>
+                
+                <td><label for="pes_telefone1">Telefone:</label></td>
+                <td><input type="tel" id="pes_telefone1" name="pes_telefone1" value="{{ form.instance.pes_telefone1 }}" required></td>
+                
+                <td><label for="pes_telefone2">Telefone2:</label></td>
+                <td><input type="tel" id="pes_telefone2" name="pes_telefone2" value="{{ form.instance.pes_telefone2 }}"></td>
+                
+                <td><label for="pes_profissao">Profissão:</label></td>
+                <td><input type="text" id="pes_profissao" name="pes_profissao" value="{{ form.instance.pes_profissao }}" oninput="converterParaCaixaAlta(this)" required></td>
+               
+                <td><label for="pes_endereco">Endereço:</label></td>
+                <td><input type="text" id="pes_endereco" name="pes_endereco" value="{{ form.instance.pes_endereco }}" oninput="converterParaCaixaAlta(this)" required></td>
+
+                <td><label for="pes_complementoendereco">Complemento:</label></td>
+                <td><input type="text" id="pes_complementoendereco" name="pes_complementoendereco" value="{{ form.instance.pes_complementoendereco }}" oninput="converterParaCaixaAlta(this)"></td>
+
+                <td><label for="pes_cep">Cep:</label></td>
+                <td><input type="text" id="pes_cep" name="pes_cep" value="{{ form.instance.pes_cep }}" oninput="converterParaCaixaAlta(this)" required></td>
+
+                <td><label for="pes_bairro">Bairro:</label></td>
+                <td><input type="text" id="pes_bairro" name="pes_bairro" value="{{ form.instance.pes_bairro }}" oninput="converterParaCaixaAlta(this)" required></td>
+
+                <td><label for="pes_cidade">Cidade:</label></td>
+                <td><input type="text" id="pes_cidade" name="pes_cidade" value="{{ form.instance.pes_cidade }}" oninput="converterParaCaixaAlta(this)" required></td>
             
-            <div class="form-group">
-                {{form.pes_cpf.errors}}
-                <label> CPF : </label>
-                {{form.pes_cpf|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_rg.errors}}
-                <label> RG : </label>
-                {{form.pes_rg|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_estadocivil.errors}}
-                <label> ESTADO CIVIL: </label>
-                {{form.pes_estadocivil|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_nacionalidade.errors}}
-                <label> NACIONALIDADE: </label>
-                {{form.pes_nacionalidade|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_email1.errors}}
-                <label> EMAIL 1: </label>
-                {{form.pes_email1|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_email2.errors}}
-                <label> EMAIL 2: </label>
-                {{form.pes_email2|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_telefone1.errors}}
-                <label> TELEFONE 1: </label>
-                {{form.pes_telefone1|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_telefone2.errors}}
-                <label> TELEFONE 2: </label>
-                {{form.pes_telefone2|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_profissao.errors}}
-                <label> PROFISSÃO: </label>
-                {{form.pes_profissao|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_enderereco.errors}}
-                <label> ENDEREÇO: </label>
-                {{form.pes_enderereco|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_complementoenderereco.errors}}
-                <label> COMPLEMENTO : </label>
-                {{form.pes_complementoenderereco|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_cep.errors}}
-                <label> CEP : </label>
-                {{form.pes_cep|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_bairro.errors}}
-                <label> BAIRRO : </label>
-                {{form.pes_bairro|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_cidade.errors}}
-                <label> CIDADE : </label>
-                {{form.pes_cidade|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_estado.errors}}
-                <label> ESTADO : </label>
-                {{form.pes_estado|addclass:'form-control'}}
-            </div>
-
+                <td><label for="pes_estado">Estado:</label></td>
+                <td><input type="text" id="pes_estado" name="pes_estado" value="{{ form.instance.pes_estado }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
             <div class="form-group">
                 {{form.cli_id.errors}}
-                <label> ID CLIENTE : </label>
+                <label> ID CLIENTE: </label>
                 {{form.cli_id|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
                 {{form.fac_id.errors}}
-                <label> ID FACTORING : </label>
+                <label> ID FACTORING: </label>
                 {{form.fac_id|addclass:'form-control'}}
             </div>
 
             <div class="form-group">
                 {{form.pes_tipopessoa.errors}}
-                <label> TIPO PESSOA : </label>
+                <label> TIPO PESSOA: </label>
                 {{form.pes_tipopessoa|addclass:'form-control'}}
             </div>
 
-            <div class="form-group">
-                <label>DATA CADASTRO:</label>
-                <input type="date" name="pes_datacadastro" class="form-control">
+            <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                <!-- criado para trazer a data de cadastro automaticamente -->
+                <label for="{{ form.pes_datacadastro.id_for_label }}">Data Cadastro:</label>
+                {{ form.pes_datacadastro }}
             </div>
 
             <div>
                 <input type="submit" name="Cadastrar Pessoa">
+                <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
             </div>
     </form>
     </main>
-</body>
+    <script>
+        $(document).ready(function(){
+            $('#pes_cpf').mask('000.000.000-00')
 
+            $('#pes_telefone1').mask('(00) 00000-0000')
+
+            $('#pes_telefone2').mask('(00) 00000-0000')
+
+            $('#pes_cep').mask('00000-000');
+
+        });
+    </script>
+    <script>
+        function converterParaCaixaAlta(elemento) {
+            elemento.value = elemento.value.toUpperCase();
+        }
+    </script>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
+</body>
 </html>

@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Factorings</title>
-    <link rel="stylesheet" href="style.css" % />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +43,22 @@
             text-decoration: none;
             color: #007bff;
             margin-right: 10px;
+        }
+
+        .edit-btn, .remove-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .edit-btn:hover, .remove-btn:hover {
+            background-color: #0056b3;
         }
 
         button {
@@ -109,8 +124,8 @@
                     <td>{{i.fac_email2}}</td>
                     <td>{{i.fac_telefone1}}</td>
                     <td>{{i.fac_telefone2}}</td>
-                    <td>{{i.fac_enderereco}}</td>
-                    <td>{{i.fac_complementoenderereco}}</td>
+                    <td>{{i.fac_endereco}}</td>
+                    <td>{{i.fac_complementoendereco}}</td>
                     <td>{{i.fac_cep}}</td>
                     <td>{{i.fac_bairro}}</td>
                     <td>{{i.fac_cidade}}</td>
@@ -127,9 +142,10 @@
                     <td>{{i.fac_valortotaloperacao}}</td>
                     <td>{{i.fac_datacadastro}}</td>
                     <td>
-                        <a href="{% url 'editar_factorings' i.fac_id %}">Editar</a>
-                        <a href="{% url 'editar_factorings2' i.fac_id %}">Editar 2</a>
-                        <a href="{% url 'remover_factorings' i.fac_id %}">Remover</a>
+                    <div>
+                        <a class="edit-btn" href="{% url 'editar_factorings' i.fac_id %}">Editar</a>
+                        <a class="remove-btn" class= href="{% url 'remover_factorings' i.fac_id %}">Remover</a>
+                    </div>
                     </td>
                 </tr>
             {% endfor %}
@@ -139,5 +155,11 @@
     <a href="{% url 'inserir_factorings' %}">
         <button>Cadastrar Factorings</button>
     </a>
+    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
 </body>
 </html>

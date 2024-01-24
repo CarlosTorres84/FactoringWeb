@@ -12,7 +12,6 @@ urlpatterns= [
     path('inserir_cliente', inserir_clientes, name='inserir_clientes'),  
     path('listar_cliente', listar_clientes, name='listar_clientes'),  
     path('editar_cliente/<str:id>', editar_clientes, name='editar_clientes'),  
-    path('editar_cliente2/<str:id>', editar_clientes2, name='editar_clientes2'),  
     path('remover_cliente/<str:id>', remover_clientes, name='remover_clientes'),  
     
 
@@ -20,21 +19,19 @@ urlpatterns= [
     path('inserir_factoring', inserir_factorings, name='inserir_factorings'),
     path('listar_factoring', listar_factorings, name='listar_factorings'),
     path('editar_factoring/<str:id>', editar_factorings, name='editar_factorings'),
-    path('editar_factoring2/<str:id>', editar_factorings2, name='editar_factorings2'),
     path('remover_factoring/<str:id>', remover_factorings, name='remover_factorings'),
 
     #Pessoas
     path('inserir_pessoa', inserir_pessoas, name='inserir_pessoas'),
     path('listar_pessoa', listar_pessoas, name='listar_pessoas'),
     path('editar_pessoa/<str:id>', editar_pessoas, name='editar_pessoas'),
-    path('editar_pessoa2/<str:id>', editar_pessoas2, name='editar_pessoas2'),
     path('remover_pessoa/<str:id>', remover_pessoas, name='remover_pessoas'),    
 
     #Contrato Mãe
     path('inserir_contratomae', inserir_contratomae, name='inserir_contratomae'),
     path('listar_contratomae', listar_contratomae, name='listar_contratomae'),
     path('gerar_contrato_word/<int:cma_id>/', gerar_contrato_word, name='gerar_contrato_word'),
-    path('editar_contratomae2/<str:id>', editar_contratomae2, name='editar_contratomae2'),
+    path('editar_contratomae/<str:id>', editar_contratomae, name='editar_contratomae'),
 
     #Simulação
     path('inserir_simulacao', inserir_simulacao, name='inserir_simulacao'),    

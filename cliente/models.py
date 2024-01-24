@@ -4,18 +4,18 @@ from django.dispatch import receiver
 
 # Create your models here.
 class Dcliente(models.Model):
-    cli_id=models.CharField(max_length=12, primary_key=True)
+    cli_id = models.AutoField(primary_key=True)
     cli_razaosocial=models.CharField(max_length=50)
     cli_nomefantasia=models.CharField(max_length=50)
     cli_cnpj=models.CharField(max_length=20)
-    cli_im=models.CharField(max_length=20)
-    cli_ie=models.CharField(max_length=20)
+    cli_im=models.CharField(max_length=20, null=True, blank=True)
+    cli_ie=models.CharField(max_length=20, null=True, blank=True)
     cli_email1=models.EmailField(max_length=30)
     cli_email2=models.EmailField(max_length=30, blank=True, null=True)
-    cli_telefone1=models.CharField(max_length=14)
-    cli_telefone2=models.CharField(max_length=14, blank=True, null=True)
-    cli_enderereco=models.CharField(max_length=50)
-    cli_complementoenderereco=models.CharField(max_length=50)
+    cli_telefone1=models.CharField(max_length=15)
+    cli_telefone2=models.CharField(max_length=15, blank=True, null=True)
+    cli_endereco=models.CharField(max_length=50)
+    cli_complementoendereco=models.CharField(max_length=50, blank=True, null=True)
     cli_cep=models.CharField(max_length=10)
     cli_bairro=models.CharField(max_length=50)
     cli_cidade=models.CharField(max_length=20)
@@ -30,18 +30,18 @@ class Dcliente(models.Model):
         return f'{self.cli_nomefantasia}'
 
 class Dfactoring(models.Model):
-    fac_id=models.CharField(max_length=12, primary_key=True)
+    fac_id = models.AutoField(primary_key=True)
     fac_razaosocial=models.CharField(max_length=50)
     fac_nomefantasia=models.CharField(max_length=50)
     fac_cnpj=models.CharField(max_length=20)
-    fac_im=models.CharField(max_length=20)
-    fac_ie=models.CharField(max_length=20)
+    fac_im=models.CharField(max_length=20, null=True, blank=True)
+    fac_ie=models.CharField(max_length=20, null=True, blank=True)
     fac_email1=models.EmailField(max_length=30)
     fac_email2=models.EmailField(max_length=30, blank=True, null=True)
-    fac_telefone1=models.CharField(max_length=14)
-    fac_telefone2=models.CharField(max_length=14, blank=True, null=True)
-    fac_enderereco=models.CharField(max_length=50)
-    fac_complementoenderereco=models.CharField(max_length=50)
+    fac_telefone1=models.CharField(max_length=15)
+    fac_telefone2=models.CharField(max_length=15, blank=True, null=True)
+    fac_endereco=models.CharField(max_length=50)
+    fac_complementoendereco=models.CharField(max_length=50, blank=True, null=True)
     fac_cep=models.CharField(max_length=10)
     fac_bairro=models.CharField(max_length=50)
     fac_cidade=models.CharField(max_length=20)
@@ -61,19 +61,25 @@ class Dfactoring(models.Model):
         return f'{self.fac_nomefantasia}'
 
 class Dpessoas(models.Model):
-    pes_id=models.CharField(max_length=12, primary_key=True)
+    pes_id = models.AutoField(primary_key=True)
     pes_nome=models.CharField(max_length=50)
     pes_cpf=models.CharField(max_length=14)
     pes_rg=models.CharField(max_length=14)
-    pes_estadocivil=models.CharField(max_length=14)
+    status_CHOICESS=(
+        ('S', 'SOLTEIRO(A)'),
+        ('C', 'CASADO(A)'),
+        ('D', 'DIVORCIADO(A)'),
+        ('V', 'VIÚVO(A)'),
+    )
+    pes_estadocivil=models.CharField(max_length=14, choices=status_CHOICESS)
     pes_nacionalidade=models.CharField(max_length=20)
     pes_email1=models.EmailField(max_length=30)
     pes_email2=models.EmailField(max_length=30, blank=True, null=True)
-    pes_telefone1=models.CharField(max_length=14)
-    pes_telefone2=models.CharField(max_length=14, blank=True, null=True)
+    pes_telefone1=models.CharField(max_length=15)
+    pes_telefone2=models.CharField(max_length=15, blank=True, null=True)
     pes_profissao=models.CharField(max_length=30)
-    pes_enderereco=models.CharField(max_length=50)
-    pes_complementoenderereco=models.CharField(max_length=50)
+    pes_endereco=models.CharField(max_length=50)
+    pes_complementoendereco=models.CharField(max_length=50, blank=True, null=True)
     pes_cep=models.CharField(max_length=10)
     pes_bairro=models.CharField(max_length=50)
     pes_cidade=models.CharField(max_length=20)
@@ -91,7 +97,8 @@ class Dpessoas(models.Model):
         return f'{self.pes_nome}'
 
 class Dcontratomae(models.Model):
-    cma_id=models.CharField(max_length=12, primary_key=True)
+    cma_id = models.AutoField(primary_key=True)
+    cma_id2=models.CharField(max_length=12)
     cli_id=models.ForeignKey(Dcliente, on_delete=models.CASCADE)
     fac_id=models.ForeignKey(Dfactoring, on_delete=models.CASCADE)    
     cma_validadecontrato=models.DateField()
@@ -100,7 +107,7 @@ class Dcontratomae(models.Model):
         return f'{self.cma_id}'
     
 class Dsimulacao(models.Model):
-    sim_id = models.AutoField(primary_key=True)
+    sim_id = models.AutoField(primary_key=True, default=189, editable=False) 
     sim_datasimulacao = models.DateField()
     cli_id = models.ForeignKey(Dcliente, on_delete=models.CASCADE)
     fac_id=models.ForeignKey(Dfactoring, on_delete=models.CASCADE)        
@@ -172,7 +179,7 @@ class Dsimulacao(models.Model):
         return f'{self.sim_id}'
 
 class Doperacao(models.Model):    
-    ope_id = models.AutoField(primary_key=True)
+    ope_id = models.AutoField(primary_key=True, default=100, editable=False)
     ope_dataoperacao = models.DateField()
     cma_id=models.ForeignKey(Dcontratomae, on_delete=models.CASCADE)    
     cli_id = models.ForeignKey(Dcliente, on_delete=models.CASCADE)
@@ -187,7 +194,7 @@ class Doperacao(models.Model):
     ope_razaosocial1 = models.CharField(max_length=50)
     ope_cnpj1 = models.CharField(max_length=20)
     ope_email1 = models.EmailField(max_length=30)
-    ope_telefone1 = models.CharField(max_length=14)
+    ope_telefone1 = models.CharField(max_length=15)
     ope_nomecontato1 = models.CharField(max_length=50)
     ope_endereco1 = models.CharField(max_length=50)
     ope_complementoendereco1 = models.CharField(max_length=50)
@@ -208,7 +215,7 @@ class Doperacao(models.Model):
     ope_razaosocial2 = models.CharField(max_length=50, null=True, blank=True)
     ope_cnpj2 = models.CharField(max_length=20, null=True, blank=True)
     ope_email2 = models.EmailField(max_length=30, null=True, blank=True)
-    ope_telefone2 = models.CharField(max_length=14, null=True, blank=True)
+    ope_telefone2 = models.CharField(max_length=15, null=True, blank=True)
     ope_nomecontato2 = models.CharField(max_length=50, null=True, blank=True)
     ope_endereco2 = models.CharField(max_length=50, null=True, blank=True)
     ope_complementoendereco2 = models.CharField(max_length=50, null=True, blank=True)
@@ -229,7 +236,7 @@ class Doperacao(models.Model):
     ope_razaosocial3 = models.CharField(max_length=50, null=True, blank=True)
     ope_cnpj3 = models.CharField(max_length=20, null=True, blank=True)
     ope_email3 = models.EmailField(max_length=30, null=True, blank=True)
-    ope_telefone3 = models.CharField(max_length=14, null=True, blank=True)
+    ope_telefone3 = models.CharField(max_length=15, null=True, blank=True)
     ope_nomecontato3 = models.CharField(max_length=50, null=True, blank=True)
     ope_endereco3 = models.CharField(max_length=50, null=True, blank=True)
     ope_complementoendereco3 = models.CharField(max_length=50, null=True, blank=True)
@@ -250,7 +257,7 @@ class Doperacao(models.Model):
     ope_razaosocial4 = models.CharField(max_length=50, null=True, blank=True)
     ope_cnpj4 = models.CharField(max_length=20, null=True, blank=True)
     ope_email4 = models.EmailField(max_length=30, null=True, blank=True)
-    ope_telefone4 = models.CharField(max_length=14, null=True, blank=True)
+    ope_telefone4 = models.CharField(max_length=15, null=True, blank=True)
     ope_nomecontato4 = models.CharField(max_length=50, null=True, blank=True)
     ope_endereco4 = models.CharField(max_length=50, null=True, blank=True)
     ope_complementoendereco4 = models.CharField(max_length=50, null=True, blank=True)
@@ -271,7 +278,7 @@ class Doperacao(models.Model):
     ope_razaosocial5 = models.CharField(max_length=50, null=True, blank=True)
     ope_cnpj5 = models.CharField(max_length=20, null=True, blank=True)
     ope_email5 = models.EmailField(max_length=30, null=True, blank=True)
-    ope_telefone5 = models.CharField(max_length=14, null=True, blank=True)
+    ope_telefone5 = models.CharField(max_length=15, null=True, blank=True)
     ope_nomecontato5 = models.CharField(max_length=50, null=True, blank=True)
     ope_endereco5 = models.CharField(max_length=50, null=True, blank=True)
     ope_complementoendereco5 = models.CharField(max_length=50, null=True, blank=True)
@@ -292,7 +299,7 @@ class Doperacao(models.Model):
     ope_razaosocial6 = models.CharField(max_length=50, null=True, blank=True)
     ope_cnpj6 = models.CharField(max_length=20, null=True, blank=True)
     ope_email6 = models.EmailField(max_length=30, null=True, blank=True)
-    ope_telefone6 = models.CharField(max_length=14, null=True, blank=True)
+    ope_telefone6 = models.CharField(max_length=15, null=True, blank=True)
     ope_nomecontato6 = models.CharField(max_length=50, null=True, blank=True)
     ope_endereco6 = models.CharField(max_length=50, null=True, blank=True)
     ope_complementoendereco6 = models.CharField(max_length=50, null=True, blank=True)

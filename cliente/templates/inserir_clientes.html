@@ -3,198 +3,133 @@
 <html lang="pt-br">
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Clientes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #0066cc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            background-color: #0066cc;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #005bb5;
-        }
-    </style>
+    <title>Cadastrar Cliente</title>
+    <link rel="stylesheet" href="./style0.css">
 </head>
 
 <body>
-    <h1>Inserir Clientes</h1>
+    <header>
+        <section>
+            <h1>Inserir Clientes</h1>
+        </section>
+    </header>
     <main class="container">
         <form method="post">
             {% csrf_token %}
-            <div class="form-group">
-                <label>ID CLIENTE:</label>
-                <input type="text" name="cli_id" class="form-control">
-            </div>
+                <td><label for="cli_razaosocial">Razão Social:</label></td>
+                <td><input type="text" id="cli_razaosocial" name="cli_razaosocial" value="{{ form.instance.cli_razaosocial }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+                <td><label for="cli_nomefantasia">Nome Fantasia:</label></td>
+                <td><input type="text" id="cli_nomefantasia" name="cli_nomefantasia" value="{{ form.instance.cli_nomefantasia }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+                <td><label for="cli_cnpj">CNPJ:</label></td>
+                <td><input type="text" id="cli_cnpj" name="cli_cnpj" value="{{ form.instance.cli_cnpj }}" required></td>
+            
+                <td><label for="cli_im">Insc. Municipal:</label></td>
+                <td><input type="text" id="cli_im" name="cli_im" value="{{ form.instance.cli_im }}"></td>
+                        
+                <td><label for="cli_ie">Insc. Estadual:</label></td>
+                <td><input type="text" id="cli_ie" name="cli_ie" value="{{ form.instance.cli_ie }}"></td>
+                        
+                <td><label for="cli_email1">E-mail:</label></td>
+                <td><input type="email" id="cli_email1" name="cli_email1" value="{{ form.instance.cli_email1 }}" required></td>
+                        
+                <td><label for="cli_email2">E-mail2:</label></td>
+                <td><input type="email" id="cli_email2" name="cli_email2" value="{{ form.instance.cli_email2 }}"></td>
 
-            <div class="form-group">
-                <label>RAZÃO SOCIAL:</label>
-                <input type="text" name="cli_razaosocial" class="form-control">
-            </div>
+                <td><label for="cli_telefone1">Telefone:</label></td>
+                <td><input type="tel" id="cli_telefone1" name="cli_telefone1" value="{{ form.instance.cli_telefone1 }}" required></td>
+                        
+                <td><label for="cli_telefone2">Telefone2:</label></td>
+                <td><input type="tel" id="cli_telefone2" name="cli_telefone2" value="{{ form.instance.cli_telefone2 }}"></td>
+                        
+                <td><label for="cli_endereco">Endereço:</label></td>
+                <td><input type="text" id="cli_endereco" name="cli_endereco" value="{{ form.instance.cli_endereco }}" oninput="converterParaCaixaAlta(this)" required></td>
+                        
+                <td><label for="cli_complementoendereco">Complemento:</label></td>
+                <td><input type="text" id="cli_complementoendereco" name="cli_complementoendereco" value="{{ form.instance.cli_complementoendereco }}" oninput="converterParaCaixaAlta(this)"></td>
+                        
+                <td><label for="cli_cep">CEP:</label></td>
+                <td><input type="text" id="cli_cep" name="cli_cep" value="{{ form.instance.cli_cep }}" required></td>
+                        
+                <td><label for="cli_bairro">Bairro:</label></td>
+                <td><input type="text" id="cli_bairro" name="cli_bairro" value="{{ form.instance.cli_bairro }}" oninput="converterParaCaixaAlta(this)" required></td>       
 
-            <div class="form-group">
-                <label>NOME FANTASIA:</label>
-                <input type="text" name="cli_nomefantasia" class="form-control">
-            </div>
+                <td><label for="cli_cidade">Cidade:</label></td>
+                <td><input type="text" id="cli_cidade" name="cli_cidade" value="{{ form.instance.cli_cidade }}" oninput="converterParaCaixaAlta(this)" required></td>
+                        
+                <td><label for="cli_estado">Estado:</label></td>
+                <td><input type="text" id="cli_estado" name="cli_estado" value="{{ form.instance.cli_estado }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="cli_taxacompra">Taxa de Compra %:</label>
+                    <input type="text" id="cli_taxacompra" name="cli_taxacompra" value="{% if form.initial.cli_taxacompra %}{{ form.initial.cli_taxacompra|stringformat:"f"  }}{% endif %}" class="form-control" required>
+                </div>                                         
 
-            <div class="form-group">
-                <label>CNPJ:</label>
-                <input type="text" name="cli_cnpj" class="form-control">
-            </div>
-
-            <div class="form-group">
-                {{form.cli_im.erros}}
-                <label> INSCRIÇÃO MUNICIPAL: </label>
-                {{form.cli_im|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_ie.erros}}
-                <label> INSCRIÇÃO ESTADUAL: </label>
-                {{form.cli_ie|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_email1.erros}}
-                <label> E-MAIL: </label>
-                {{form.cli_email1|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_email2.erros}}
-                <label> E-MAIL2: </label>
-                {{form.cli_email2|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_telefone1.erros}}
-                <label> TELEFONE: </label>
-                {{form.cli_telefone1|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_telefone2.erros}}
-                <label> TELEFONE2: </label>
-                {{form.cli_telefone2|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_enderereco.erros}}
-                <label> ENDEREÇO: </label>
-                {{form.cli_enderereco|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_complementoenderereco.erros}}
-                <label> COMPLEMENTO: </label>
-                {{form.cli_complementoenderereco|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_cep.erros}}
-                <label> CEP: </label>
-                {{form.cli_cep|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_bairro.erros}}
-                <label> BAIRRO: </label>
-                {{form.cli_bairro|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_cidade.erros}}
-                <label> CIDADE: </label>
-                {{form.cli_cidade|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_estado.erros}}
-                <label> ESTADO: </label>
-                {{form.cli_estado|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_taxacompra.erros}}
-                <label> TAXA DE COMPRA %: </label>
-                {{form.cli_taxacompra|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_multa.erros}}
-                <label> MULTA %: </label>
-                {{form.cli_multa|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_juros.erros}}
-                <label> JUROS %: </label>
-                {{form.cli_juros|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_taxarecompra.erros}}
-                <label> TAXA RECOMPRA $: </label>
-                {{form.cli_taxarecompra|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.cli_valortotaloperacao.erros}}
-                <label> VALOR TOTAL OPERAÇÃO $: </label>
-                {{form.cli_valortotaloperacao|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                <label>DATA CADASTRO:</label>
-                <input type="date" name="cli_datacadastro" class="form-control">
-            </div>
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="cli_multa">Multa %:</label>
+                    <input type="text" id="cli_multa" name="cli_multa" value="{% if form.initial.cli_multa %}{{ form.initial.cli_multa|stringformat:"f" }}{% endif %}" class="form-control" required>
+                </div>            
+    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="cli_juros">Juros Mensal %:</label>
+                    <input type="text" id="cli_juros" name="cli_juros" value="{% if form.initial.cli_juros %}{{ form.initial.cli_juros|stringformat:"f" }}{% endif %}" class="form-control" required>
+                </div>                       
+    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="cli_taxarecompra">Taxa de Recompra $:</label>
+                    <input type="text" id="cli_taxarecompra" name="cli_taxarecompra" value="{% if form.initial.cli_taxarecompra %}{{ form.initial.cli_taxarecompra|stringformat:"f" }}{% endif %}" class="form-control" required>
+                </div>
+                       
+                
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="cli_valortotaloperacao">Valor Limite Operação:</label>
+                    <input type="text" id="cli_valortotaloperacao" name="cli_valortotaloperacao" value="{{ form.instance.cli_valortotaloperacao|stringformat:"f" }}" class="form-control" required>
+                </div>
+                <div style="clear: both;"></div>          
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <!-- criado para trazer a data de cadastro automaticamente -->
+                    <label for="{{ form.cli_datacadastro.id_for_label }}">Data Cadastro:</label>
+                    {{ form.cli_datacadastro }}
+                </div>
         
-            <div>
-                <input type="submit" name="Cadastrar Cliente">
-            </div>
+                <div>
+                    <input type="submit" name="Cadastrar Cliente">
+                    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+                </div>
         </form>
     </main>
+    <script>
+        $(document).ready(function(){
+            $('#cli_cnpj').mask('00.000.000/0000-00');
+    
+            $('#cli_im').mask('000.000.000');
+
+            $('#cli_ie').mask('000.000.000.000');
+
+            $('#cli_telefone1').mask('(00) 00000-0000')
+
+            $('#cli_telefone2').mask('(00) 00000-0000')
+
+            $('#cli_cep').mask('00000-000');
+
+        });
+    </script>
+    <script>
+        function converterParaCaixaAlta(elemento) {
+            elemento.value = elemento.value.toUpperCase();
+        }
+    </script>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
 </body>
 
 </html>

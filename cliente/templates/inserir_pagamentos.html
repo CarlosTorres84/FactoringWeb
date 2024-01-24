@@ -103,6 +103,7 @@
             <!-- Botão de calcular saldo -->
             <div style="margin-top: 20px;">
                 <button type="button" id="calcularSaldoBtn">Calcular Saldo</button>
+                <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
             </div>
         </form>
     </main>
@@ -127,6 +128,11 @@
             saldoInput.value = novoSaldo.toFixed(2);
         });
     });
+</script>
+<script>
+    function irParaPaginaPrincipal() {
+        window.location.href = "http://127.0.0.1:8000/Inicio";
+    }
 </script>
     </body>
 </html>

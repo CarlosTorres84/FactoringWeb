@@ -3,232 +3,226 @@
 <html lang="pt-br">
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Factorings</title>
+    <title>Cadastrar Factoring</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
 
-        h1 {
-            color: #333;
-        }
+    color: black;
+    font-family: helvetica;
+}   
 
-        .container {
-            margin-top: 20px;
-        }
+header {    
+    width: 100%;
+    border: 5px black;
+    background: rgb(228, 228, 228);
+    display: flex;
+    justify-content: center;
+    font-size: large;
+}
 
-        form {
-            margin-bottom: 15px;
-            text-align: left;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
+h1 {
+    color: #333;
+}
 
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #0066cc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+.container {
+    margin-top: 20px;
+}
 
-        input[type="submit"] {
+form {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
             background-color: #0066cc;
             color: #fff;
             cursor: pointer;
         }
 
-        input[type="submit"]:hover {
+        button:hover {
             background-color: #005bb5;
         }
-    </style>
+    </style> 
 </head>
 
 <body>
-    <h1>Inserir Factorings</h1>
+    <header>
+        <section>
+            <h1>Inserir Factoring</h1>
+        </section>
+    </header>    
     <main class="container">
         <form method="post">
             {% csrf_token %}
-            <div class="form-group">
-                {{form.fac_id.erros}}
-                <label> ID FACTORING: </label>
-                {{form.fac_id|addclass:'form-control'}}
-            </div>
+                <td><label for="fac_razaosocial">Razão Social:</label></td>
+                <td><input type="text" id="fac_razaosocial" name="fac_razaosocial" value="{{ form.instance.fac_razaosocial }}" oninput="converterParaCaixaAlta(this)" required></td>
 
-            <div class="form-group">
-                {{form.fac_razaosocial.erros}}
-                <label> RAZÃO SOCIAL: </label>
-                {{form.fac_razaosocial|addclass:'form-control'}}
-            </div>
+                <td><label for="fac_nomefantasia">Nome Fantasia:</label></td>
+                <td><input type="text" id="fac_nomefantasia" name="fac_nomefantasia" value="{{ form.instance.fac_nomefantasia }}" oninput="converterParaCaixaAlta(this)" required></td>
 
-            <div class="form-group">
-                {{form.fac_nomefantasia.erros}}
-                <label> NOME FANTASIA: </label>
-                {{form.fac_nomefantasia|addclass:'form-control'}}
-            </div>
+                <td><label for="fac_cnpj">CNPJ:</label></td>
+                <td><input type="text" id="fac_cnpj" name="fac_cnpj" value="{{ form.instance.fac_cnpj }}" required></td>
 
-            <div class="form-group">
-                {{form.fac_cnpj.erros}}
-                <label> CNPJ: </label>
-                {{form.fac_cnpj|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_im.erros}}
-                <label> INSCRIÇÃO MUNICIPAL: </label>
-                {{form.fac_im|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_ie.erros}}
-                <label> INSCRIÇÃO ESTADUAL: </label>
-                {{form.fac_ie|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_email1.erros}}
-                <label> E-MAIL: </label>
-                {{form.fac_email1|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_email2.erros}}
-                <label> E-MAIL2: </label>
-                {{form.fac_email2|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_telefone1.erros}}
-                <label> TELEFONE: </label>
-                {{form.fac_telefone1|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_telefone2.erros}}
-                <label> TELEFONE2: </label>
-                {{form.fac_telefone2|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_enderereco.erros}}
-                <label> ENDEREÇO: </label>
-                {{form.fac_enderereco|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_complementoenderereco.erros}}
-                <label> COMPLEMENTO: </label>
-                {{form.fac_complementoenderereco|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_cep.erros}}
-                <label> CEP: </label>
-                {{form.fac_cep|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_bairro.erros}}
-                <label> BAIRRO: </label>
-                {{form.fac_bairro|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_cidade.erros}}
-                <label> CIDADE: </label>
-                {{form.fac_cidade|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_estado.erros}}
-                <label> ESTADO: </label>
-                {{form.fac_estado|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_taxacompra.erros}}
-                <label> TAXA DE COMPRA %: </label>
-                {{form.fac_taxacompra|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_iof.erros}}
-                <label> IOF ANUAL%: </label>
-                {{form.fac_iof|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_iofadicional.erros}}
-                <label> IOF ADICIONAL%: </label>
-                {{form.fac_iofadicional|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_pis.erros}}
-                <label> PIS %: </label>
-                {{form.fac_pis|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_cofins.erros}}
-                <label> COFINS %: </label>
-                {{form.fac_cofins|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_float.erros}}
-                <label> FLOAT: </label>
-                {{form.fac_float|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_multa.erros}}
-                <label> MULTA %: </label>
-                {{form.fac_multa|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_juros.erros}}
-                <label> JUROS %: </label>
-                {{form.fac_juros|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_taxarecompra.erros}}
-                <label> TAXA RECOMPRA $: </label>
-                {{form.fac_taxarecompra|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_valortotaloperacao.erros}}
-                <label> VALOR TOTAL OPERAÇÃO: </label>
-                {{form.fac_valortotaloperacao|addclass:'form-control'}}
-            </div>
+                <td><label for="fac_im">Insc. Municipal:</label></td>
+                <td><input type="text" id="fac_im" name="fac_im" value="{{ form.instance.fac_im }}"></td>
             
-            <div class="form-group">
-                <label>DATA CADASTRO:</label>
-                <input type="date" name="fac_datacadastro" class="form-control">
-            </div>
+                <td><label for="fac_ie">Insc. Estadual:</label></td>
+                <td><input type="text" id="fac_ie" name="fac_ie" value="{{ form.instance.fac_ie }}"></td>
             
-            <div>
-                <input type="submit" name="Cadastrar FACTORING">
-            </div>
+                <td><label for="fac_email1">E-mail:</label></td>
+                <td><input type="email" id="fac_email1" name="fac_email1" value="{{ form.instance.fac_email1 }}" required></td>
+
+                <td><label for="fac_email2">E-mail2:</label></td>
+                <td><input type="email" id="fac_email2" name="fac_email2" value="{{ form.instance.fac_email2 }}"></td>  
+
+                <td><label for="fac_telefone1">Telefone:</label></td>
+                <td><input type="tel" id="fac_telefone1" name="fac_telefone1" value="{{ form.instance.fac_telefone1 }}" required></td>
+            
+                <td><label for="fac_telefone2">Telefone2:</label></td>
+                <td><input type="tel" id="fac_telefone2" name="fac_telefone2" value="{{ form.instance.fac_telefone2 }}"></td>
+            
+                <td><label for="fac_endereco">Endereço:</label></td>
+                <td><input type="text" id="fac_endereco" name="fac_endereco" value="{{ form.instance.fac_endereco }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+                <td><label for="fac_complementoendereco">Complemento:</label></td>
+                <td><input type="text" id="fac_complementoendereco" name="fac_complementoendereco" value="{{ form.instance.fac_complementoendereco }}" oninput="converterParaCaixaAlta(this)"></td>
+            
+                <td><label for="fac_cep">CEP:</label></td>
+                <td><input type="text" id="fac_cep" name="fac_cep" value="{{ form.instance.fac_cep }}" required></td>
+            
+                <td><label for="fac_bairro">Bairro:</label></td>
+                <td><input type="text" id="fac_bairro" name="fac_bairro" value="{{ form.instance.fac_bairro }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+
+                <td><label for="fac_cidade">Cidade:</label></td>
+                <td><input type="text" id="fac_cidade" name="fac_cidade" value="{{ form.instance.fac_cidade }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+                <td><label for="fac_estado">Estado:</label></td>
+                <td><input type="text" id="fac_estado" name="fac_estado" value="{{ form.instance.fac_estado }}" oninput="converterParaCaixaAlta(this)" required></td>
+            
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <td><label for="fac_taxacompra">Taxa de Compra %:</label></td>
+                    <td><input type="text" id="fac_taxacompra" name="fac_taxacompra" value="{{ form.instance.fac_taxacompra|stringformat:"f" }}" class="form-control" required></td>
+                </div>
+                    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_iof">Iof Anual %:</label>
+                    <input type="text" id="fac_iof" name="fac_iof" value="{{ form.instance.fac_iof|stringformat:"f" }}" class="form-control" required>
+                </div>
+                    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_iofadicional">Iof Adicional %:</label>
+                    <input type="text" id="fac_iofadicional" name="fac_iofadicional" value="{{ form.instance.fac_iofadicional|stringformat:"f" }}" class="form-control" required>
+                </div>
+                    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_pis">Pis %:</label>
+                    <input type="text" id="fac_pis" name="fac_pis" value="{{ form.instance.fac_pis|stringformat:"f" }}" class="form-control" required>
+                </div>         
+                    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">           
+                    <label for="fac_cofins">Cofins %:</label>
+                    <input type="text" id="fac_cofins" name="fac_cofins" value="{{ form.instance.fac_cofins|stringformat:"f" }}" class="form-control" required>
+                </div>         
+                <div style="clear: both;"></div>   
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_float">Float em dias:</label>
+                    <input type="text" id="fac_float" name="fac_float" value="{{ form.instance.fac_float }}" class="form-control" required>
+                </div>         
+                    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_multa">Multa %:</label>
+                    <input type="text" id="fac_multa" name="fac_multa" value="{{ form.instance.fac_multa|stringformat:"f" }}" class="form-control" required>
+                </div>         
+
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_juros">Juros Mensal %:</label>
+                    <input type="text" id="fac_juros" name="fac_juros" value="{{ form.instance.fac_juros|stringformat:"f" }}" class="form-control" required>
+                </div>         
+
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_taxarecompra">Taxa de Recompra $:</label>
+                    <input type="text" id="fac_taxarecompra" name="fac_taxarecompra" value="{{ form.instance.fac_taxarecompra|stringformat:"f" }}" class="form-control" required>
+                </div>         
+                    
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                    <label for="fac_valortotaloperacao">Valor Limite Operação:</label>
+                    <input type="text" id="fac_valortotaloperacao" name="fac_valortotaloperacao" value="{{ form.instance.fac_valortotaloperacao|stringformat:"f" }}" class="form-control" required>   
+                </div>         
+                <div style="clear: both;"></div>          
+                <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+                        <!-- criado para trazer a data de cadastro automaticamente -->
+                        <label for="{{ form.fac_datacadastro.id_for_label }}">Data Cadastro:</label>
+                        {{ form.fac_datacadastro }}
+                </div>
+                    
+                <div>
+                    <input type="submit" name="Cadastrar FACTORING">
+                    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+                </div>
         </form>
     </main>
-</body>
+    <script>
+        $(document).ready(function(){
+            $('#fac_cnpj').mask('00.000.000/0000-00');
+    
+            $('#fac_im').mask('000.000.000');
 
+            $('#fac_ie').mask('000.000.000.000');
+
+            $('#fac_telefone1').mask('(00) 00000-0000')
+
+            $('#fac_telefone2').mask('(00) 00000-0000')
+
+            $('#fac_cep').mask('00000-000');
+
+        });
+    </script>
+    <script>
+        function converterParaCaixaAlta(elemento) {
+            elemento.value = elemento.value.toUpperCase();
+        }
+    </script>
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
+</body>
 </html>
