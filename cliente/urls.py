@@ -3,6 +3,7 @@ from .views import *
 from .models import *
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 
 urlpatterns= [
     # Página Principal
@@ -52,4 +53,10 @@ urlpatterns= [
     #Carteira
     path('listar_carteira', listar_carteira , name='listar_carteira'),
     path('incluir_pagamento/<int:ope_id>/<int:titulonumero>/', incluir_pagamento, name='incluir_pagamento'),
-    ]
+
+   # Configurando a servir a folha de estilo com o tipo MIME correto
+    path('style0.css', serve, {'document_root': settings.STATIC_ROOT, 'path': 'style0.css', 'content_type': 'text/css'}),
+]
+
+# Adicione esta linha para servir arquivos estáticos durante o desenvolvimento
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

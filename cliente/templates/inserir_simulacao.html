@@ -65,7 +65,7 @@
           {% csrf_token %}
         <div style="display: inline-block; width: 15%; margin-right: 2%;">
           <label for="sim_datasimulacao">Data Simulação:</label>          
-          <input type="date" id="sim_datasimulacao" name="sim_datasimulacao" value="2023-12-15" required>
+          <input type="date" id="sim_datasimulacao" name="sim_datasimulacao" value="{{ form.initial.sim_datasimulacao|date:'Y-m-d' }}" required>
         </div>
 
         <div style="display: inline-block; width: 15%; margin-right: 2%;">
@@ -93,34 +93,34 @@
         
         <div style="clear: both;"></div>
 
-        <div style="display: inline-block; width: 12%; margin-right: 2%;">
-          <label for="sim_taxadecompra">Taxa de Compra %:</label>          
-          <input type="text" id="sim_taxadecompra" name="sim_taxadecompra" value="7.15" required>
+        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+          <label for="sim_taxacompra">Taxa de Compra %:</label>          
+          <input type="text" id="sim_taxacompra" name="sim_taxacompra" value="{% if form.initial.sim_taxacompra %}{{ form.initial.sim_taxacompra|stringformat:"f"  }}{% endif %}" class="form-control" required>
         </div>
 
-        <div style="display: inline-block; width: 12%; margin-right: 2%;">
+        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
           <label for="sim_iof">IOF Anual %:</label>          
-          <input type="text" id="sim_iof" name="sim_iof" value="1.50" required>
+          <input type="text" id="sim_iof" name="sim_iof" value="{% if form.initial.sim_iof %}{{ form.initial.sim_iof|stringformat:"f"  }}{% endif %}" class="form-control" required>
         </div>
 
-        <div style="display: inline-block; width: 12%; margin-right: 2%;">
+        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
           <label for="sim_iofadicional">IOF Adicional %:</label>          
-          <input type="text" id="sim_iofadicional" name="sim_iofadicional" value="0.38" required>
+          <input type="text" id="sim_iofadicional" name="sim_iofadicional" value="{% if form.initial.sim_iofadicional %}{{ form.initial.sim_iofadicional|stringformat:"f"  }}{% endif %}" class="form-control" required>
         </div>
 
-        <div style="display: inline-block; width: 12%; margin-right: 2%;">
+        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
           <label for="sim_despesas">Despesas $ (-):</label>          
-          <input type="text" id="sim_despesas" name="sim_despesas" value="100" required>
+          <input type="text" id="sim_despesas" name="sim_despesas" value="{% if form.instance.sim_despesas %}{{ form.instance.sim_despesas|stringformat:"f" }}{% else %}0{% endif %}" />
         </div>
 
-        <div style="display: inline-block; width: 12%; margin-right: 2%;">
+        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
           <label for="sim_acrescimos">Acréscimos $ (+):</label>          
-          <input type="text" id="sim_acrescimos" name="sim_acrescimos" value="200" required>
+          <input type="text" id="sim_acrescimos" name="sim_acrescimos" value="{% if form.instance.sim_acrescimos %}{{ form.instance.sim_acrescimos|stringformat:"f" }}{% else %}0{% endif %}" />
         </div>
           
-        <div style="display: inline-block; width: 12%; margin-right: 2%;">
-            <label for="sim_myfloat">MyFloat:</label>
-            <input type="text" id="sim_myfloat" name="sim_myfloat" value="2" required>
+        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
+            <label for="sim_float">Float:</label>
+            <input type="text" id="sim_float" name="sim_float" value="{% if form.initial.sim_float %}{{ form.initial.sim_float|stringformat:"f"  }}{% endif %}" class="form-control" required>
         </div>
            
           <table>
@@ -129,21 +129,21 @@
               </tr>
               <tr>
                 <td><label for="sim_vencimento1">Vencimento:</label></td>
-                <td><input type="date" id="sim_vencimento1" name="sim_vencimento1" value="{{ form.instance.sim_vencimento1 }}" required></td>
-                <td><input type="date" name="sim_vencimento2" value="{{ form.instance.sim_vencimento2 }}" aria-label="Data de Vencimento 2"></td>
-                <td><input type="date" name="sim_vencimento3" value="{{ form.instance.sim_vencimento3 }}" aria-label="Data de Vencimento 3"></td>
-                <td><input type="date" name="sim_vencimento4" value="{{ form.instance.sim_vencimento4 }}" aria-label="Data de Vencimento 4"></td>
-                <td><input type="date" name="sim_vencimento5" value="{{ form.instance.sim_vencimento5 }}" aria-label="Data de Vencimento 5"></td>
-                <td><input type="date" name="sim_vencimento6" value="{{ form.instance.sim_vencimento6 }}" aria-label="Data de Vencimento 6"></td>
+                <td><input type="date" id="sim_vencimento1" name="sim_vencimento1" value="{{ form.initial.sim_vencimento1|date:'Y-m-d' }}" required></td>
+                <td><input type="date" name="sim_vencimento2" value="{{ form.initial.sim_vencimento2|date:'Y-m-d' }}" aria-label="Data de Vencimento 2"></td>
+                <td><input type="date" name="sim_vencimento3" value="{{ form.initial.sim_vencimento3|date:'Y-m-d' }}" aria-label="Data de Vencimento 3"></td>
+                <td><input type="date" name="sim_vencimento4" value="{{ form.initial.sim_vencimento4|date:'Y-m-d' }}" aria-label="Data de Vencimento 4"></td>
+                <td><input type="date" name="sim_vencimento5" value="{{ form.initial.sim_vencimento5|date:'Y-m-d' }}" aria-label="Data de Vencimento 5"></td>
+                <td><input type="date" name="sim_vencimento6" value="{{ form.initial.sim_vencimento6|date:'Y-m-d' }}" aria-label="Data de Vencimento 6"></td>
               </tr>
               <tr>
                 <td><label for="sim_valortotal1">Valor Total:</label></td>
-                <td><input type="text" id="sim_valortotal1" name="sim_valortotal1" value="{{ form.instance.sim_valortotal1 }}" required></td>
-                <td><input type="text" name="sim_valortotal2" value="{{ form.instance.sim_valortotal2|default:'0' }}" aria-label="Valor Total 2"></td>
-                <td><input type="text" name="sim_valortotal3" value="{{ form.instance.sim_valortotal3|default:'0' }}" aria-label="Valor Total 3"></td>
-                <td><input type="text" name="sim_valortotal4" value="{{ form.instance.sim_valortotal4|default:'0' }}" aria-label="Valor Total 4"></td>
-                <td><input type="text" name="sim_valortotal5" value="{{ form.instance.sim_valortotal5|default:'0' }}" aria-label="Valor Total 5"></td>
-                <td><input type="text" name="sim_valortotal6" value="{{ form.instance.sim_valortotal6|default:'0' }}" aria-label="Valor Total 3"></td>
+                <td><input type="text" id="sim_valortotal1" name="sim_valortotal1" value="{{ form.instance.sim_valortotal1|stringformat:"f"  }}" required></td>
+                <td><input type="text" name="sim_valortotal2" value="{% if form.instance.sim_valortotal2 %}{{ form.instance.sim_valortotal2|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 2"></td>
+                <td><input type="text" name="sim_valortotal3" value="{% if form.instance.sim_valortotal3 %}{{ form.instance.sim_valortotal3|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 3"></td>
+                <td><input type="text" name="sim_valortotal4" value="{% if form.instance.sim_valortotal4 %}{{ form.instance.sim_valortotal4|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 4"></td>
+                <td><input type="text" name="sim_valortotal5" value="{% if form.instance.sim_valortotal5 %}{{ form.instance.sim_valortotal5|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 5"></td>
+                <td><input type="text" name="sim_valortotal6" value="{% if form.instance.sim_valortotal6 %}{{ form.instance.sim_valortotal6|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 6"></td>
               </tr>
               <tr>
                 <td><label for="sim_prazo1">Prazo:</label></td>
@@ -217,7 +217,7 @@
       <script>
         function calcular() {
           var dataSimulacao = new Date(document.getElementsByName('sim_datasimulacao')[0].value);
-          var myFloat = parseFloat(document.getElementsByName('sim_myfloat')[0].value) || 0;
+          var myFloat = parseFloat(document.getElementsByName('sim_float')[0].value) || 0;
       
           for (var i = 1; i <= 6; i++) {
             var campoVencimento = document.getElementsByName('sim_vencimento' + i)[0];
@@ -233,7 +233,7 @@
             if (campoVencimento && campoPrazo && campoTaxaPeriodo && campoValorCompra && campoValorIOF && campoValorIOFadicional && campoValorLiquido && campoDespesas && campoAcrescimos) {
               var vencimento = new Date(campoVencimento.value);
               var diferencaEmDias = Math.ceil((vencimento - dataSimulacao) / (1000 * 60 * 60 * 24));
-              var resultadoComFloat = diferencaEmDias + myFloat + 1;
+              var resultadoComFloat = diferencaEmDias + myFloat + 2;
       
               if (isNaN(resultadoComFloat)) {
                 campoPrazo.value = 0;
@@ -245,7 +245,7 @@
               } else {
                 campoPrazo.value = resultadoComFloat;
       
-                var taxaCompra = parseFloat(document.getElementsByName('sim_taxadecompra')[0].value) || 0;
+                var taxaCompra = parseFloat(document.getElementsByName('sim_taxacompra')[0].value) || 0;
                 var taxaPeriodo = (taxaCompra / 30) * resultadoComFloat;
                 campoTaxaPeriodo.value = taxaPeriodo.toFixed(2);
       
@@ -281,7 +281,7 @@
             }
       
             var campoValortotal = document.getElementsByName('sim_valortotal' + i)[0];
-            var campoTaxaCompra = document.getElementsByName('sim_taxadecompra')[0];
+            var campoTaxaCompra = document.getElementsByName('sim_taxacompra')[0];
             var campoTaxaCompraEfetiva = document.getElementsByName('sim_taxadecompraefetiva' + i)[0];
       
             if (campoValortotal && campoTaxaCompra && campoTaxaCompraEfetiva) {
