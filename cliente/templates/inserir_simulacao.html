@@ -1,61 +1,14 @@
 <!DOCTYPE html>
-{% load meus_filtros %}
 <html lang="pt-br">
+{% load meus_filtros %}
+{% load static %}
+
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerar Simulação</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        form {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #0066cc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            background-color: #0066cc;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #005bb5;
-        }
-    </style>
+    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
 </head>
 
 <body>
@@ -208,10 +161,10 @@
                 <td><input type="text" name="sim_valorliquido5" value="{{ form.instance.sim_valorliquido5 }}" aria-label="Valor Líquido 5"></td>
                 <td><input type="text" name="sim_valorliquido6" value="{{ form.instance.sim_valorliquido6 }}" aria-label="Valor Líquido 6"></td>
               </tr>    
-          </table>    
-          <button type="submit">Salvar</button>
-          <button type="button" onclick="calcular()">Calcular</button> 
-          <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+          </table>   
+                <input type="submit" name="Salvar">
+                <button type="button" onclick="calcular()">Calcular</button> 
+                <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
       </form>
       </main>
       <script>

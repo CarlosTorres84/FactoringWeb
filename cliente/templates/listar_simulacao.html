@@ -4,67 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listar Simulações</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background-color: #0066cc;
-      color: #fff;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    td:nth-child(odd) {
-      background-color: #e6e6e6;
-    }
-
-    .details-table {
-      margin-top: 20px;
-    }
-
-    .details-table th, .details-table td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-
-    .btn-primary {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .btn-primary:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <link rel="stylesheet" type= "text/css" href="../static/style.css">
 </head>
 <body>
   <h1>Listar Simulações</h1>
@@ -212,6 +152,8 @@
   <a href="{% url 'inserir_simulacao' %}">
     <button class="btn btn-primary">Cadastrar Simulação</button>
   </a>
+    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+ 
   <script>
     function irParaPaginaPrincipal() {
         window.location.href = "http://127.0.0.1:8000/Inicio";

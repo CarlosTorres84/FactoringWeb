@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+
+    color: black;
+    font-family: helvetica;
+}   
+
+header {    
+    width: 100%;
+    border: 5px black;
+    background: rgb(228, 228, 228);
+    display: flex;
+    justify-content: center;
+    font-size: large;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #0066cc;
+    color: #fff;
+}
+
+h1 {
+    color: #333;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+form {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.edit-btn, .remove-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.edit-btn:hover, .remove-btn:hover {
+    background-color: #0056b3;
+}
+
+button {
+            background-color: #0066cc;
+            color: #fff;
+            cursor: pointer;
+}
+
+button:hover {
+            background-color: #005bb5;
+}

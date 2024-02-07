@@ -269,7 +269,7 @@ def inserir_simulacao(request):
         if form.is_valid():
             nova_simulacao = form.save()            
             novo_id = nova_simulacao.sim_id            
-            return redirect('listar_simulacaoid', id=novo_id)
+            return redirect('listar_simulacaocopy')
     else:
         dados_dfactoring = Dfactoring.objects.get(fac_id=1)
 
@@ -286,9 +286,6 @@ def listar_simulacao(request):
 def listar_simulacaocopy(request):
     simulacao=Dsimulacao.objects.all()
     return render(request, 'listar_simulacaocopy.html', {'simulacao':simulacao})
-def listar_simulacaoid(request, id):
-    simulacao_id=Dsimulacao.objects.get(sim_id=id)
-    return render(request, 'listar_simulacaoid.html', {'simulacao_id':simulacao_id})
 def gerar_simulacao_word(request, sim_id):
     simulacao = Dsimulacao.objects.get(sim_id=sim_id)
     cliente_associado = simulacao.cli_id
@@ -409,7 +406,7 @@ def gerar_simulacao_word(request, sim_id):
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
         response['Content-Disposition'] = f'attachment; filename=SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx'
     return response
-def editar_simulacao2(request, id):
+def editar_simulacao(request, id):
     simulacao=Dsimulacao.objects.get(sim_id=id)
     form = DsimulacaoForm(request.POST or None, instance=simulacao)
     if form.is_valid():
@@ -435,12 +432,12 @@ def inserir_operacao(request, sim_id):
                 'ope_dataoperacao': simulacao.sim_datasimulacao,
                 'cli_id': simulacao.cli_id,
                 'fac_id': simulacao.fac_id,
-                'ope_taxadecompra': simulacao.sim_taxadecompra,
+                'ope_taxacompra': simulacao.sim_taxacompra,
                 'ope_iof': simulacao.sim_iof,
                 'ope_iofadicional': simulacao.sim_iofadicional,
                 'ope_despesas': simulacao.sim_despesas,
                 'ope_acrescimos': simulacao.sim_acrescimos,
-                'ope_myfloat': simulacao.sim_myfloat,
+                'ope_float': simulacao.sim_float,
                 'ope_vencimento1' : simulacao.sim_vencimento1,
                 'ope_vencimento2' : simulacao.sim_vencimento2,
                 'ope_vencimento3' : simulacao.sim_vencimento3,
@@ -487,15 +484,15 @@ def gerar_operacao_word(request, ope_id):
         'ID_OPE': operacao.ope_id,
         'DATAOPERACAO': operacao.ope_dataoperacao.strftime('%d/%m/%Y'),
         # 'ID_CONTRATOMAE
-        "CONTRATOMAE" : contratomae_associado.cma_id,
+        "CONTRATOMAE" : contratomae_associado.cma_id2,
         "DATACONTRATOMAE" : contratomae_associado.cma_datacadastro.strftime('%d/%m/%Y'),
         # 'ID_CLIENTE
         'ID_CLIENTE': cliente_associado.cli_id,
-        'RAZAOSOCIAL_CLIENTE': f'Empresa: ' + cliente_associado.cli_razaosocial,
+        'RAZAOSOCIAL_CLIENTE': f'EMPRESA: ' + cliente_associado.cli_razaosocial,
         'CNPJ_CLIENTE': f'CNPJ: ' + cliente_associado.cli_cnpj,        
         # 'ID_FACTORING'
         'ID_FACTORING': factoring_associado.fac_id,
-        'RAZAOSOCIAL_FACTORING': f'Empresa: ' + factoring_associado.fac_razaosocial,
+        'RAZAOSOCIAL_FACTORING': f'EMPRESA: ' + factoring_associado.fac_razaosocial,
         'CNPJ_FACTORING': f'CNPJ: ' + factoring_associado.fac_cnpj,
         # 'OPERAÇÕES1 A 6'
         'NUMTITULO1': operacao.ope_numtitulo1,
@@ -582,8 +579,8 @@ def gerar_promissoria_word(request, ope_id):
         'ID_FACTORING': factoring_associado.fac_id,
         'RAZAOSOCIAL_FACTORING': f'Empresa: ' + factoring_associado.fac_razaosocial,
         'CNPJ_FACTORING': f'CNPJ: ' + factoring_associado.fac_cnpj,
-        'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_enderereco,
-        'COMPLEMENTOENDERECO_CLIENTE':f'COMPLEMENTO: ' +  cliente_associado.cli_complementoenderereco,
+        'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_endereco,
+        'COMPLEMENTOENDERECO_CLIENTE': cliente_associado.cli_complementoendereco,
         'CEP_CLIENTE': f'CEP: ' + cliente_associado.cli_cep,
         'BAIRRO_CLIENTE': cliente_associado.cli_bairro,
         'CIDADE_CLIENTE': cliente_associado.cli_cidade,
@@ -601,10 +598,10 @@ def gerar_promissoria_word(request, ope_id):
         'CPF_PESSOA01': f'CPF: ' + pessoas_associadas_rs[1].pes_cpf if len(pessoas_associadas_rs) > 1 else '',
         'CPF_PESSOA000': f'CPF: ' + pessoas_associadas_rt[0].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
         'CPF_PESSOA001': f'CPF: ' + pessoas_associadas_rt[1].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
-        'ENDERECO_PES00': f'Endereço:: ' + pessoas_associadas_rs[0].pes_enderereco if pessoas_associadas_rs else '',
-        'ENDERECO_PES01': f'Endereço: ' + pessoas_associadas_rs[1].pes_enderereco if len(pessoas_associadas_rs) > 1 else '',
-        'COMPLEENDE_PES00': pessoas_associadas_rs[0].pes_complementoenderereco if pessoas_associadas_rs else '',
-        'COMPLEENDE_PES01': pessoas_associadas_rs[1].pes_complementoenderereco if len(pessoas_associadas_rs) > 1 else '',
+        'ENDERECO_PES00': f'Endereço:: ' + pessoas_associadas_rs[0].pes_endereco if pessoas_associadas_rs else '',
+        'ENDERECO_PES01': f'Endereço: ' + pessoas_associadas_rs[1].pes_endereco if len(pessoas_associadas_rs) > 1 else '',
+        'COMPLEENDE_PES00': pessoas_associadas_rs[0].pes_complementoendereco if pessoas_associadas_rs else '',
+        'COMPLEENDE_PES01': pessoas_associadas_rs[1].pes_complementoendereco if len(pessoas_associadas_rs) > 1 else '',
         'BAIRRO_PES00': pessoas_associadas_rs[0].pes_bairro if pessoas_associadas_rs else '',
         'BAIRRO_PES01': pessoas_associadas_rs[1].pes_bairro if len(pessoas_associadas_rs) > 1 else '',
         'CIDADE_PES00': pessoas_associadas_rs[0].pes_cidade if pessoas_associadas_rs else '',
