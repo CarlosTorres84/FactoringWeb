@@ -37,6 +37,7 @@ urlpatterns= [
     #Simulação
     path('inserir_simulacao', inserir_simulacao, name='inserir_simulacao'),    
     path('gerar_simulacao_word/<int:sim_id>/', gerar_simulacao_word, name='gerar_simulacao_word'),
+    path('listar_simulacaoid/<str:id>', listar_simulacaoid, name='listar_simulacaoid'),
     path('listar_simulacao', listar_simulacao, name='listar_simulacao'),
     path('listar_simulacaocopy', listar_simulacaocopy, name='listar_simulacaocopy'),
     path('editar_simulacao/<str:id>', editar_simulacao, name='editar_simulacao'),

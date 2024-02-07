@@ -286,6 +286,9 @@ def listar_simulacao(request):
 def listar_simulacaocopy(request):
     simulacao=Dsimulacao.objects.all()
     return render(request, 'listar_simulacaocopy.html', {'simulacao':simulacao})
+def listar_simulacaoid(request, id):
+    simulacao_id=Dsimulacao.objects.get(sim_id=id)
+    return render(request, 'listar_simulacaoid.html', {'simulacao_id':simulacao_id})
 def gerar_simulacao_word(request, sim_id):
     simulacao = Dsimulacao.objects.get(sim_id=sim_id)
     cliente_associado = simulacao.cli_id
