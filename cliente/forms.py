@@ -59,7 +59,6 @@ class DcarteiraForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Adicione um campo de seleção para escolher a operação
         self.fields['ope_id'] = forms.ModelChoiceField(
             queryset=Doperacao.objects.all(),
             label='Operação',
@@ -67,8 +66,6 @@ class DcarteiraForm(forms.ModelForm):
         )
     def clean_car_titulonumero(self):
         car_titulonumero = self.cleaned_data.get('car_titulonumero')
-
-        # Faça a validação personalizada
         if not Doperacao.objects.filter(
             ope_numtitulo1=car_titulonumero
         ).exists() and not Doperacao.objects.filter(
@@ -83,16 +80,10 @@ class DcarteiraForm(forms.ModelForm):
             ope_numtitulo6=car_titulonumero
         ).exists():
             raise forms.ValidationError('Número de título inválido. Não existe uma Operação com este número de Nota.')
-
         return car_titulonumero
     
-    # def clean_car_valorpgto(self):
-    #     car_valorpgto = self.cleaned_data.get('car_valorpgto')
-
-    #     # Faça a validação personalizada
-    #     if not (
-    #         car_valorpgto > 0.00
-    #     ).exists():
-    #         raise forms.ValidationError('Número de título inválido. Não existe uma Operação com este número de Nota.')
-
-    #     return car_valorpgto
+    def clean_car_valorpgto(self):
+        car_valorpgto = self.cleaned_data.get('car_valorpgto')
+        if car_valorpgto >= 0.00:
+            raise forms.ValidationError('Número inválido. Valor lançado deve ser negativo.')
+        return car_valorpgto

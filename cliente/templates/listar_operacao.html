@@ -56,11 +56,15 @@
                 <button type="submit" class="generate-word">Gerar Promissória Word</button>
             </form>
         </td>
+        
     </tr>
     {% endif %}
     {% endfor %}
     </tbody>
 </table>
+<div>
+    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+</div> 
 <script>
     function irParaPaginaPrincipal() {
         window.location.href = "http://127.0.0.1:8000/Inicio";

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load meus_filtros %}
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Pagamentos</title>
+    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
+</head>
+<body>
+    <h1>Listar Pagamentos</h1>
+    <input type="text" id="filtro" placeholder="Digite a informação para filtrar" style="width: 300px">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data Pagamento:</th>
+                <th>Valor Pagamento:</th>
+                <th>Operação ID:</th>
+                <th>Título Número: </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in carteira %}
+            <tr>
+                <td>{{i.car_datapgto}}</td>
+                <td>{{i.car_valorpgto}}</td>
+                <td>{{i.ope_id}}</td>
+                <td>{{i.car_titulonumero}}</td>
+                <!-- <td>
+                    {% for operacao_item in operacao %}
+                        {% if i.ope_id == operacao_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td> -->
+            </tr> 
+            {% endfor %} 
+        </tbody>
+    </table>
+    <div>
+        <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+    </div> 
+    <script>
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
+    </script>
+</body>
+</html>

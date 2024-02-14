@@ -53,6 +53,7 @@ urlpatterns= [
     #Carteira
     path('listar_carteira', listar_carteira , name='listar_carteira'),
     path('inserir_pagamentos', inserir_pagamentos, name='inserir_pagamentos'),
+    path('listar_pagamentos', listar_pagamentos, name='listar_pagamentos'),
 
    # Configurando a servir a folha de estilo com o tipo MIME correto
     path('style0.css', serve, {'document_root': settings.STATIC_ROOT, 'path': 'style0.css', 'content_type': 'text/css'}),

@@ -644,3 +644,7 @@ def inserir_pagamentos(request):
         raise
 
     return render(request, 'inserir_pagamentos.html', {'form': form, 'operacao':operacao})
+def listar_pagamentos(request):
+    operacao=Doperacao.objects.all()
+    carteira=Dcarteira.objects.all()
+    return render(request, 'listar_pagamentos.html', {'operacao':operacao, 'carteira':carteira})

@@ -22,10 +22,10 @@
                 <th>Sub Cliente Nome: </th>
                 <th>Numero título:</th>
                 <th>Vencimento:</th>
-                <th>Valor Total:</th>
-                <th>Valor Pago:</th>
-                <th>Saldo Pendente:</th>
-
+                <th id="total">Valor Total:</th>
+                <th id="pago">Valor Pago:</th>
+                <th id="juros">Juros/Multa Pago:</th>
+                <th id="pendente">Saldo Pendente:</th>
             </tr>
         </thead>
         <tbody>
@@ -51,11 +51,20 @@
                         {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
                             {{ i.ope_valortotal1|add:carteira_item.car_valorpgto }}
                         {% else %}
-                            {{ i.ope_valortotal1 }}
+                            0
                         {% endif %}
                     {% endfor %}
                 </td>
-            </tr>
+                <td>
+                    {% for carteira_item in carteira %}
+                    {% if i.ope_numtitulo1 == carteira_item.car_titulonumero and i.ope_valortotal1|add:carteira_item.car_valorpgto < 0 %}
+                        0
+                    {% else %}
+                        {{ i.ope_valortotal1 }}    
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>  
             {% if i.ope_valortotal2 != 0 %}
             <tr>
                 <td>{{i.ope_dataoperacao}}</td>
@@ -77,12 +86,20 @@
                         {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
                             {{ i.ope_valortotal2|add:carteira_item.car_valorpgto }}
                         {% else %}
-                            {{ i.ope_valortotal2 }}
+                            0
                         {% endif %}
                     {% endfor %}
                 </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                    {% if i.ope_numtitulo2 == carteira_item.car_titulonumero and i.ope_valortotal2|add:carteira_item.car_valorpgto < 0 %}
+                        0
+                    {% else %}
+                        {{ i.ope_valortotal2 }}    
+                    {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
-            {% endif %}
             {% endif %}
             {% if i.ope_valortotal3 != 0 %}
             <tr>
@@ -105,8 +122,17 @@
                         {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
                             {{ i.ope_valortotal3|add:carteira_item.car_valorpgto }}
                         {% else %}
-                            {{ i.ope_valortotal3 }}
+                            0
                         {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                    {% if i.ope_numtitulo3 == carteira_item.car_titulonumero and i.ope_valortotal3|add:carteira_item.car_valorpgto < 0 %}
+                        0
+                    {% else %}
+                        {{ i.ope_valortotal3 }}    
+                    {% endif %}
                     {% endfor %}
                 </td>
             </tr>
@@ -132,8 +158,17 @@
                         {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
                             {{ i.ope_valortotal4|add:carteira_item.car_valorpgto }}
                         {% else %}
-                            {{ i.ope_valortotal4 }}
+                            0
                         {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                    {% if i.ope_numtitulo4 == carteira_item.car_titulonumero and i.ope_valortotal4|add:carteira_item.car_valorpgto < 0 %}
+                        0
+                    {% else %}
+                        {{ i.ope_valortotal4 }}    
+                    {% endif %}
                     {% endfor %}
                 </td>
             </tr>
@@ -159,8 +194,17 @@
                         {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
                             {{ i.ope_valortotal5|add:carteira_item.car_valorpgto }}
                         {% else %}
-                            {{ i.ope_valortotal5 }}
+                            0
                         {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                    {% if i.ope_numtitulo5 == carteira_item.car_titulonumero and i.ope_valortotal5|add:carteira_item.car_valorpgto < 0 %}
+                        0
+                    {% else %}
+                        {{ i.ope_valortotal5 }}    
+                    {% endif %}
                     {% endfor %}
                 </td>
             </tr>
@@ -186,11 +230,21 @@
                         {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
                             {{ i.ope_valortotal6|add:carteira_item.car_valorpgto }}
                         {% else %}
-                            {{ i.ope_valortotal6 }}
+                            0
                         {% endif %}
                     {% endfor %}
                 </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                    {% if i.ope_numtitulo6 == carteira_item.car_titulonumero and i.ope_valortotal6|add:carteira_item.car_valorpgto < 0 %}
+                        0
+                    {% else %}
+                        {{ i.ope_valortotal6 }}    
+                    {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
+            {% endif %}
             {% endif %}
             {% endfor %}
         </tbody>
