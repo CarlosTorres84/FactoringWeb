@@ -52,7 +52,7 @@ urlpatterns= [
 
     #Carteira
     path('listar_carteira', listar_carteira , name='listar_carteira'),
-    path('incluir_pagamento/<int:ope_id>/<int:titulonumero>/', incluir_pagamento, name='incluir_pagamento'),
+    path('inserir_pagamentos', inserir_pagamentos, name='inserir_pagamentos'),
 
    # Configurando a servir a folha de estilo com o tipo MIME correto
     path('style0.css', serve, {'document_root': settings.STATIC_ROOT, 'path': 'style0.css', 'content_type': 'text/css'}),

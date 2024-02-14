@@ -1,72 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+{% load meus_filtros %}
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Carteira</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #0066cc;
-            color: #fff;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .edit {
-            background-color: #534caf;
-        }
-
-        .operation {
-            background-color: #ff9800;
-        }
-
-        .generate-word {
-            background-color: #007bff;
-        }
-
-        .create-simulation {
-            background-color: #28a745;
-        }
-
-        .actions a:hover, .actions button:hover {
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
 </head>
 <body>
     <h1>Listar Carteiras</h1>
@@ -80,8 +22,10 @@
                 <th>Sub Cliente Nome: </th>
                 <th>Numero título:</th>
                 <th>Vencimento:</th>
-                <th>Valor:</th>
-                <th>Saldo:</th>
+                <th>Valor Total:</th>
+                <th>Valor Pago:</th>
+                <th>Saldo Pendente:</th>
+
             </tr>
         </thead>
         <tbody>
@@ -95,10 +39,22 @@
                 <td>{{i.ope_numtitulo1}}</td>
                 <td>{{i.ope_vencimento1}}</td>
                 <td>{{i.ope_valortotal1}}</td>
-                <td>{{i.car_saldo}}</td>
                 <td>
-                    <a href="{% url 'incluir_pagamento' ope_id=i.ope_id titulonumero=i.ope_numtitulo1 %}">Incluir Pagamento</a>
-                </td>           
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
+                            {{ i.ope_valortotal1|add:carteira_item.car_valorpgto }}
+                        {% else %}
+                            {{ i.ope_valortotal1 }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             {% if i.ope_valortotal2 != 0 %}
             <tr>
@@ -109,7 +65,22 @@
                 <td>{{i.ope_numtitulo2}}</td>
                 <td>{{i.ope_vencimento2}}</td>
                 <td>{{i.ope_valortotal2}}</td>
-                <td>{{i.car_saldo}}</td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
+                            {{ i.ope_valortotal2|add:carteira_item.car_valorpgto }}
+                        {% else %}
+                            {{ i.ope_valortotal2 }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             {% endif %}
             {% endif %}
@@ -122,7 +93,22 @@
                 <td>{{i.ope_numtitulo3}}</td>
                 <td>{{i.ope_vencimento3}}</td>
                 <td>{{i.ope_valortotal3}}</td>
-                <td>{{i.car_saldo}}</td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
+                            {{ i.ope_valortotal3|add:carteira_item.car_valorpgto }}
+                        {% else %}
+                            {{ i.ope_valortotal3 }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             {% endif %}
             {% if i.ope_valortotal4 != 0 %}
@@ -134,7 +120,22 @@
                 <td>{{i.ope_numtitulo4}}</td>
                 <td>{{i.ope_vencimento4}}</td>
                 <td>{{i.ope_valortotal4}}</td>
-                <td>{{i.car_saldo}}</td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
+                            {{ i.ope_valortotal4|add:carteira_item.car_valorpgto }}
+                        {% else %}
+                            {{ i.ope_valortotal4 }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             {% endif %}
             {% if i.ope_valortotal5 != 0 %}
@@ -146,7 +147,22 @@
                 <td>{{i.ope_numtitulo5}}</td>
                 <td>{{i.ope_vencimento5}}</td>
                 <td>{{i.ope_valortotal5}}</td>
-                <td>{{i.car_saldo}}</td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
+                            {{ i.ope_valortotal5|add:carteira_item.car_valorpgto }}
+                        {% else %}
+                            {{ i.ope_valortotal5 }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             {% endif %}
             {% if i.ope_valortotal6 != 0 %}
@@ -158,21 +174,34 @@
                 <td>{{i.ope_numtitulo6}}</td>
                 <td>{{i.ope_vencimento6}}</td>
                 <td>{{i.ope_valortotal6}}</td>
-                <td>{{i.car_saldo}}</td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
+                            {{ carteira_item.car_valorpgto }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for carteira_item in carteira %}
+                        {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
+                            {{ i.ope_valortotal6|add:carteira_item.car_valorpgto }}
+                        {% else %}
+                            {{ i.ope_valortotal6 }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             {% endif %}
             {% endfor %}
         </tbody>
     </table>
+    <div>
+        <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+    </div> 
     <script>
-        document.getElementById('filtro').addEventListener('input', function() {
-            var filtroValor = this.value.toLowerCase();
-            var linhas = document.querySelectorAll('tbody tr');
-            linhas.forEach(function(linha) {
-                var textoLinha = linha.textContent.toLowerCase();
-                linha.style.display = textoLinha.includes(filtroValor) ? '' : 'none';
-            });
-        });
+        function irParaPaginaPrincipal() {
+            window.location.href = "http://127.0.0.1:8000/Inicio";
+        }
     </script>
 </body>
 </html>

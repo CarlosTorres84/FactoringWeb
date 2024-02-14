@@ -1,72 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+{% load meus_filtros %}
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Operações</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #0066cc;
-            color: #fff;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .edit {
-            background-color: #534caf;
-        }
-
-        .operation {
-            background-color: #ff9800;
-        }
-
-        .generate-word {
-            background-color: #007bff;
-        }
-
-        .create-simulation {
-            background-color: #28a745;
-        }
-
-        .actions a:hover, .actions button:hover {
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
 </head>
 <body>
 <h1>Listar Operações</h1>
@@ -96,12 +38,12 @@
         <td>{{i.ope_dataoperacao}}</td>
         <td>{{i.cli_id}}</td>
         <td>{{i.fac_id}}</td>
-        <td>{{i.ope_taxadecompra}}</td>
+        <td>{{i.ope_taxacompra}}</td>
         <td>{{i.ope_iof}}</td>
         <td>{{i.ope_iofadicional}}</td>
         <td>{{i.ope_despesas}}</td>
         <td>{{i.ope_acrescimos}}</td>
-        <td>{{i.ope_myfloat}}</td>
+        <td>{{i.ope_float}}</td>
         <td>{{i.ope_status}}</td>
         <td class="actions">
             <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">

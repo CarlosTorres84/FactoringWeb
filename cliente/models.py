@@ -104,7 +104,7 @@ class Dcontratomae(models.Model):
     cma_validadecontrato=models.DateField()
     cma_datacadastro=models.DateField()
     def __str__(self):
-        return f'{self.cma_id}'
+        return f'{self.cma_id2}'
     
 class Dsimulacao(models.Model):
     sim_id = models.AutoField(primary_key=True, editable=False) 
@@ -172,7 +172,8 @@ class Dsimulacao(models.Model):
     sim_valoriofadicional6 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     sim_valorliquido6 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     status_CHOICES=(
-        ('1', 'SIMULAÇÃO'),        
+        ('1', 'SIMULAÇÃO'),   
+        ('3', 'CANCELADO'),
     )
     sim_status=models.CharField(max_length=1, choices=status_CHOICES)    
     def __str__(self):
@@ -317,7 +318,9 @@ class Doperacao(models.Model):
     ope_valoriofadicional6 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     ope_valorliquido6 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     status_CHOICES=(        
-        ('2', 'OPERAÇÃO'),        
+        ('2', 'OPERAÇÃO'),
+        ('3', 'CANCELADO'),
+        ('4', 'FINALIZADO'),      
     )
     ope_status=models.CharField(max_length=1, choices=status_CHOICES)
     def __str__(self):
@@ -326,9 +329,9 @@ class Doperacao(models.Model):
 class Dcarteira(models.Model):
     car_id = models.AutoField(primary_key=True)
     ope_id = models.ForeignKey(Doperacao, on_delete=models.CASCADE)
-    car_datapgto = models.DateField()    
+    car_datapgto = models.DateField()
     car_valorpgto = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    car_titulonumero = models.IntegerField(null=True, blank=True)
-    car_saldo = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    car_titulonumero = models.IntegerField(null=True, blank=True, default=0)
+
     def __str__(self):
-        return f'{self.car_id}'
+        return f'{self.ope_id} - {self.car_datapgto} - R${self.car_valorpgto}'

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+{% load meus_filtros %}
+{% load static %}
+
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listar Simulações</title>
   <link rel="stylesheet" type= "text/css" href="../static/style.css">
@@ -32,12 +36,12 @@
         <td>{{i.sim_datasimulacao}}</td>
         <td>{{i.cli_id}}</td>
         <td>{{i.fac_id}}</td>
-        <td>{{i.sim_taxadecompra}}</td>
+        <td>{{i.sim_taxacompra}}</td>
         <td>{{i.sim_iof}}</td>
         <td>{{i.sim_iofadicional}}</td>
         <td>{{i.sim_despesas}}</td>
         <td>{{i.sim_acrescimos}}</td>
-        <td>{{i.sim_myfloat}}</td>
+        <td>{{i.sim_float}}</td>
         <td>{{i.sim_status}}</td>
       </tr>
       {% endfor %}
