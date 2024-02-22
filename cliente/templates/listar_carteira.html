@@ -7,255 +7,160 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Carteira</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
+    <title>LISTAR CARTEIRA - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
+
 <body>
-    <h1>Listar Carteiras</h1>
-    <input type="text" id="filtro" placeholder="Digite a informação para filtrar" style="width: 300px">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Data Operação:</th>
-                <th>ID Operação:</th>
-                <th>Cliente ID:</th>
-                <th>Sub Cliente Nome: </th>
-                <th>Numero título:</th>
-                <th>Vencimento:</th>
-                <th id="total">Valor Total:</th>
-                <th id="pago">Valor Pago:</th>
-                <th id="juros">Juros/Multa Pago:</th>
-                <th id="pendente">Saldo Pendente:</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in operacao %}
-            {% if i.ope_status == '2' %}
-            <tr>
-                <td>{{i.ope_dataoperacao}}</td>
-                <td>{{i.ope_id}}</td>
-                <td>{{i.cli_id}}</td>
-                <td>{{i.ope_razaosocial1}}</td>
-                <td>{{i.ope_numtitulo1}}</td>
-                <td>{{i.ope_vencimento1}}</td>
-                <td>{{i.ope_valortotal1}}</td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
-                            {{ i.ope_valortotal1|add:carteira_item.car_valorpgto }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                    {% if i.ope_numtitulo1 == carteira_item.car_titulonumero and i.ope_valortotal1|add:carteira_item.car_valorpgto < 0 %}
-                        0
-                    {% else %}
-                        {{ i.ope_valortotal1 }}    
+    <header>
+        <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Listar Carteira</h1>
+    </header>
+
+    <main>
+        <fieldset>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data Operação:</th>
+                        <th>ID Operação:</th>
+                        <th>Cliente ID:</th>
+                        <th>Sub Cliente Nome: </th>
+                        <th>Título:</th>
+                        <th>Vencimento:</th>
+                        <th id="total">Total:</th>
+                        <th id="pago">Pago:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in operacao %}
+                    {% if i.ope_status == '2' %}
+                    <tr>
+                        <td>{{ i.ope_dataoperacao|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.ope_razaosocial1}}</td>
+                        <td>{{i.ope_numtitulo1}}</td>
+                        <td>{{ i.ope_vencimento1|date:"d/m/Y" }}</td>
+                        <td>R$ {{i.ope_valortotal1}}</td>
+                        <td>
+                            {% for carteira_item in carteira %}
+                            {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
+                            R$ {{ carteira_item.car_valorpgto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% if i.ope_valortotal2 != 0 %}
+                    <tr>
+                        <td>{{ i.ope_dataoperacao|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.ope_razaosocial2}}</td>
+                        <td>{{i.ope_numtitulo2}}</td>
+                        <td>{{ i.ope_vencimento2|date:"d/m/Y" }}</td>
+                        <td>R$ {{i.ope_valortotal2}}</td>
+                        <td>
+                            {% for carteira_item in carteira %}
+                            {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
+                            R$ {{ carteira_item.car_valorpgto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if i.ope_valortotal3 != 0 %}
+                    <tr>
+                        <td>{{ i.ope_dataoperacao|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.ope_razaosocial3}}</td>
+                        <td>{{i.ope_numtitulo3}}</td>
+                        <td>{{ i.ope_vencimento3|date:"d/m/Y" }}</td>
+                        <td>R$ {{i.ope_valortotal3}}</td>
+                        <td>
+                            {% for carteira_item in carteira %}
+                            {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
+                            R$ {{ carteira_item.car_valorpgto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if i.ope_valortotal4 != 0 %}
+                    <tr>
+                        <td>{{ i.ope_dataoperacao|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.ope_razaosocial4}}</td>
+                        <td>{{ i.ope_vencimento4|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_vencimento4}}</td>
+                        <td>R$ {{i.ope_valortotal4}}</td>
+                        <td>
+                            {% for carteira_item in carteira %}
+                            {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
+                            R$ {{ carteira_item.car_valorpgto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if i.ope_valortotal5 != 0 %}
+                    <tr>
+                        <td>{{ i.ope_dataoperacao|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.ope_razaosocial5}}</td>
+                        <td>{{i.ope_numtitulo5}}</td>
+                        <td>{{ i.ope_vencimento5|date:"d/m/Y" }}</td>
+                        <td>R$ {{i.ope_valortotal5}}</td>
+                        <td>
+                            {% for carteira_item in carteira %}
+                            {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
+                            R$ {{ carteira_item.car_valorpgto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if i.ope_valortotal6 != 0 %}
+                    <tr>
+                        <td>{{ i.ope_dataoperacao|date:"d/m/Y" }}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.ope_razaosocial6}}</td>
+                        <td>{{i.ope_numtitulo6}}</td>
+                        <td>{{ i.ope_vencimento6|date:"d/m/Y" }}</td>
+                        <td>R$ {{i.ope_valortotal6}}</td>
+                        <td>
+                            {% for carteira_item in carteira %}
+                            {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
+                            R$ {{ carteira_item.car_valorpgto }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
                     {% endif %}
                     {% endfor %}
-                </td>
-            </tr>  
-            {% if i.ope_valortotal2 != 0 %}
-            <tr>
-                <td>{{i.ope_dataoperacao}}</td>
-                <td>{{i.ope_id}}</td>
-                <td>{{i.cli_id}}</td>
-                <td>{{i.ope_razaosocial2}}</td>
-                <td>{{i.ope_numtitulo2}}</td>
-                <td>{{i.ope_vencimento2}}</td>
-                <td>{{i.ope_valortotal2}}</td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
-                            {{ i.ope_valortotal2|add:carteira_item.car_valorpgto }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                    {% if i.ope_numtitulo2 == carteira_item.car_titulonumero and i.ope_valortotal2|add:carteira_item.car_valorpgto < 0 %}
-                        0
-                    {% else %}
-                        {{ i.ope_valortotal2 }}    
-                    {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endif %}
-            {% if i.ope_valortotal3 != 0 %}
-            <tr>
-                <td>{{i.ope_dataoperacao}}</td>               
-                <td>{{i.ope_id}}</td>
-                <td>{{i.cli_id}}</td>
-                <td>{{i.ope_razaosocial3}}</td>
-                <td>{{i.ope_numtitulo3}}</td>
-                <td>{{i.ope_vencimento3}}</td>
-                <td>{{i.ope_valortotal3}}</td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
-                            {{ i.ope_valortotal3|add:carteira_item.car_valorpgto }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                    {% if i.ope_numtitulo3 == carteira_item.car_titulonumero and i.ope_valortotal3|add:carteira_item.car_valorpgto < 0 %}
-                        0
-                    {% else %}
-                        {{ i.ope_valortotal3 }}    
-                    {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endif %}
-            {% if i.ope_valortotal4 != 0 %}
-            <tr>
-                <td>{{i.ope_dataoperacao}}</td>
-                <td>{{i.ope_id}}</td>
-                <td>{{i.cli_id}}</td>
-                <td>{{i.ope_razaosocial4}}</td>
-                <td>{{i.ope_numtitulo4}}</td>
-                <td>{{i.ope_vencimento4}}</td>
-                <td>{{i.ope_valortotal4}}</td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
-                            {{ i.ope_valortotal4|add:carteira_item.car_valorpgto }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                    {% if i.ope_numtitulo4 == carteira_item.car_titulonumero and i.ope_valortotal4|add:carteira_item.car_valorpgto < 0 %}
-                        0
-                    {% else %}
-                        {{ i.ope_valortotal4 }}    
-                    {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endif %}
-            {% if i.ope_valortotal5 != 0 %}
-            <tr>
-                <td>{{i.ope_dataoperacao}}</td>
-                <td>{{i.ope_id}}</td>
-                <td>{{i.cli_id}}</td>
-                <td>{{i.ope_razaosocial5}}</td>
-                <td>{{i.ope_numtitulo5}}</td>
-                <td>{{i.ope_vencimento5}}</td>
-                <td>{{i.ope_valortotal5}}</td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
-                            {{ i.ope_valortotal5|add:carteira_item.car_valorpgto }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                    {% if i.ope_numtitulo5 == carteira_item.car_titulonumero and i.ope_valortotal5|add:carteira_item.car_valorpgto < 0 %}
-                        0
-                    {% else %}
-                        {{ i.ope_valortotal5 }}    
-                    {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endif %}
-            {% if i.ope_valortotal6 != 0 %}
-            <tr>
-                <td>{{i.ope_dataoperacao}}</td>
-                <td>{{i.ope_id}}</td>
-                <td>{{i.cli_id}}</td>
-                <td>{{i.ope_razaosocial6}}</td>
-                <td>{{i.ope_numtitulo6}}</td>
-                <td>{{i.ope_vencimento6}}</td>
-                <td>{{i.ope_valortotal6}}</td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                        {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
-                            {{ i.ope_valortotal6|add:carteira_item.car_valorpgto }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for carteira_item in carteira %}
-                    {% if i.ope_numtitulo6 == carteira_item.car_titulonumero and i.ope_valortotal6|add:carteira_item.car_valorpgto < 0 %}
-                        0
-                    {% else %}
-                        {{ i.ope_valortotal6 }}    
-                    {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-    <div>
-        <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-    </div> 
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>
+                </tbody>
+            </table>
+        </fieldset>
+        <div>
+            <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página
+                Principal</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
+
+    <script src="../static/admin/js/script.js"></script>
+
 </body>
+
 </html>

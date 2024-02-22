@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
 from datetime import datetime, timedelta   
+from django.utils import timezone
 
 class DClienteForm(forms.ModelForm):
     class Meta:
@@ -29,20 +30,38 @@ class DpessoasForm(forms.ModelForm):
 class DcontratomaeForm(forms.ModelForm):
     class Meta:
         model = Dcontratomae
-        fields = ['cma_id2', 'cli_id', 'fac_id', 'cma_validadecontrato','cma_datacadastro']
+        fields = ['cma_id', 'cli_id', 'fac_id', 'cma_validadecontrato','cma_datacadastro']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['cma_datacadastro'].initial = datetime.now().strftime('%d/%m/%Y')
         data_cadastro = datetime.now()
         data_validade = data_cadastro + timedelta(days=730)
         self.fields['cma_validadecontrato'].initial = data_validade.strftime('%d/%m/%Y')
+    def clean_cma_id(self):
+        cma_id = self.cleaned_data['cma_id']
+
+        # Print: Obtenção do Contrato Mãe
+        contrato_mae = Dcontratomae.objects.get(pk=cma_id)
+        print(f"Contrato Mãe obtido: {contrato_mae}")
+
+        # Print: Conversão da Data
+        data_validade_formatada = timezone.make_aware(contrato_mae.cma_validadecontrato, timezone.get_current_timezone())
+        print(f"Data de validade formatada: {data_validade_formatada}")
+
+        # Print: Verificação da Validade do Contrato
+        if data_validade_formatada < timezone.now():
+            raise forms.ValidationError("A validade do contrato mãe expirou.")
+        else:
+            print("O contrato mãe está válido.")
+
+        return cma_id
 
 class DsimulacaoForm(forms.ModelForm):
     class Meta:
         model = Dsimulacao
         fields = [
             'sim_datasimulacao', 'cli_id', 'fac_id', 'sim_taxacompra','sim_iof', 'sim_iofadicional', 'sim_despesas', 'sim_acrescimos', 'sim_float', 'sim_vencimento1', 'sim_valortotal1', 'sim_prazo1','sim_taxadecompraefetiva1', 'sim_taxaperiodo1', 'sim_valorcompra1','sim_valoriof1', 'sim_valoriofadicional1', 'sim_valorliquido1','sim_vencimento2', 'sim_valortotal2', 'sim_prazo2','sim_taxadecompraefetiva2', 'sim_taxaperiodo2', 'sim_valorcompra2','sim_valoriof2', 'sim_valoriofadicional2', 'sim_valorliquido2','sim_vencimento3', 'sim_valortotal3', 'sim_prazo3','sim_taxadecompraefetiva3', 'sim_taxaperiodo3', 'sim_valorcompra3','sim_valoriof3', 'sim_valoriofadicional3', 'sim_valorliquido3','sim_vencimento4', 'sim_valortotal4', 'sim_prazo4','sim_taxadecompraefetiva4', 'sim_taxaperiodo4', 'sim_valorcompra4','sim_valoriof4', 'sim_valoriofadicional4', 'sim_valorliquido4','sim_vencimento5', 'sim_valortotal5', 'sim_prazo5','sim_taxadecompraefetiva5', 'sim_taxaperiodo5', 'sim_valorcompra5','sim_valoriof5', 'sim_valoriofadicional5', 'sim_valorliquido5','sim_vencimento6', 'sim_valortotal6', 'sim_prazo6','sim_taxadecompraefetiva6', 'sim_taxaperiodo6', 'sim_valorcompra6','sim_valoriof6', 'sim_valoriofadicional6', 'sim_valorliquido6', 'sim_status']    
-
+  
 class DoperacaoForm(forms.ModelForm):
     class Meta:
         model = Doperacao

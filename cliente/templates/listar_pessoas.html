@@ -4,82 +4,75 @@
 {% load static %}
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Pessoas</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css">
+    <title>LISTAR PESSOAS - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
-<body>
-    <h1>Listar Pessoas</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID PESSOA</th>
-                <th>NOME</th>
-                <th>CPF</th>
-                <th>RG</th>
-                <th>ESTADO CIVÍL</th>
-                <th>NACIONALIDADE</th>
-                <th>E-MAIL 1</th>
-                <th>E-MAIL 2</th>
-                <th>TELEFONE 1</th>
-                <th>TELEFONE 2</th>
-                <th>PROFISSÃO</th>
-                <th>ENDEREÇO</th>
-                <th>COMPLEMENTO</th>
-                <th>CEP</th>
-                <th>BAIRRO</th>
-                <th>CIDADE</th>
-                <th>ESTADO</th>
-                <th>ID CLIENTE</th>
-                <th>ID FACTORING</th>
-                <th>TIPO PESSOA</th>
-                <th>DATA CADASTRO</th>
-                <th>AÇÕES</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in pessoas %}
-                <tr>
-                    <td>{{i.pes_id}}</td>
-                    <td>{{i.pes_nome}}</td>
-                    <td>{{i.pes_cpf}}</td>
-                    <td>{{i.pes_rg}}</td>
-                    <td>{{i.pes_estadocivil}}</td>
-                    <td>{{i.pes_nacionalidade}}</td>
-                    <td>{{i.pes_email1}}</td>
-                    <td>{{i.pes_email2}}</td>
-                    <td>{{i.pes_telefone1}}</td>
-                    <td>{{i.pes_telefone2}}</td>
-                    <td>{{i.pes_profissao}}</td>
-                    <td>{{i.pes_endereco}}</td>
-                    <td>{{i.pes_complementoendereco}}</td>
-                    <td>{{i.pes_cep}}</td>
-                    <td>{{i.pes_bairro}}</td>
-                    <td>{{i.pes_cidade}}</td>
-                    <td>{{i.pes_estado}}</td>
-                    <td>{{i.cli_id}}</td>
-                    <td>{{i.fac_id}}</td>
-                    <td>{{i.pes_tipopessoa}}</td>
-                    <td>{{i.pes_datacadastro}}</td>
-                    <td>
-                        <a href="{% url 'editar_pessoas' i.pes_id %}">Editar</a>
-                        <a href="{% url 'remover_pessoas' i.pes_id %}">Remover</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <a href="{% url 'inserir_pessoas' %}">
-        <button>Cadastrar Pessoas</button>
-    </a>
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Listar Pessoas</h1>
+    </header>
+
+    <main>
+        <form>
+            <fieldset>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>E-mail</th>
+                            <!-- <th>Telefone</th> -->
+                            <th>Cliente</th>
+                            <th>Tipo Pessoa</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for i in pessoas %}
+                        <tr>
+                            <td>{{i.pes_nome}}</td>
+                            <td>{{i.pes_cpf}}</td>
+                            <td>{{i.pes_email1}}</td>
+                            <!-- <td>{{i.pes_telefone1}}</td> -->
+                            <td>{{i.cli_id}}</td>
+                            <td>{{i.pes_tipopessoa}}</td>
+                            <td>
+                                <div>
+                                    <a class="edit-btn" href="{% url 'editar_pessoas' i.pes_id %}">Editar</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <a class="remove-btn" href="{% url 'remover_pessoas' i.pes_id %}">Remover</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+            <div>
+                <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
+
+    <script src="../static/admin/js/script.js"></script>
+
 </body>
+
 </html>

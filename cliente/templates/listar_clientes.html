@@ -4,87 +4,74 @@
 {% load static %}
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Clientes</title>    
-    <link rel="stylesheet" type= "text/css" href="../static/style.css">
+    <title>LISTAR CLIENTES - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type= "text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
-<body>
-    <h1>Listar Clientes</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID CLIENTE</th>
-                <th>RAZÃO SOCIAL</th>
-                <th>NOME FANTASIA</th>
-                <th>CNPJ</th>
-                <th>INSCRIÇÃO MUNICIPAL</th>
-                <th>INSCRIÇÃO ESTADUAL</th>
-                <th>E-MAIL 1</th>
-                <th>E-MAIL 2</th>
-                <th>TELEFONE 1</th>
-                <th>TELEFONE 2</th>
-                <th>ENDEREÇO</th>
-                <th>COMPLEMENTO</th>
-                <th>CEP</th>
-                <th>BAIRRO</th>
-                <th>CIDADE</th>
-                <th>ESTADO</th>
-                <th>TAXA DE COMPRA %</th>
-                <th>MULTA</th>
-                <th>JUROS</th>
-                <th>TAXA RECOMPRA $</th>
-                <th>VALOR TOTAL OPERAÇÃO</th>
-                <th>DATA CADASTRO</th>
-                <th>AÇÕES</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in clientes %}
-                <tr>
-                    <td>{{i.cli_id}}</td>
-                    <td>{{i.cli_razaosocial}}</td>
-                    <td>{{i.cli_nomefantasia}}</td>
-                    <td>{{i.cli_cnpj}}</td>
-                    <td>{{i.cli_im}}</td>
-                    <td>{{i.cli_ie}}</td>
-                    <td>{{i.cli_email1}}</td>
-                    <td>{{i.cli_email2}}</td>
-                    <td>{{i.cli_telefone1}}</td>
-                    <td>{{i.cli_telefone2}}</td>
-                    <td>{{i.cli_endereco}}</td>
-                    <td>{{i.cli_complementoendereco}}</td>
-                    <td>{{i.cli_cep}}</td>
-                    <td>{{i.cli_bairro}}</td>
-                    <td>{{i.cli_cidade}}</td>
-                    <td>{{i.cli_estado}}</td>
-                    <td>{{i.cli_taxacompra}}</td>
-                    <td>{{i.cli_multa}}</td>
-                    <td>{{i.cli_juros}}</td>
-                    <td>{{i.cli_taxarecompra}}</td>
-                    <td>{{i.cli_valortotaloperacao}}</td>
-                    <td>{{i.cli_datacadastro}}</td>
-                    <td>
-                <div>
-                    <a class="edit-btn" href="{% url 'editar_clientes' i.cli_id %}">Editar</a>
-                    <a class="remove-btn" href="{% url 'remover_clientes' i.cli_id %}">Remover</a>
-                </div>
-            </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <a href="{% url 'inserir_clientes' %}">
-        <button>Cadastrar Clientes</button>
-    </a>
-    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Listar Clientes</h1>
+    </header> 
+
+    <main> 
+        <form>
+            <fieldset>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome Fantasia</th>
+                            <th>CNPJ</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Taxa de Compra %</th>
+                            <th>Limite Operação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for i in clientes %}
+                        <tr>
+                            <td>{{i.cli_nomefantasia}}</td>
+                            <td>{{i.cli_cnpj}}</td>
+                            <td>{{i.cli_email1}}</td>
+                            <td>{{i.cli_telefone1}}</td>
+                            <td>{{i.cli_taxacompra}}%</td>
+                            <td>R$ {{i.cli_valortotaloperacao}}</td>
+                            <td>
+                                <div>
+                                    <a class="edit-btn" href="{% url 'editar_clientes' i.cli_id %}">Editar</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <a class="remove-btn" href="{% url 'remover_clientes' i.cli_id %}">Remover</a>
+                                </div>
+                             </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+            <div>
+                <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+            </div>
+        </form> 
+    </main>
+
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
+
+    <script src="../static/admin/js/script.js"></script>
+
 </body>
 </html>

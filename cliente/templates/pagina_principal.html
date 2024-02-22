@@ -7,65 +7,71 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Factoring - Lion's</title>
-    
-    <style>
-        body {
-            font-family: Arial, sans-serif; 
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        td {
-            margin-top: 20px;
-        }
-
-        a {
-            text-decoration: none;
-            color: #0066cc;
-            display: block;
-            padding: 10px;
-            border: 1px solid #0066cc;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-
-        a:hover {
-            background-color: #0066cc;
-            color: #fff;
-        }
-    </style>
+    <title>LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type= "text/css" href="../static/admin/css/style.css">     
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
 <body>
     <header>
-    <h1>Bem-vindo ao Sistema de Factoring da Lion's!</h1>
-    <td>
-        <a href="{% url 'index'%}">Área de Cadastro/ Login</a>
-        <a href="{% url 'inserir_factorings'%}">Inserir Factoring</a>
-        <a href="{% url 'inserir_clientes'%}">Inserir Cliente</a>
-        <a href="{% url 'inserir_pessoas'%}">Inserir Pessoas</a>
-        <a href="{% url 'inserir_contratomae'%}">Inserir Contrato Mãe</a>
-        <a href="{% url 'inserir_simulacao'%}">Inserir Simulação</a>
-        <a href="{% url 'listar_simulacaocopy'%}">Inserir Operação</a>
-        <a href="{% url 'listar_factorings'%}">Listar Factoring</a>
-        <a href="{% url 'listar_clientes'%}">Listar Clientes</a>
-        <a href="{% url 'listar_pessoas'%}">Listar Pessoas</a>
-        <a href="{% url 'listar_contratomae'%}">Listar Contrato Mãe</a>
-        <a href="{% url 'listar_simulacao'%}">Listar Simulação</a>
-        <a href="{% url 'listar_simulacaocopy'%}">Listar Simulação</a>
-        <a href="{% url 'listar_operacao'%}">Listar Operação</a>
-        <a href="{% url 'listar_contratomae'%}">Gerar World Contrato Mãe</a>
-        <a href="{% url 'listar_simulacaocopy'%}">Gerar World Simulação</a>
-        <a href="{% url 'listar_operacao'%}">Gerar World Contrato Operação e Nota Promissória</a>
-        <a href="{% url 'listar_carteira'%}">Listar Carteira</a>
-        <a href="{% url 'inserir_pagamentos'%}">Inserir Pagamentos</a>
-        <a href="{% url 'listar_pagamentos'%}">Listar Pagamentos</a>
-    </td>
+        <div class="logo">
+          <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Sistema de Factoring - Lion's</h1>
+      </header>
+        <table>
+            <tr>
+                <td>
+                    <div class="dropdown-container">
+                        <a class="main-option" href="#">Inserir</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'inserir_factorings'%}"> Factoring</a>
+                            <a href="{% url 'inserir_clientes'%}"> Cliente</a>
+                            <a href="{% url 'inserir_pessoas'%}"> Pessoas</a>
+                            <a href="{% url 'inserir_contratomae'%}"> Contrato Mãe</a>
+                            <a href="{% url 'inserir_simulacao'%}"> Simulação</a>
+                            <a href="{% url 'listar_simulacaocopy'%}"> Operação</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown-container">
+                        <a class="main-option" href="#">Listar</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'listar_factorings'%}"> Factoring</a>
+                            <a href="{% url 'listar_clientes'%}"> Clientes</a>
+                            <a href="{% url 'listar_pessoas'%}"> Pessoas</a>
+                            <a href="{% url 'listar_contratomae'%}"> Contrato Mãe</a>
+                            <a href="{% url 'listar_simulacao'%}"> Simulação</a>
+                            <a href="{% url 'listar_simulacaocopy'%}"> Simulação</a>
+                            <a href="{% url 'listar_operacao'%}"> Operação</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown-container">
+                        <a class="main-option" href="#">Impressão</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'listar_contratomae'%}"> Contrato Mãe</a>
+                            <a href="{% url 'listar_simulacaocopy'%}"> Simulação</a>
+                            <a href="{% url 'listar_operacao'%}"> Operação/ NP</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown-container">
+                        <a class="main-option" href="#">Gestão de Carteira</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'listar_carteira'%}"> Listar Carteira</a>
+                            <a href="{% url 'inserir_pagamentos'%}"> Inserir Pagamentos</a>
+                            <a href="{% url 'listar_pagamentos'%}"> Listar Pagamentos</a>
+                        </div>
+                    </div>
+                </td>
+                
+            </tr>
+        </table>
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
 </body>
 </html>

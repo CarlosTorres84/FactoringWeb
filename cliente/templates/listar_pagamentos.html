@@ -7,46 +7,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Pagamentos</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
+    <title>LISTAR PAGAMENTOS - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
+
 <body>
-    <h1>Listar Pagamentos</h1>
-    <input type="text" id="filtro" placeholder="Digite a informação para filtrar" style="width: 300px">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Data Pagamento:</th>
-                <th>Valor Pagamento:</th>
-                <th>Operação ID:</th>
-                <th>Título Número: </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in carteira %}
-            <tr>
-                <td>{{i.car_datapgto}}</td>
-                <td>{{i.car_valorpgto}}</td>
-                <td>{{i.ope_id}}</td>
-                <td>{{i.car_titulonumero}}</td>
-                <!-- <td>
-                    {% for operacao_item in operacao %}
-                        {% if i.ope_id == operacao_item.car_titulonumero %}
-                            {{ carteira_item.car_valorpgto }}
-                        {% endif %}
+    <header>
+        <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Listar Pagamentos</h1>
+    </header>
+
+    <main>
+        <fieldset>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data de Pagamento</th>
+                        <th>Valor de Pagamento</th>
+                        <th>Operação/ Cliente</th>
+                        <th>Título</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in carteira %}
+                    <tr>
+                        <td>{{i.car_datapgto}}</td>
+                        <td>{{i.car_valorpgto}}</td>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.car_titulonumero}}</td>
+                    </tr>
                     {% endfor %}
-                </td> -->
-            </tr> 
-            {% endfor %} 
-        </tbody>
-    </table>
-    <div>
-        <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-    </div> 
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>
+                </tbody>
+            </table>
+        </fieldset>
+        <div>
+            <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página
+                Principal</button>
+        </div>
+    </main>
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
+
+    <script src="../static/admin/js/script.js"></script>
+    
 </body>
+
 </html>

@@ -4,67 +4,83 @@
 {% load static %}
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Simulações</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css">
+    <title>LISTAR SIMULAÇÕES - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
 
 <body>
-    <h1>Listar Simulações</h1>
+    <header>
+        <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Listar Simulações</h1>
+    </header>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID SIMULAÇÃO</th>
-                <th>DATA SIMULAÇÃO</th>
-                <th>ID CLIENTE</th>
-                <th>ID FACTORING</th>
-                <th>TAXA DE COMPRA</th>
-                <th>DESPESAS $</th>
-                <th>ACRÉSCIMOS $</th>
-                <th>FLOAT</th>
-                <th>STATUS</th>
-                <th>AÇÕES</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in simulacao %}
-                {% if i.sim_status == '1' %}
+    <main>
+        <fieldset>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Simulação</th>
+                        <th>Data Simulação</th>
+                        <th>Cliente</th>
+                        <th>Factoring</th>
+                        <th></th>
+                        <th>Taxa de Compra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in simulacao %}
+                    {% if i.sim_status == '1' %}
                     <tr>
                         <td>{{i.sim_id}}</td>
                         <td>{{i.sim_datasimulacao}}</td>
                         <td>{{i.cli_id}}</td>
                         <td>{{i.fac_id}}</td>
-                        <td>{{i.sim_taxacompra}}</td>       
-                        <td>{{i.sim_despesas}}</td>
-                        <td>{{i.sim_acrescimos}}</td>
-                        <td>{{i.sim_float}}</td>
-                        <td>{{i.sim_status}}</td>
-                        <td class="actions">
-                            <a href="{% url 'editar_simulacao' i.sim_id %}" class="edit">Editar</a>
-                            <a href="{% url 'inserir_operacao' i.sim_id %}" class="operation">Incluir Operação</a>
-                            <form method="post" action="{% url 'gerar_simulacao_word' i.sim_id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="generate-word">Gerar Word Simulação</button>
-                            </form>
+                        <td></td>
+                        <td>{{i.sim_taxacompra}}%</td>
+                        <td>
+                            <div>
+                                <a href="{% url 'editar_simulacao' i.sim_id %}" class="edit">Detalhes/ Editar</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <form method="post" action="{% url 'gerar_simulacao_word' i.sim_id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="generate-word">Gerar Word</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <a href="{% url 'inserir_operacao' i.sim_id %}" class="operation">Incluir Operação</a>
+                            </div>
                         </td>
                     </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+        <div>
+            <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página
+                Principal</button>
+        </div>
+    </main>
 
-    <a href="{% url 'inserir_simulacao' %}" class="create-simulation">
-        <button>Cadastrar Simulação</button>
-    </a>
-    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-    
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
+
+    <script src="../static/admin/js/script.js"></script>
+
 </body>
+
 </html>

@@ -4,71 +4,88 @@
 {% load static %}
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Operações</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
+    <title>LISTAR OPERAÇÕES - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
-<body>
-<h1>Listar Operações</h1>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>ID OPERAÇÃO:</th>
-        <th>DATA OPERAÇÃO:</th>
-        <th>ID CLIENTE:</th>
-        <th>ID FACTORING:</th>
-        <th>TAXA DE COMPRA:</th>
-        <th>IOF ANUAL %:</th>
-        <th>IOF ADICIONAL %:</th>
-        <th>DESPESAS $:</th>
-        <th>ACRÉSCIMOS $:</th>
-        <th>FLOAT:</th>
-        <th>STATUS:</th>
-        <th>AÇÕES</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for i in operacao %}
-    {% if i.ope_status == '2' %}
-    <tr>
-        <td>{{i.ope_id}}</td>
-        <td>{{i.ope_dataoperacao}}</td>
-        <td>{{i.cli_id}}</td>
-        <td>{{i.fac_id}}</td>
-        <td>{{i.ope_taxacompra}}</td>
-        <td>{{i.ope_iof}}</td>
-        <td>{{i.ope_iofadicional}}</td>
-        <td>{{i.ope_despesas}}</td>
-        <td>{{i.ope_acrescimos}}</td>
-        <td>{{i.ope_float}}</td>
-        <td>{{i.ope_status}}</td>
-        <td class="actions">
-            <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">
-                {% csrf_token %}
-                <a href="{% url 'editar_operacao' i.ope_id %}" class="edit">Editar 2</a>
-                <button type="submit" class="generate-word">Gerar Word Aditivo</button>
-            </form>
-            <form method="post" action="{% url 'gerar_promissoria_word' i.ope_id %}">
-                {% csrf_token %}
-                <button type="submit" class="generate-word">Gerar Promissória Word</button>
-            </form>
-        </td>
-        
-    </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
-<div>
-    <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-</div> 
-<script>
-    function irParaPaginaPrincipal() {
-        window.location.href = "http://127.0.0.1:8000/Inicio";
-    }
-</script>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+        <h1>Listar Operações</h1>
+    </header>
+
+
+    <main>
+        <fieldset>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Operação</th>
+                        <th>Data Operação</th>
+                        <th>Cliente</th>
+                        <th>Factoring</th>
+                        <th></th>
+                        <th>Taxa de Compra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in operacao %}
+                    {% if i.ope_status == '2' %}
+                    <tr>
+                        <td>{{i.ope_id}}</td>
+                        <td>{{i.ope_dataoperacao}}</td>
+                        <td>{{i.cli_id}}</td>
+                        <td>{{i.fac_id}}</td>
+                        <td></td>
+                        <td>{{i.ope_taxacompra}}%</td>
+                        <td>
+                            <div>
+                                <a href="{% url 'editar_operacao' i.ope_id %}" class="edit">Detalhes/ Editar</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <form method="post" action="{% url 'gerar_operacao_word' i.ope_id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="generate-word">Gerar Aditivo</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <form method="post" action="{% url 'gerar_promissoria_word' i.ope_id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="generate-word">Gerar NP</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+        <div>
+            <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página
+                Principal</button>
+        </div>
+    </main>
+
+        <footer>
+            <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+        </footer>
+
+        <script src="../static/admin/js/script.js"></script>
+
 </body>
+
 </html>

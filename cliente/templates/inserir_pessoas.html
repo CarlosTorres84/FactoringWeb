@@ -9,121 +9,127 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Pessoa</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
+    <title>CADASTRAR PESSOAS - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type= "text/css" href="../static/admin/css/style.css"> 
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
 
 <body>
     <header>
-        <section>
-            <h1>Inserir Pessoas</h1>
-        </section>
+            <div class="logo">
+            <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+            </div>
+        <h1>Cadastrar Pessoas</h1>
     </header>
+
     <main class="container">
         <form method="post">
-            {% csrf_token %}            
-                <td><label for="pes_nome">Nome:</label></td>
-                <td><input type="text" id="pes_nome" name="pes_nome" value="{{ form.instance.pes_nome }}" oninput="converterParaCaixaAlta(this)" required></td>
-            
-                <td><label for="pes_cpf">Cpf:</label></td>
-                <td><input type="text" id="pes_cpf" name="pes_cpf" value="{{ form.instance.pes_cpf }}" oninput="converterParaCaixaAlta(this)" required></td>
-                
-                <td><label for="pes_rg">Rg:</label></td>
-                <td><input type="text" id="pes_rg" name="pes_rg" value="{{ form.instance.pes_rg }}" oninput="converterParaCaixaAlta(this)" required></td>
-                
-                <div class="form-group">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Dados da Pessoa</legend>    
+                <div class="linha-diferente">
+                    <label class="label-diferente" for="pes_nome">Nome:</label>
+                    <input type="text" id="pes_nome" name="pes_nome" value="{{ form.instance.pes_nome }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div> </div>
+                <div>
+                    <label for="pes_cpf">CPF:</label>
+                    <input type="text" id="pes_cpf" name="pes_cpf" value="{{ form.instance.pes_cpf }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_rg">RG:</label>
+                    <input type="text" id="pes_rg" name="pes_rg" value="{{ form.instance.pes_rg }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_nacionalidade">Nacionalidade:</label></td>
+                    <input type="text" id="pes_nacionalidade" name="pes_nacionalidade" value="{{ form.instance.pes_nacionalidade }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_email1">E-mail:</label>
+                    <input type="email" id="pes_email1" name="pes_email1" value="{{ form.instance.pes_email1 }}" required>
+                </div>
+                <div>
+                    <label for="pes_email2">E-mail2:</label>
+                    <input type="email" id="pes_email2" name="pes_email2" value="{{ form.instance.pes_email2 }}">
+                </div>
+                <div>
+                    <label for="pes_telefone1">Telefone:</label>
+                    <input type="tel" id="pes_telefone1" name="pes_telefone1" value="{{ form.instance.pes_telefone1 }}" required>
+                </div>
+                <div>
+                    <label for="pes_telefone2">Telefone2:</label>
+                    <input type="tel" id="pes_telefone2" name="pes_telefone2" value="{{ form.instance.pes_telefone2 }}">
+                </div>
+                <div>
+                    <label for="pes_profissao">Profissão:</label>
+                    <input type="text" id="pes_profissao" name="pes_profissao" value="{{ form.instance.pes_profissao }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_endereco">Endereço:</label>
+                    <input type="text" id="pes_endereco" name="pes_endereco" value="{{ form.instance.pes_endereco }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_complementoendereco">Complemento:</label>
+                    <input type="text" id="pes_complementoendereco" name="pes_complementoendereco" value="{{ form.instance.pes_complementoendereco }}" oninput="converterParaCaixaAlta(this)">
+                </div>
+                <div>
+                    <label for="pes_cep">CEP:</label>
+                    <input type="text" id="pes_cep" name="pes_cep" value="{{ form.instance.pes_cep }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_bairro">Bairro:</label>
+                    <input type="text" id="pes_bairro" name="pes_bairro" value="{{ form.instance.pes_bairro }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_cidade">Cidade:</label>
+                    <input type="text" id="pes_cidade" name="pes_cidade" value="{{ form.instance.pes_cidade }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+                <div>
+                    <label for="pes_estado">Estado:</label>
+                    <input type="text" id="pes_estado" name="pes_estado" value="{{ form.instance.pes_estado }}" oninput="converterParaCaixaAlta(this)" required>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Relacionamentos</legend>
+                <div class="linha-diferente">
                     {{form.pes_estadocivil.errors}}
-                    <label> Estado Cívil: </label>
+                    <label class="label-diferente"> Estado Cívil: </label>
                     {{form.pes_estadocivil|addclass:'form-control'}}
                 </div>
-                
-                <td><label for="pes_nacionalidade">Nacionalidade:</label></td>
-                <td><input type="text" id="pes_nacionalidade" name="pes_nacionalidade" value="{{ form.instance.pes_nacionalidade }}" oninput="converterParaCaixaAlta(this)" required></td>
-                
-                <td><label for="pes_email1">E-mail:</label></td>
-                <td><input type="email" id="pes_email1" name="pes_email1" value="{{ form.instance.pes_email1 }}" required></td>
-                
-                <td><label for="pes_email2">E-mail2:</label></td>
-                <td><input type="email" id="pes_email2" name="pes_email2" value="{{ form.instance.pes_email2 }}"></td>
-                
-                <td><label for="pes_telefone1">Telefone:</label></td>
-                <td><input type="tel" id="pes_telefone1" name="pes_telefone1" value="{{ form.instance.pes_telefone1 }}" required></td>
-                
-                <td><label for="pes_telefone2">Telefone2:</label></td>
-                <td><input type="tel" id="pes_telefone2" name="pes_telefone2" value="{{ form.instance.pes_telefone2 }}"></td>
-                
-                <td><label for="pes_profissao">Profissão:</label></td>
-                <td><input type="text" id="pes_profissao" name="pes_profissao" value="{{ form.instance.pes_profissao }}" oninput="converterParaCaixaAlta(this)" required></td>
-               
-                <td><label for="pes_endereco">Endereço:</label></td>
-                <td><input type="text" id="pes_endereco" name="pes_endereco" value="{{ form.instance.pes_endereco }}" oninput="converterParaCaixaAlta(this)" required></td>
-
-                <td><label for="pes_complementoendereco">Complemento:</label></td>
-                <td><input type="text" id="pes_complementoendereco" name="pes_complementoendereco" value="{{ form.instance.pes_complementoendereco }}" oninput="converterParaCaixaAlta(this)"></td>
-
-                <td><label for="pes_cep">Cep:</label></td>
-                <td><input type="text" id="pes_cep" name="pes_cep" value="{{ form.instance.pes_cep }}" oninput="converterParaCaixaAlta(this)" required></td>
-
-                <td><label for="pes_bairro">Bairro:</label></td>
-                <td><input type="text" id="pes_bairro" name="pes_bairro" value="{{ form.instance.pes_bairro }}" oninput="converterParaCaixaAlta(this)" required></td>
-
-                <td><label for="pes_cidade">Cidade:</label></td>
-                <td><input type="text" id="pes_cidade" name="pes_cidade" value="{{ form.instance.pes_cidade }}" oninput="converterParaCaixaAlta(this)" required></td>
-            
-                <td><label for="pes_estado">Estado:</label></td>
-                <td><input type="text" id="pes_estado" name="pes_estado" value="{{ form.instance.pes_estado }}" oninput="converterParaCaixaAlta(this)" required></td>
-            
-            <div class="form-group">
-                {{form.cli_id.errors}}
-                <label> ID CLIENTE: </label>
-                {{form.cli_id|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.fac_id.errors}}
-                <label> ID FACTORING: </label>
-                {{form.fac_id|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group">
-                {{form.pes_tipopessoa.errors}}
-                <label> TIPO PESSOA: </label>
-                {{form.pes_tipopessoa|addclass:'form-control'}}
-            </div>
-
-            <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-                <!-- criado para trazer a data de cadastro automaticamente -->
-                <label for="{{ form.pes_datacadastro.id_for_label }}">Data Cadastro:</label>
+                <div class="linha-diferente">
+                    {{form.cli_id.errors}}
+                    <label class="label-diferente"> Nome Cliente: </label>
+                    {{form.cli_id|addclass:'form-control'}}
+                </div>
+                <div class="linha-diferente">
+                    {{form.fac_id.errors}}
+                    <label class="label-diferente"> Nome Factoring: </label>
+                    {{form.fac_id|addclass:'form-control'}}
+                </div>
+                <div class="linha-diferente">
+                    {{form.pes_tipopessoa.errors}}
+                    <label class="label-diferente"> Tipo Pessoa: </label>
+                    {{form.pes_tipopessoa|addclass:'form-control'}}
+                </div>
+            </fieldset>
+            <div class="form-group custom-form-group">
+                <label class="label-diferente for="{{ form.pes_datacadastro.id_for_label }}">Data Cadastro:</label>
                 {{ form.pes_datacadastro }}
             </div>
-
             <div>
-                <input type="submit" name="Cadastrar Pessoa">
-                <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+                <button class="cadastrar-btn" type="submit" name="Cadastrar PESSOAS">Cadastrar PESSOAS</button>
             </div>
-    </form>
+            <div>  
+                <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+            </div>
+        </form>
     </main>
-    <script>
-        $(document).ready(function(){
-            $('#pes_cpf').mask('000.000.000-00')
+    
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
 
-            $('#pes_telefone1').mask('(00) 00000-0000')
+    <script src="../static/admin/js/script.js"></script>
 
-            $('#pes_telefone2').mask('(00) 00000-0000')
-
-            $('#pes_cep').mask('00000-000');
-
-        });
-    </script>
-    <script>
-        function converterParaCaixaAlta(elemento) {
-            elemento.value = elemento.value.toUpperCase();
-        }
-    </script>
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>
 </body>
 </html>

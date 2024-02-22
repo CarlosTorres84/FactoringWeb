@@ -163,12 +163,12 @@ def gerar_contrato_word(request, cma_id):
         'ID_CLIENTE': cliente_associado.cli_id,
         'RAZAOSOCIAL_CLIENTE': f'RAZÃO SOCIAL: ' + cliente_associado.cli_razaosocial,
         'CNPJ_CLIENTE': f'CNPJ: ' + cliente_associado.cli_cnpj,
-        'IM_CLIENTE': f'INSC. MUNICIPAL: ' + cliente_associado.cli_im,
-        'IE_CLIENTE': f'INSC. ESTADUAL: ' + cliente_associado.cli_ie,
+        'IM_CLIENTE': f'INSC. MUNICIPAL: {cliente_associado.cli_im}' if cliente_associado.cli_im else '',
+        'IE_CLIENTE': f'INSC. ESTADUAL: {cliente_associado.cli_ie}' if cliente_associado.cli_ie else '',
         'EMAIL1_CLIENTE': f'E-MAIL: ' + cliente_associado.cli_email1,
         'TELEFONE1_CLIENTE': f'TELEFONE: ' + cliente_associado.cli_telefone1,
         'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_endereco,
-        'COMPLEMENTOENDERECO_CLIENTE':f'COMPLEMENTO: ' +  cliente_associado.cli_complementoendereco,
+        'COMPLEMENTOENDERECO_CLIENTE': f'COMPLEMENTO: {cliente_associado.cli_complementoendereco}' if cliente_associado.cli_complementoendereco else '',
         'CEP_CLIENTE': f'CEP: ' + cliente_associado.cli_cep,
         'BAIRRO_CLIENTE': f'BAIRRO: ' + cliente_associado.cli_bairro,
         'CIDADE_CLIENTE': f'CIDADE: ' + cliente_associado.cli_cidade,
@@ -480,7 +480,7 @@ def gerar_operacao_word(request, ope_id):
     pessoas_associadas_rt = Dpessoas.objects.filter(fac_id_id=operacao.fac_id.fac_id, pes_tipopessoa='RT')
     template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\OperacaoPadrao.docx"     
     # Caminho de saída do documento gerado
-    output_path = f"OPERACAO DE FOMENTO MERCANTIL - {ope_id}.docx"
+    output_path = f"ADITIVO OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx"
     doc = DocxTemplate(template_path)
     # Defina os dados a serem inseridos no modelo
     context = {        
@@ -545,7 +545,7 @@ def gerar_operacao_word(request, ope_id):
     doc.save(output_path)
     with open(output_path, 'rb') as doc_file:
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        response['Content-Disposition'] = f'attachment; filename=OPERACAO DE FOMENTO MERCANTIL - {ope_id}.docx'
+        response['Content-Disposition'] = f'attachment; filename=ADITIVO OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx'
     return response
 def gerar_promissoria_word(request, ope_id):
     operacao = Doperacao.objects.get(ope_id=ope_id)    
@@ -568,7 +568,7 @@ def gerar_promissoria_word(request, ope_id):
     else:
         maior_data_formatada = ''
     template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\NotaPromissoriaPadrao.docx"         
-    output_path = f"NOTA PROMISSORIA - {ope_id}.docx"
+    output_path = f"PROMISSORIA OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx"
     doc = DocxTemplate(template_path)
     # Defina os dados a serem inseridos no modelo
     context = {        
@@ -619,7 +619,7 @@ def gerar_promissoria_word(request, ope_id):
     doc.save(output_path)
     with open(output_path, 'rb') as doc_file:
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        response['Content-Disposition'] = f'attachment; filename=NOTA PROMISSORIA - {ope_id}.docx'
+        response['Content-Disposition'] = f'attachment; filename=PROMISSORIA OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx'
     return response
 
 def listar_carteira(request):
@@ -642,7 +642,6 @@ def inserir_pagamentos(request):
     except Exception as e:
         print(f"Erro ao inserir operação: {e}")
         raise
-
     return render(request, 'inserir_pagamentos.html', {'form': form, 'operacao':operacao})
 def listar_pagamentos(request):
     operacao=Doperacao.objects.all()

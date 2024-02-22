@@ -7,56 +7,65 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerar Contrato Mãe</title>
-    <link rel="stylesheet" type= "text/css" href="../static/style.css"> 
+    <title>CADASTRAR CONTRATO MÃE - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type= "text/css" href="../static/admin/css/style.css"> 
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon">
 </head>
 
 <body>
     <header>
-        <section>
-            <h1>Gerar Contrato Mãe</h1>
-        </section>
-    </header>   
+        <div class="logo">
+        <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+    <h1>Cadastrar Contrato Mãe</h1>
+</header>
+
     <main class="container">
         <form method="post">
-            {% csrf_token %}            
-            <div class="form-group">
-                {{ form.cma_id2.errors }}
-                <label for="{{ form.cma_id2.id_for_label }}" class="form-control"> ID Contrato Mãe: </label>
-                {{ form.cma_id2 }}
+            {% csrf_token %}  
+            <fieldset>
+                <legend>ID Contrato Mãe</legend>
+                <div class="form-group custom-form-groups">
+                    {{ form.cma_id2.errors }}
+                    <label class="label-diferente" for="{{ form.cma_id2.id_for_label }}" class="form-control"> ID Contrato: </label>
+                    {{ form.cma_id2 }}
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Relacionamentos</legend>
+                <div class="form-group custom-form-groups">
+                    {{ form.cli_id.errors }}
+                    <label class="label-diferente" for="{{ form.cli_id.id_for_label }}" class="form-control"> Cliente: </label>
+                    {{ form.cli_id }}
+                </div>
+                <div class="form-group custom-form-groups">
+                    {{ form.fac_id.errors }}
+                    <label class="label-diferente" for="{{ form.fac_id.id_for_label }}" class="form-control"> Factoring: </label>
+                    {{ form.fac_id }}
+                </div>
+            </fieldset>
+            <div class="form-group custom-form-group">  
+                {{ form.cma_datacadastro.errors }}          
+                <label class="label-diferente" for="{{ form.cma_datacadastro.id_for_label }}">Data Cadastro:</label>
+                {{ form.cma_datacadastro }}  
+                {{ form.cma_validadecontrato.errors }}          
+                <label class="label-diferente" for="{{ form.cma_validadecontrato.id_for_label }}">Validade Contrato:</label>
+                {{ form.cma_validadecontrato }}
+            </div>            
+            <div>
+                <button class="cadastrar-btn" type="submit" name="Cadastrar FACTORING">Cadastrar FACTORING</button>
             </div>
-
-            <div class="form-group">
-                {{ form.cli_id.errors }}
-                <label for="{{ form.cli_id.id_for_label }}" class="form-control"> ID Cliente: </label>
-                {{ form.cli_id }}
+            <div>  
+                <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
             </div>
-            
-            <div class="form-group">
-                {{ form.fac_id.errors }}
-                <label for="{{ form.fac_id.id_for_label }}" class="form-control"> ID Factoring: </label>
-                {{ form.fac_id }}
-            </div>
-
-        <!-- criado para trazer a data de cadastro automaticamente -->
-        <label for="{{ form.cma_datacadastro.id_for_label }}">Data Cadastro:</label>
-        {{ form.cma_datacadastro }}
-
-        <!-- criado para trazer a data de vencimento automaticamente -->
-        <label for="{{ form.cma_validadecontrato.id_for_label }}">Validade Contrato:</label>
-        {{ form.cma_validadecontrato }}
-
-        <div>
-            <input type="submit" name="Cadastrar Contrato">
-            <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-        </div>
-    </form>   
+        </form>
     </main>   
-    <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>  
-</body>
+    
+    <footer>
+        <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+    </footer>
 
+    <script src="../static/admin/js/script.js"></script>
+
+</body>
 </html>

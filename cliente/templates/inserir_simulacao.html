@@ -4,253 +4,193 @@
 {% load static %}
 
 <head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerar Simulação</title>
-    <link rel="stylesheet" type= "text/css" href="/static/style.css"> 
+    <title>CADASTRAR SIMULAÇÃO - LION'S FOMENTO MERCANTIL LTDA</title>
+    <link rel="stylesheet" type= "text/css" href="../static/admin/css/style.css">
+    <link rel="icon" href="../static/admin/img/LogoPrincipalLions.png" type="image/x-icon"> 
 </head>
 
 <body>
-    <h1>Gerar Simulação</h1>   
-      <main class="container"> 
-      <form method="post">
-          {% csrf_token %}
-        <div style="display: inline-block; width: 15%; margin-right: 2%;">
-          <label for="sim_datasimulacao">Data Simulação:</label>          
+  <header>
+        <div class="logo">
+          <img src="../static/admin/img/LogoPrincipalLions..png" alt="Logo">
+        </div>
+      <h1>Cadastrar Simulação</h1>
+  </header> 
+
+  <main class="container"> 
+    <form method="post">
+      {% csrf_token %}
+        <!-- Neste campo de data preciso manter o formato das datas vencimento das operações, elas precisam ter o mesmo padrão date:'Y-m-d' -->
+        <div class="form-group custom-form-group">
+          <label class="label-diferente" for="sim_datasimulacao">Data de Simulação:</label>
           <input type="date" id="sim_datasimulacao" name="sim_datasimulacao" value="{{ form.initial.sim_datasimulacao|date:'Y-m-d' }}" required>
         </div>
-
-        <div style="display: inline-block; width: 15%; margin-right: 2%;">
-          <label for="sim_status">Status:</label>
+        <div class="form-group custom-form-group">
+          <label class="label-diferente" for="sim_status">Status Simulação:</label>
           <select name="sim_status" id="sim_status" required>
               {% for value, label in form.fields.sim_status.choices %}
-                  <option value="{{ value }}" {% if form.instance.sim_status == value %}selected{% endif %}>{{ label }}</option>
+                <option value="{{ value }}" {% if form.instance.sim_status == value %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
-          </select>   
+          </select>
         </div>
+        <fieldset>
+          <legend>Relacionamentos</legend>          
+          <div class="linha-diferente">
+            {{ form.cli_id.errors }}
+            <label class="label-diferente" for="{{ form.cli_id.id_for_label }}">Cliente:</label>
+            {{ form.cli_id }}
+          </div>          
+          <div class="linha-diferente">
+            {{ form.fac_id.errors }}
+            <label class="label-diferente" for="{{ form.fac_id.id_for_label }}">Factoring:</label>
+            {{ form.fac_id }}
+          </div>
+        </fieldset>      
+        <fieldset class="custom-fieldset">
+        <legend>Taxas e Limites</legend>
+            <div></div>
+            <div class="form-group">
+              <label class="label-diferente2" for="sim_taxacompra">Taxa de Compra %:</label>          
+              <input type="text" id="sim_taxacompra" name="sim_taxacompra" value="{% if form.initial.sim_taxacompra %}{{ form.initial.sim_taxacompra|stringformat:"f"  }}{% endif %}" class="form-control" required>
+            </div>
 
-        <div style="clear: both;"></div>
+            <div class="form-group">
+              <label class="label-diferente2" for="sim_iof">IOF Anual %:</label>          
+              <input type="text" id="sim_iof" name="sim_iof" value="{% if form.initial.sim_iof %}{{ form.initial.sim_iof|stringformat:"f"  }}{% endif %}" class="form-control" required>
+            </div>
 
-        <div class="form-group" style="display: inline-block; width: 15%; margin-right: 2%;">
-          {{ form.cli_id.errors }}
-          <label for="{{ form.cli_id.id_for_label }}" class="form-control">ID Cliente:</label>
-          {{ form.cli_id }}
-        </div>
+            <div class="form-group">
+              <label class="label-diferente2" for="sim_iofadicional">IOF Adicional %:</label>          
+              <input type="text" id="sim_iofadicional" name="sim_iofadicional" value="{% if form.initial.sim_iofadicional %}{{ form.initial.sim_iofadicional|stringformat:"f"  }}{% endif %}" class="form-control" required>
+            </div>
 
-        <div class="form-group" style="display: inline-block; width: 15%; margin-right: 2%;">
-          {{ form.fac_id.errors }}
-          <label for="{{ form.fac_id.id_for_label }}" class="form-control">ID Factoring:</label>
-          {{ form.fac_id }}
-        </div>
+            <div></div>
+            <div></div>
+
+            <div class="form-group">
+              <label class="label-diferente2" for="sim_despesas">Despesas $ (-):</label>          
+              <input type="text" id="sim_despesas" name="sim_despesas" value="{% if form.instance.sim_despesas %}{{ form.instance.sim_despesas|stringformat:"f" }}{% else %}0{% endif %}" />
+            </div>
+
+            <div class="form-group">
+              <label class="label-diferente2" for="sim_acrescimos">Acréscimos $ (+):</label>          
+              <input type="text" id="sim_acrescimos" name="sim_acrescimos" value="{% if form.instance.sim_acrescimos %}{{ form.instance.sim_acrescimos|stringformat:"f" }}{% else %}0{% endif %}" />
+            </div>
+              
+            <div class="form-group">
+              <label class="label-diferente2" for="sim_float">Float:</label>
+              <input type="text" id="sim_float" name="sim_float" value="{% if form.initial.sim_float %}{{ form.initial.sim_float|stringformat:"f"  }}{% endif %}" class="form-control" required>
+            </div>
+        </fieldset>
         
-        <div style="clear: both;"></div>
-
-        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-          <label for="sim_taxacompra">Taxa de Compra %:</label>          
-          <input type="text" id="sim_taxacompra" name="sim_taxacompra" value="{% if form.initial.sim_taxacompra %}{{ form.initial.sim_taxacompra|stringformat:"f"  }}{% endif %}" class="form-control" required>
-        </div>
-
-        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-          <label for="sim_iof">IOF Anual %:</label>          
-          <input type="text" id="sim_iof" name="sim_iof" value="{% if form.initial.sim_iof %}{{ form.initial.sim_iof|stringformat:"f"  }}{% endif %}" class="form-control" required>
-        </div>
-
-        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-          <label for="sim_iofadicional">IOF Adicional %:</label>          
-          <input type="text" id="sim_iofadicional" name="sim_iofadicional" value="{% if form.initial.sim_iofadicional %}{{ form.initial.sim_iofadicional|stringformat:"f"  }}{% endif %}" class="form-control" required>
-        </div>
-
-        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-          <label for="sim_despesas">Despesas $ (-):</label>          
-          <input type="text" id="sim_despesas" name="sim_despesas" value="{% if form.instance.sim_despesas %}{{ form.instance.sim_despesas|stringformat:"f" }}{% else %}0{% endif %}" />
-        </div>
-
-        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-          <label for="sim_acrescimos">Acréscimos $ (+):</label>          
-          <input type="text" id="sim_acrescimos" name="sim_acrescimos" value="{% if form.instance.sim_acrescimos %}{{ form.instance.sim_acrescimos|stringformat:"f" }}{% else %}0{% endif %}" />
-        </div>
-          
-        <div class="form-group" style="display: inline-block; width: 12%; margin-right: 2%;">
-            <label for="sim_float">Float:</label>
-            <input type="text" id="sim_float" name="sim_float" value="{% if form.initial.sim_float %}{{ form.initial.sim_float|stringformat:"f"  }}{% endif %}" class="form-control" required>
-        </div>
-           
+        <fieldset>
+        <legend>Detalhes da Simulação</legend>
           <table>
-              <tr>
-                <th colspan="2">Detalhes da Simulação</th>
-              </tr>
-              <tr>
-                <td><label for="sim_vencimento1">Vencimento:</label></td>
-                <td><input type="date" id="sim_vencimento1" name="sim_vencimento1" value="{{ form.initial.sim_vencimento1|date:'Y-m-d' }}" required></td>
-                <td><input type="date" name="sim_vencimento2" value="{{ form.initial.sim_vencimento2|date:'Y-m-d' }}" aria-label="Data de Vencimento 2"></td>
-                <td><input type="date" name="sim_vencimento3" value="{{ form.initial.sim_vencimento3|date:'Y-m-d' }}" aria-label="Data de Vencimento 3"></td>
-                <td><input type="date" name="sim_vencimento4" value="{{ form.initial.sim_vencimento4|date:'Y-m-d' }}" aria-label="Data de Vencimento 4"></td>
-                <td><input type="date" name="sim_vencimento5" value="{{ form.initial.sim_vencimento5|date:'Y-m-d' }}" aria-label="Data de Vencimento 5"></td>
-                <td><input type="date" name="sim_vencimento6" value="{{ form.initial.sim_vencimento6|date:'Y-m-d' }}" aria-label="Data de Vencimento 6"></td>
-              </tr>
-              <tr>
-                <td><label for="sim_valortotal1">Valor Total:</label></td>
-                <td><input type="text" id="sim_valortotal1" name="sim_valortotal1" value="{{ form.instance.sim_valortotal1|stringformat:"f"  }}" required></td>
-                <td><input type="text" name="sim_valortotal2" value="{% if form.instance.sim_valortotal2 %}{{ form.instance.sim_valortotal2|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 2"></td>
-                <td><input type="text" name="sim_valortotal3" value="{% if form.instance.sim_valortotal3 %}{{ form.instance.sim_valortotal3|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 3"></td>
-                <td><input type="text" name="sim_valortotal4" value="{% if form.instance.sim_valortotal4 %}{{ form.instance.sim_valortotal4|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 4"></td>
-                <td><input type="text" name="sim_valortotal5" value="{% if form.instance.sim_valortotal5 %}{{ form.instance.sim_valortotal5|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 5"></td>
-                <td><input type="text" name="sim_valortotal6" value="{% if form.instance.sim_valortotal6 %}{{ form.instance.sim_valortotal6|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 6"></td>
-              </tr>
-              <tr>
-                <td><label for="sim_prazo1">Prazo:</label></td>
-                <td><input type="text" id="sim_prazo1" name="sim_prazo1" value="{{ form.instance.sim_prazo1 }}" required></td>
-                <td><input type="text" name="sim_prazo2" value="{{ form.instance.sim_prazo2 }}" aria-label="Prazo 2"></td>
-                <td><input type="text" name="sim_prazo3" value="{{ form.instance.sim_prazo3 }}" aria-label="Prazo 3"></td>
-                <td><input type="text" name="sim_prazo4" value="{{ form.instance.sim_prazo4 }}" aria-label="Prazo 4"></td>
-                <td><input type="text" name="sim_prazo5" value="{{ form.instance.sim_prazo5 }}" aria-label="Prazo 5"></td>
-                <td><input type="text" name="sim_prazo6" value="{{ form.instance.sim_prazo6 }}" aria-label="Prazo 6"></td>              
-              </tr>
-              <tr>
-                <td><label for="sim_taxadecompraefetiva1">Taxa de Compra Efetiva:</label></td>
-                <td><input type="text" id="sim_taxadecompraefetiva1" name="sim_taxadecompraefetiva1" value="{{ form.instance.sim_taxadecompraefetiva1 }}" required></td>
-                <td><input type="text" name="sim_taxadecompraefetiva2" value="{{ form.instance.sim_taxadecompraefetiva2 }}" aria-label="Taxa de Compra Efetiva 2"></td>
-                <td><input type="text" name="sim_taxadecompraefetiva3" value="{{ form.instance.sim_taxadecompraefetiva3 }}" aria-label="Taxa de Compra Efetiva 3"></td>
-                <td><input type="text" name="sim_taxadecompraefetiva4" value="{{ form.instance.sim_taxadecompraefetiva4 }}" aria-label="Taxa de Compra Efetiva 4"></td>
-                <td><input type="text" name="sim_taxadecompraefetiva5" value="{{ form.instance.sim_taxadecompraefetiva5 }}" aria-label="Taxa de Compra Efetiva 5"></td>
-                <td><input type="text" name="sim_taxadecompraefetiva6" value="{{ form.instance.sim_taxadecompraefetiva6 }}" aria-label="Taxa de Compra Efetiva 6"></td>              
-              </tr>
-              <tr>
-                <td><label for="sim_taxaperiodo1">Taxa Período:</label></td>
-                <td><input type="text" id="sim_taxaperiodo1" name="sim_taxaperiodo1" value="{{ form.instance.sim_taxaperiodo1 }}" required></td>
-                <td><input type="text" name="sim_taxaperiodo2" value="{{ form.instance.sim_taxaperiodo2 }}" aria-label="Taxa por Período 2"></td>
-                <td><input type="text" name="sim_taxaperiodo3" value="{{ form.instance.sim_taxaperiodo3 }}" aria-label="Taxa por Período 3"></td>
-                <td><input type="text" name="sim_taxaperiodo4" value="{{ form.instance.sim_taxaperiodo4 }}" aria-label="Taxa por Período 4"></td>
-                <td><input type="text" name="sim_taxaperiodo5" value="{{ form.instance.sim_taxaperiodo5 }}" aria-label="Taxa por Período 5"></td>
-                <td><input type="text" name="sim_taxaperiodo6" value="{{ form.instance.sim_taxaperiodo6 }}" aria-label="Taxa por Período 6"></td>
-              </tr>
-              <tr>
-                <td><label for="sim_valorcompra1">Valor de Compra:</label></td>
-                <td><input type="text" id="sim_valorcompra1" name="sim_valorcompra1" value="{{ form.instance.sim_valorcompra1 }}" required></td>
-                <td><input type="text" name="sim_valorcompra2" value="{{ form.instance.sim_valorcompra2 }}" aria-label="Valor de Compra 2"></td>
-                <td><input type="text" name="sim_valorcompra3" value="{{ form.instance.sim_valorcompra3 }}" aria-label="Valor de Compra 3"></td>
-                <td><input type="text" name="sim_valorcompra4" value="{{ form.instance.sim_valorcompra4 }}" aria-label="Valor de Compra 4"></td>
-                <td><input type="text" name="sim_valorcompra5" value="{{ form.instance.sim_valorcompra5 }}" aria-label="Valor de Compra 5"></td>
-                <td><input type="text" name="sim_valorcompra6" value="{{ form.instance.sim_valorcompra6 }}" aria-label="Valor de Compra 6"></td>
-              </tr>
-              <tr>
-                <td><label for="sim_valoriof1">Valor IOF:</label></td>
-                <td><input type="text" id="sim_valoriof1" name="sim_valoriof1" value="{{ form.instance.sim_valoriof1 }}" required></td>
-                <td><input type="text" name="sim_valoriof2" value="{{ form.instance.sim_valoriof2 }}" aria-label="Valor do IOF 2"></td>
-                <td><input type="text" name="sim_valoriof3" value="{{ form.instance.sim_valoriof3 }}" aria-label="Valor do IOF 3"></td>
-                <td><input type="text" name="sim_valoriof4" value="{{ form.instance.sim_valoriof4 }}" aria-label="Valor do IOF 4"></td>
-                <td><input type="text" name="sim_valoriof5" value="{{ form.instance.sim_valoriof5 }}" aria-label="Valor do IOF 5"></td>
-                <td><input type="text" name="sim_valoriof6" value="{{ form.instance.sim_valoriof6 }}" aria-label="Valor do IOF 6"></td>
-              </tr>
-              <tr>
-                <td><label for="sim_valoriofadicional1">Valor IOF Adicional:</label></td>
-                <td><input type="text" id="sim_valoriofadicional1" name="sim_valoriofadicional1" value="{{ form.instance.sim_valoriofadicional1 }}" required></td>
-                <td><input type="text" name="sim_valoriofadicional2" value="{{ form.instance.sim_valoriofadicional2 }}" aria-label="Valor Adicional do IOF 2"></td>
-                <td><input type="text" name="sim_valoriofadicional3" value="{{ form.instance.sim_valoriofadicional3 }}" aria-label="Valor Adicional do IOF 3"></td>
-                <td><input type="text" name="sim_valoriofadicional4" value="{{ form.instance.sim_valoriofadicional4 }}" aria-label="Valor Adicional do IOF 4"></td>
-                <td><input type="text" name="sim_valoriofadicional5" value="{{ form.instance.sim_valoriofadicional5 }}" aria-label="Valor Adicional do IOF 5"></td>
-                <td><input type="text" name="sim_valoriofadicional6" value="{{ form.instance.sim_valoriofadicional6 }}" aria-label="Valor Adicional do IOF 6"></td>
-              </tr>
-              <tr>
-                <td><label for="sim_valorliquido1">Valor Líquido:</label></td>
-                <td><input type="text" id="sim_valorliquido1" name="sim_valorliquido1" value="{{ form.instance.sim_valorliquido1 }}" required></td>
-                <td><input type="text" name="sim_valorliquido2" value="{{ form.instance.sim_valorliquido2 }}" aria-label="Valor Líquido 2"></td>
-                <td><input type="text" name="sim_valorliquido3" value="{{ form.instance.sim_valorliquido3 }}" aria-label="Valor Líquido 3"></td>
-                <td><input type="text" name="sim_valorliquido4" value="{{ form.instance.sim_valorliquido4 }}" aria-label="Valor Líquido 4"></td>
-                <td><input type="text" name="sim_valorliquido5" value="{{ form.instance.sim_valorliquido5 }}" aria-label="Valor Líquido 5"></td>
-                <td><input type="text" name="sim_valorliquido6" value="{{ form.instance.sim_valorliquido6 }}" aria-label="Valor Líquido 6"></td>
-              </tr>    
-          </table>   
-                <input type="submit" name="Salvar">
-                <button type="button" onclick="calcular()">Calcular</button> 
-                <button type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
-      </form>
-      </main>
-      <script>
-        function calcular() {
-          var dataSimulacao = new Date(document.getElementsByName('sim_datasimulacao')[0].value);
-          var myFloat = parseFloat(document.getElementsByName('sim_float')[0].value) || 0;
-      
-          for (var i = 1; i <= 6; i++) {
-            var campoVencimento = document.getElementsByName('sim_vencimento' + i)[0];
-            var campoPrazo = document.getElementsByName('sim_prazo' + i)[0];
-            var campoTaxaPeriodo = document.getElementsByName('sim_taxaperiodo' + i)[0];
-            var campoValorCompra = document.getElementsByName('sim_valorcompra' + i)[0];
-            var campoValorIOF = document.getElementsByName('sim_valoriof' + i)[0];
-            var campoValorIOFadicional = document.getElementsByName('sim_valoriofadicional' + i)[0];
-            var campoValorLiquido = document.getElementsByName('sim_valorliquido' + i)[0];
-            var campoDespesas = document.getElementsByName('sim_despesas')[0];
-            var campoAcrescimos = document.getElementsByName('sim_acrescimos')[0];
-      
-            if (campoVencimento && campoPrazo && campoTaxaPeriodo && campoValorCompra && campoValorIOF && campoValorIOFadicional && campoValorLiquido && campoDespesas && campoAcrescimos) {
-              var vencimento = new Date(campoVencimento.value);
-              var diferencaEmDias = Math.ceil((vencimento - dataSimulacao) / (1000 * 60 * 60 * 24));
-              var resultadoComFloat = diferencaEmDias + myFloat + 2;
-      
-              if (isNaN(resultadoComFloat)) {
-                campoPrazo.value = 0;
-                campoTaxaPeriodo.value = 0;
-                campoValorCompra.value = 0;
-                campoValorIOF.value = 0;
-                campoValorIOFadicional.value = 0;
-                campoValorLiquido.value = 0;
-              } else {
-                campoPrazo.value = resultadoComFloat;
-      
-                var taxaCompra = parseFloat(document.getElementsByName('sim_taxacompra')[0].value) || 0;
-                var taxaPeriodo = (taxaCompra / 30) * resultadoComFloat;
-                campoTaxaPeriodo.value = taxaPeriodo.toFixed(2);
-      
-                var valortotal = parseFloat(document.getElementsByName('sim_valortotal' + i)[0].value) || 0;
-                var valorCompra = (valortotal * taxaPeriodo) / 100;
-                campoValorCompra.value = valorCompra.toFixed(2);
-      
-                var iof = parseFloat(document.getElementsByName('sim_iof')[0].value) || 0;
-                var valoriof = (((iof / 365) * resultadoComFloat) * (valortotal - valorCompra)) / 100;
-                campoValorIOF.value = valoriof.toFixed(2);
-      
-                var iofadicional = parseFloat(document.getElementsByName('sim_iofadicional')[0].value) || 0;
-                var valoriofadicional = (iofadicional * (valortotal - valorCompra)) / 100;
-                campoValorIOFadicional.value = valoriofadicional.toFixed(2);
-      
-                if (i === 1) {
-                  var despesas = parseFloat(campoDespesas.value) || 0;
-                  var acrescimos = parseFloat(campoAcrescimos.value) || 0;
-                  var valorLiquido1 = valortotal - valorCompra - valoriof - valoriofadicional - despesas + acrescimos;
-                  campoValorLiquido.value = valorLiquido1.toFixed(2);
-                } else {
-                  var valorLiquido = valortotal - valorCompra - valoriof - valoriofadicional;
-                  campoValorLiquido.value = valorLiquido.toFixed(2);
-                }
-              }
-            } else {              
-              campoPrazo.value = 0;
-              campoTaxaPeriodo.value = 0;
-              campoValorCompra.value = 0;
-              campoValorIOF.value = 0;
-              campoValorIOFadicional.value = 0;
-              campoValorLiquido.value = 0;
-            }
-      
-            var campoValortotal = document.getElementsByName('sim_valortotal' + i)[0];
-            var campoTaxaCompra = document.getElementsByName('sim_taxacompra')[0];
-            var campoTaxaCompraEfetiva = document.getElementsByName('sim_taxadecompraefetiva' + i)[0];
-      
-            if (campoValortotal && campoTaxaCompra && campoTaxaCompraEfetiva) {
-              var valortotal = parseFloat(campoValortotal.value) || 0;
-              var taxaCompra = parseFloat(campoTaxaCompra.value) || 0;
-              var taxaCompraEfetiva = ((valortotal * (taxaCompra / 100)) / (valortotal - (valortotal * (taxaCompra / 100)))) * 100;
-              campoTaxaCompraEfetiva.value = isNaN(taxaCompraEfetiva) ? 0 : taxaCompraEfetiva.toFixed(2);
-            }
-          }
-        }
-      </script>
-      <script>
-        function irParaPaginaPrincipal() {
-            window.location.href = "http://127.0.0.1:8000/Inicio";
-        }
-    </script>        
-</body>
+            <tr>
+              <td><label class="label-diferente" for="sim_vencimento1">Vencimento:</label></td>
+              <td><input type="date" id="sim_vencimento1" name="sim_vencimento1" value="{{ form.initial.sim_vencimento1|date:'Y-m-d' }}" required></td>
+              <td><input type="date" name="sim_vencimento2" value="{{ form.initial.sim_vencimento2|date:'Y-m-d' }}" aria-label="Data de Vencimento 2"></td>
+              <td><input type="date" name="sim_vencimento3" value="{{ form.initial.sim_vencimento3|date:'Y-m-d' }}" aria-label="Data de Vencimento 3"></td>
+              <td><input type="date" name="sim_vencimento4" value="{{ form.initial.sim_vencimento4|date:'Y-m-d' }}" aria-label="Data de Vencimento 4"></td>
+              <td><input type="date" name="sim_vencimento5" value="{{ form.initial.sim_vencimento5|date:'Y-m-d' }}" aria-label="Data de Vencimento 5"></td>
+              <td><input type="date" name="sim_vencimento6" value="{{ form.initial.sim_vencimento6|date:'Y-m-d' }}" aria-label="Data de Vencimento 6"></td>
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_valortotal1">Valor Total:</label></td>
+              <td><input type="text" id="sim_valortotal1" name="sim_valortotal1" value="{{ form.instance.sim_valortotal1|stringformat:"f"  }}" required></td>
+              <td><input type="text" name="sim_valortotal2" value="{% if form.instance.sim_valortotal2 %}{{ form.instance.sim_valortotal2|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 2"></td>
+              <td><input type="text" name="sim_valortotal3" value="{% if form.instance.sim_valortotal3 %}{{ form.instance.sim_valortotal3|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 3"></td>
+              <td><input type="text" name="sim_valortotal4" value="{% if form.instance.sim_valortotal4 %}{{ form.instance.sim_valortotal4|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 4"></td>
+              <td><input type="text" name="sim_valortotal5" value="{% if form.instance.sim_valortotal5 %}{{ form.instance.sim_valortotal5|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 5"></td>
+              <td><input type="text" name="sim_valortotal6" value="{% if form.instance.sim_valortotal6 %}{{ form.instance.sim_valortotal6|stringformat:"f" }}{% else %}0{% endif %}" aria-label="Valor Total 6"></td>
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_prazo1">Prazo:</label></td>
+              <td><input type="text" id="sim_prazo1" name="sim_prazo1" value="{{ form.instance.sim_prazo1 }}" required></td>
+              <td><input type="text" name="sim_prazo2" value="{{ form.instance.sim_prazo2 }}" aria-label="Prazo 2"></td>
+              <td><input type="text" name="sim_prazo3" value="{{ form.instance.sim_prazo3 }}" aria-label="Prazo 3"></td>
+              <td><input type="text" name="sim_prazo4" value="{{ form.instance.sim_prazo4 }}" aria-label="Prazo 4"></td>
+              <td><input type="text" name="sim_prazo5" value="{{ form.instance.sim_prazo5 }}" aria-label="Prazo 5"></td>
+              <td><input type="text" name="sim_prazo6" value="{{ form.instance.sim_prazo6 }}" aria-label="Prazo 6"></td>              
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_taxadecompraefetiva1">Taxa de Compra Efetiva:</label></td>
+              <td><input type="text" id="sim_taxadecompraefetiva1" name="sim_taxadecompraefetiva1" value="{{ form.instance.sim_taxadecompraefetiva1 }}" required></td>
+              <td><input type="text" name="sim_taxadecompraefetiva2" value="{{ form.instance.sim_taxadecompraefetiva2 }}" aria-label="Taxa de Compra Efetiva 2"></td>
+              <td><input type="text" name="sim_taxadecompraefetiva3" value="{{ form.instance.sim_taxadecompraefetiva3 }}" aria-label="Taxa de Compra Efetiva 3"></td>
+              <td><input type="text" name="sim_taxadecompraefetiva4" value="{{ form.instance.sim_taxadecompraefetiva4 }}" aria-label="Taxa de Compra Efetiva 4"></td>
+              <td><input type="text" name="sim_taxadecompraefetiva5" value="{{ form.instance.sim_taxadecompraefetiva5 }}" aria-label="Taxa de Compra Efetiva 5"></td>
+              <td><input type="text" name="sim_taxadecompraefetiva6" value="{{ form.instance.sim_taxadecompraefetiva6 }}" aria-label="Taxa de Compra Efetiva 6"></td>              
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_taxaperiodo1">Taxa Período:</label></td>
+              <td><input type="text" id="sim_taxaperiodo1" name="sim_taxaperiodo1" value="{{ form.instance.sim_taxaperiodo1 }}" required></td>
+              <td><input type="text" name="sim_taxaperiodo2" value="{{ form.instance.sim_taxaperiodo2 }}" aria-label="Taxa por Período 2"></td>
+              <td><input type="text" name="sim_taxaperiodo3" value="{{ form.instance.sim_taxaperiodo3 }}" aria-label="Taxa por Período 3"></td>
+              <td><input type="text" name="sim_taxaperiodo4" value="{{ form.instance.sim_taxaperiodo4 }}" aria-label="Taxa por Período 4"></td>
+              <td><input type="text" name="sim_taxaperiodo5" value="{{ form.instance.sim_taxaperiodo5 }}" aria-label="Taxa por Período 5"></td>
+              <td><input type="text" name="sim_taxaperiodo6" value="{{ form.instance.sim_taxaperiodo6 }}" aria-label="Taxa por Período 6"></td>
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_valorcompra1">Valor de Compra:</label></td>
+              <td><input type="text" id="sim_valorcompra1" name="sim_valorcompra1" value="{{ form.instance.sim_valorcompra1 }}" required></td>
+              <td><input type="text" name="sim_valorcompra2" value="{{ form.instance.sim_valorcompra2 }}" aria-label="Valor de Compra 2"></td>
+              <td><input type="text" name="sim_valorcompra3" value="{{ form.instance.sim_valorcompra3 }}" aria-label="Valor de Compra 3"></td>
+              <td><input type="text" name="sim_valorcompra4" value="{{ form.instance.sim_valorcompra4 }}" aria-label="Valor de Compra 4"></td>
+              <td><input type="text" name="sim_valorcompra5" value="{{ form.instance.sim_valorcompra5 }}" aria-label="Valor de Compra 5"></td>
+              <td><input type="text" name="sim_valorcompra6" value="{{ form.instance.sim_valorcompra6 }}" aria-label="Valor de Compra 6"></td>
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_valoriof1">Valor IOF:</label></td>
+              <td><input type="text" id="sim_valoriof1" name="sim_valoriof1" value="{{ form.instance.sim_valoriof1 }}" required></td>
+              <td><input type="text" name="sim_valoriof2" value="{{ form.instance.sim_valoriof2 }}" aria-label="Valor do IOF 2"></td>
+              <td><input type="text" name="sim_valoriof3" value="{{ form.instance.sim_valoriof3 }}" aria-label="Valor do IOF 3"></td>
+              <td><input type="text" name="sim_valoriof4" value="{{ form.instance.sim_valoriof4 }}" aria-label="Valor do IOF 4"></td>
+              <td><input type="text" name="sim_valoriof5" value="{{ form.instance.sim_valoriof5 }}" aria-label="Valor do IOF 5"></td>
+              <td><input type="text" name="sim_valoriof6" value="{{ form.instance.sim_valoriof6 }}" aria-label="Valor do IOF 6"></td>
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_valoriofadicional1">Valor IOF Adicional:</label></td>
+              <td><input type="text" id="sim_valoriofadicional1" name="sim_valoriofadicional1" value="{{ form.instance.sim_valoriofadicional1 }}" required></td>
+              <td><input type="text" name="sim_valoriofadicional2" value="{{ form.instance.sim_valoriofadicional2 }}" aria-label="Valor Adicional do IOF 2"></td>
+              <td><input type="text" name="sim_valoriofadicional3" value="{{ form.instance.sim_valoriofadicional3 }}" aria-label="Valor Adicional do IOF 3"></td>
+              <td><input type="text" name="sim_valoriofadicional4" value="{{ form.instance.sim_valoriofadicional4 }}" aria-label="Valor Adicional do IOF 4"></td>
+              <td><input type="text" name="sim_valoriofadicional5" value="{{ form.instance.sim_valoriofadicional5 }}" aria-label="Valor Adicional do IOF 5"></td>
+              <td><input type="text" name="sim_valoriofadicional6" value="{{ form.instance.sim_valoriofadicional6 }}" aria-label="Valor Adicional do IOF 6"></td>
+            </tr>
+            <tr>
+              <td><label class="label-diferente" for="sim_valorliquido1">Valor Líquido:</label></td>
+              <td><input type="text" id="sim_valorliquido1" name="sim_valorliquido1" value="{{ form.instance.sim_valorliquido1 }}" required></td>
+              <td><input type="text" name="sim_valorliquido2" value="{{ form.instance.sim_valorliquido2 }}" aria-label="Valor Líquido 2"></td>
+              <td><input type="text" name="sim_valorliquido3" value="{{ form.instance.sim_valorliquido3 }}" aria-label="Valor Líquido 3"></td>
+              <td><input type="text" name="sim_valorliquido4" value="{{ form.instance.sim_valorliquido4 }}" aria-label="Valor Líquido 4"></td>
+              <td><input type="text" name="sim_valorliquido5" value="{{ form.instance.sim_valorliquido5 }}" aria-label="Valor Líquido 5"></td>
+              <td><input type="text" name="sim_valorliquido6" value="{{ form.instance.sim_valorliquido6 }}" aria-label="Valor Líquido 6"></td>
+            </tr>    
+          </table>
+        </fieldset>
+        <div>
+          <button class="calcular-btn" type="button" onclick="calcularsimulacao()">CALCULAR</button> 
+        </div>
+        <div>
+          <button class="cadastrar-btn" type="submit" name="Cadastrar SIMULAÇÃO">Cadastrar SIMULAÇÃO</button>
+        </div>
+        <div>
+          <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página Principal</button>
+        </div>
+    </form>
+  </main>
 
+  <footer>
+    <p>Sistemas CAVT 2023 - 2024. Todos os direitos reservados. Segurança e privacidade.</p>
+  </footer>
+
+  <script src="../static/admin/js/script.js"></script>
+    
+</body>
 </html>
