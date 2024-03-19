@@ -26,6 +26,7 @@ class Dcliente(models.Model):
     cli_taxarecompra=models.DecimalField(max_digits=10, decimal_places=2)
     cli_valortotaloperacao=models.DecimalField(max_digits=17, decimal_places=2)
     cli_datacadastro=models.DateField()
+    cli_datafundacao=models.DateField()
     def __str__(self):
         return f'{self.cli_nomefantasia}'
 
@@ -57,6 +58,7 @@ class Dfactoring(models.Model):
     fac_taxarecompra=models.DecimalField(max_digits=10, decimal_places=2)
     fac_valortotaloperacao=models.DecimalField(max_digits=10, decimal_places=2)
     fac_datacadastro=models.DateField()
+    fac_datafundacao=models.DateField()
     def __str__(self):
         return f'{self.fac_nomefantasia}'
 
@@ -87,12 +89,14 @@ class Dpessoas(models.Model):
     cli_id=models.ForeignKey(Dcliente, on_delete=models.CASCADE)
     fac_id=models.ForeignKey(Dfactoring, on_delete=models.CASCADE)
     status_CHOICES=(
-        ('RE', 'Responsável Empresa'),
-        ('RS', 'Responsável Solidário'),
-        ('RT', 'Responsável Testemunha'),
+        ('RE', 'RESPONSÁVEL EMPRESA'),
+        ('RS', 'RESPONSÁVEL SOLIDÁRIO'),
+        ('RT', 'RESPONSÁVEL TESTEMUNHA'),
     )
     pes_tipopessoa=models.CharField(max_length=2, choices=status_CHOICES)    
     pes_datacadastro=models.DateField()
+    pes_datanascimento=models.DateField()
+
     def __str__(self):
         return f'{self.pes_nome}'
 
@@ -190,6 +194,8 @@ class Doperacao(models.Model):
     ope_iofadicional = models.DecimalField(max_digits=10, decimal_places=2)
     ope_despesas = models.DecimalField(max_digits=10, decimal_places=2)
     ope_acrescimos = models.DecimalField(max_digits=10, decimal_places=2)
+    ope_recompra = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    ope_juros = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     ope_float = models.IntegerField()
     ope_numtitulo1 = models.IntegerField(default=0)
     ope_razaosocial1 = models.CharField(max_length=50)

@@ -141,6 +141,14 @@ def inserir_contratomae(request):
 def listar_contratomae(request):
     contratomae=Dcontratomae.objects.all()
     return render(request, 'listar_contratomae.html', {'contratomae':contratomae})
+def traduzir_estado_civil(abreviacao):
+    traducao = {
+        'S': 'SOLTEIRO',
+        'C': 'CASADO',
+        'D': 'DIVORCIADO',
+        'V': 'VIÚVO'
+    }
+    return traducao.get(abreviacao, '')
 def gerar_contrato_word(request, cma_id):
     contrato = Dcontratomae.objects.get(cma_id=cma_id)
     cliente_associado = contrato.cli_id
@@ -148,13 +156,41 @@ def gerar_contrato_word(request, cma_id):
     pessoas_associadas_re = Dpessoas.objects.filter(cli_id_id=contrato.cli_id.cli_id, pes_tipopessoa='RE')
     pessoas_associadas_rs = Dpessoas.objects.filter(cli_id_id=contrato.cli_id.cli_id, pes_tipopessoa='RS')
     pessoas_associadas_rt = Dpessoas.objects.filter(fac_id_id=contrato.fac_id.fac_id, pes_tipopessoa='RT')
-    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\ContratoPadrao.docx"
+    
+    template_path = r"D:\Users\carlo\OneDrive\Programação\Factoring\Documentos\ContratoPadrao.docx"
+    
     # Formatação vencimento
     data_validade_contrato = contrato.cma_validadecontrato
     validade_formatada = data_validade_contrato.strftime('%d/%m/%Y')
-    # Caminho de saída do documento gerado
-    output_path = f"CONTRATO FOMENTO MERCANTIL - {cma_id}.docx"
+
+    data_fundacao_cliente = cliente_associado.cli_datafundacao.strftime("%d/%m/%Y")
+
+    data_fundacao_factoring = factoring_associado.fac_datafundacao.strftime("%d/%m/%Y")
+
+    data_nascimento_pessoa0 = ''
+    data_nascimento_pessoa1 = ''
+    if pessoas_associadas_re:
+        data_nascimento_pessoa0 = pessoas_associadas_re[0].pes_datanascimento.strftime("%d/%m/%Y")
+        if len(pessoas_associadas_re) > 1:
+            data_nascimento_pessoa1 = pessoas_associadas_re[1].pes_datanascimento.strftime("%d/%m/%Y")
+
+    data_nascimento_pessoa00 = ''
+    data_nascimento_pessoa01 = ''
+    if pessoas_associadas_rs:
+        data_nascimento_pessoa00 = pessoas_associadas_rs[0].pes_datanascimento.strftime("%d/%m/%Y")
+        if len(pessoas_associadas_rs) > 1:
+            data_nascimento_pessoa01 = pessoas_associadas_rs[1].pes_datanascimento.strftime("%d/%m/%Y")
+
+    # Caminho base do diretório "Downloads"
+    downloads_dir = r"D:\Users\carlo\Downloads"
+    # Nome do arquivo
+    file_name = f"{contrato.cma_id2} - CONTRATO FOMENTO MERCANTIL - {cliente_associado.cli_nomefantasia}.docx"
+    # Caminho completo do arquivo
+    output_path = os.path.join(downloads_dir, file_name)
     doc = DocxTemplate(template_path)
+    # Salvar o documento gerado no caminho especificado
+    doc.save(output_path)
+
     # Defina os dados a serem inseridos no modelo
     context = {
         'ID_CONTRATO': contrato.cma_id2,
@@ -165,6 +201,7 @@ def gerar_contrato_word(request, cma_id):
         'CNPJ_CLIENTE': f'CNPJ: ' + cliente_associado.cli_cnpj,
         'IM_CLIENTE': f'INSC. MUNICIPAL: {cliente_associado.cli_im}' if cliente_associado.cli_im else '',
         'IE_CLIENTE': f'INSC. ESTADUAL: {cliente_associado.cli_ie}' if cliente_associado.cli_ie else '',
+        'DATAFUNDACAO_CLIENTE': f'FUNDAÇÃO: {data_fundacao_cliente}',
         'EMAIL1_CLIENTE': f'E-MAIL: ' + cliente_associado.cli_email1,
         'TELEFONE1_CLIENTE': f'TELEFONE: ' + cliente_associado.cli_telefone1,
         'ENDERECO_CLIENTE': f'ENDEREÇO: ' + cliente_associado.cli_endereco,
@@ -177,8 +214,9 @@ def gerar_contrato_word(request, cma_id):
         'ID_FACTORING': factoring_associado.fac_id,
         'RAZAOSOCIAL_FACTORING':f'RAZÃO SOCIAL: ' +  factoring_associado.fac_razaosocial,
         'CNPJ_FACTORING':f'CNPJ: ' +  factoring_associado.fac_cnpj,
-        'IM_FACTORING': f'INSC. MUNICIPAL: ' + factoring_associado.fac_im,
-        'IE_FACTORING': f'INSC. ESTADUAL: ' + factoring_associado.fac_ie,
+        'IM_FACTORING': f'INSC. MUNICIPAL: {factoring_associado.fac_im}' if factoring_associado.fac_im else '',
+        'IE_FACTORING': f'INSC. ESTADUAL: {factoring_associado.fac_ie}' if factoring_associado.fac_ie else '',
+        'DATAFUNDACAO_FACTORING': f'FUNDAÇÃO: {data_fundacao_factoring}',
         'EMAIL1_FACTORING': f'E-MAIL: ' + factoring_associado.fac_email1,
         'TELEFONE1_FACTORING': f'TELEFONE: ' + factoring_associado.fac_telefone1,
         'ENDERECO_FACTORING': f'ENDEREÇO: ' + factoring_associado.fac_endereco,
@@ -194,8 +232,10 @@ def gerar_contrato_word(request, cma_id):
         'CPF_PESSOA1': f'CPF: ' + pessoas_associadas_re[1].pes_cpf if len(pessoas_associadas_re) > 1 else '',
         'RG_PESSOA0': f'RG: ' + pessoas_associadas_re[0].pes_rg if pessoas_associadas_re else '',
         'RG_PESSOA1': f'RG: ' + pessoas_associadas_re[1].pes_rg if len(pessoas_associadas_re) > 1 else '',
-        'ESTADOCIVIL_PESSOA0': f'ESTADO CÍVIL: ' + pessoas_associadas_re[0].pes_estadocivil if pessoas_associadas_re else '',
-        'ESTADOCIVIL_PESSOA1': f'ESTADO CÍVIL: ' + pessoas_associadas_re[1].pes_estadocivil if len(pessoas_associadas_re) > 1 else '',
+        'DATANASCIMENTO_PESSOA0': f'NASCIMENTO: {data_nascimento_pessoa0}',
+        'DATANASCIMENTO_PESSOA1': f'NASCIMENTO: {data_nascimento_pessoa1}' if data_nascimento_pessoa1 else '',
+        'ESTADOCIVIL_PESSOA0': f'ESTADO CÍVIL: ' + traduzir_estado_civil(pessoas_associadas_re[0].pes_estadocivil) if pessoas_associadas_re else '',
+        'ESTADOCIVIL_PESSOA1': f'ESTADO CÍVIL: ' + traduzir_estado_civil(pessoas_associadas_re[1].pes_estadocivil) if len(pessoas_associadas_re) > 1 else '',
         'NACIONALIDADE_PESSOA0': f'NACIONALIDADE: ' + pessoas_associadas_re[0].pes_nacionalidade if pessoas_associadas_re else '',
         'NACIONALIDADE_PESSOA1': f'NACIONALIDADE: ' + pessoas_associadas_re[1].pes_nacionalidade if len(pessoas_associadas_re) > 1 else '',
         'EMAIL1_PESSOA0': f'E-MAIL: ' + pessoas_associadas_re[0].pes_email1 if pessoas_associadas_re else '',
@@ -206,8 +246,8 @@ def gerar_contrato_word(request, cma_id):
         'PROFISSAO_PESSOA1': f'PROFISSÃO: ' + pessoas_associadas_re[1].pes_profissao if len(pessoas_associadas_re) > 1 else '',
         'ENDERECO_PESSOA0': f'ENDEREÇO: ' + pessoas_associadas_re[0].pes_endereco if pessoas_associadas_re else '',
         'ENDERECO_PESSOA1': f'ENDEREÇO: ' + pessoas_associadas_re[1].pes_endereco if len(pessoas_associadas_re) > 1 else '',
-        'COMPLEMENTOENDERECO_PESSOA0': f'COMPLEMENTO: ' + pessoas_associadas_re[0].pes_complementoendereco if pessoas_associadas_re else '',
-        'COMPLEMENTOENDERECO_PESSOA1': f'COMPLEMENTO: ' + pessoas_associadas_re[1].pes_complementoendereco if len(pessoas_associadas_re) > 1 else '',
+        'COMPLEMENTOENDERECO_PESSOA0': f'COMPLEMENTO: ' + pessoas_associadas_re[0].pes_complementoendereco if pessoas_associadas_re and pessoas_associadas_re[0].pes_complementoendereco else '',
+        'COMPLEMENTOENDERECO_PESSOA1': f'COMPLEMENTO: ' + pessoas_associadas_re[1].pes_complementoendereco if len(pessoas_associadas_re) > 1 and pessoas_associadas_re[1].pes_complementoendereco else '',
         'CEP_PESSOA0': f'CEP: ' + pessoas_associadas_re[0].pes_cep if pessoas_associadas_re else '',
         'CEP_PESSOA1': f'CEP: ' + pessoas_associadas_re[1].pes_cep if len(pessoas_associadas_re) > 1 else '',
         'BAIRRO_PESSOA0': f'BAIRRO: ' + pessoas_associadas_re[0].pes_bairro if pessoas_associadas_re else '',
@@ -226,8 +266,10 @@ def gerar_contrato_word(request, cma_id):
         'CPF_PESSOA001': f'CPF: ' + pessoas_associadas_rt[1].pes_cpf if len(pessoas_associadas_rt) > 1 else '',
         'RG_PESSOA00': f'RG: ' + pessoas_associadas_rs[0].pes_rg if pessoas_associadas_rs else '',
         'RG_PESSOA01': f'RG: ' + pessoas_associadas_rs[1].pes_rg if len(pessoas_associadas_rs) > 1 else '',
-        'ESTADOCIVIL_PESSOA00': f'ESTADO CÍVIL: ' + pessoas_associadas_rs[0].pes_estadocivil if pessoas_associadas_rs else '',
-        'ESTADOCIVIL_PESSOA01': f'ESTADO CÍVIL: ' + pessoas_associadas_rs[1].pes_estadocivil if len(pessoas_associadas_rs) > 1 else '',
+        'DATANASCIMENTO_PESSOA00': f'NASCIMENTO: {data_nascimento_pessoa00}',
+        'DATANASCIMENTO_PESSOA01': f'NASCIMENTO: {data_nascimento_pessoa01}' if data_nascimento_pessoa01 else '',
+        'ESTADOCIVIL_PESSOA00': f'ESTADO CÍVIL: ' + traduzir_estado_civil(pessoas_associadas_rs[0].pes_estadocivil) if pessoas_associadas_rs else '',
+        'ESTADOCIVIL_PESSOA01': f'ESTADO CÍVIL: ' + traduzir_estado_civil(pessoas_associadas_rs[1].pes_estadocivil) if len(pessoas_associadas_rs) > 1 else '',
         'NACIONALIDADE_PESSOA00': f'NACIONALIDADE: ' + pessoas_associadas_rs[0].pes_nacionalidade if pessoas_associadas_rs else '',
         'NACIONALIDADE_PESSOA01': f'NACIONALIDADE: ' + pessoas_associadas_rs[1].pes_nacionalidade if len(pessoas_associadas_rs) > 1 else '',
         'EMAIL1_PESSOA00': f'E-MAIL: ' + pessoas_associadas_rs[0].pes_email1 if pessoas_associadas_rs else '',
@@ -238,8 +280,8 @@ def gerar_contrato_word(request, cma_id):
         'PROFISSAO_PESSOA01': f'PROFISSÃO: ' + pessoas_associadas_rs[1].pes_profissao if len(pessoas_associadas_rs) > 1 else '',
         'ENDERECO_PESSOA00': f'ENDEREÇO: ' + pessoas_associadas_rs[0].pes_endereco if pessoas_associadas_rs else '',
         'ENDERECO_PESSOA01': f'ENDEREÇO :' + pessoas_associadas_rs[1].pes_endereco if len(pessoas_associadas_rs) > 1 else '',
-        'COMPLEMENTOENDERECO_PESSOA00': f'COMPLEMENTO: ' + pessoas_associadas_rs[0].pes_complementoendereco if pessoas_associadas_rs else '',
-        'COMPLEMENTOENDERECO_PESSOA01': f'COMPLEMENTO: ' + pessoas_associadas_rs[1].pes_complementoendereco if len(pessoas_associadas_rs) > 1 else '',
+        'COMPLEMENTOENDERECO_PESSOA00': f'COMPLEMENTO: ' + pessoas_associadas_rs[0].pes_complementoendereco if pessoas_associadas_rs and pessoas_associadas_rs[0].pes_complementoendereco else '',
+        'COMPLEMENTOENDERECO_PESSOA01': f'COMPLEMENTO: ' + pessoas_associadas_rs[1].pes_complementoendereco if len(pessoas_associadas_rs) > 1 and pessoas_associadas_rs[1].pes_complementoendereco else '',
         'CEP_PESSOA00': f'CEP: ' + pessoas_associadas_rs[0].pes_cep if pessoas_associadas_rs else '',
         'CEP_PESSOA01': f'CEP: ' + pessoas_associadas_rs[1].pes_cep if len(pessoas_associadas_rs) > 1 else '',
         'BAIRRO_PESSOA00': f'BAIRRO: ' + pessoas_associadas_rs[0].pes_bairro if pessoas_associadas_rs else '',
@@ -253,7 +295,7 @@ def gerar_contrato_word(request, cma_id):
     doc.save(output_path)
     with open(output_path, 'rb') as doc_file:
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        response['Content-Disposition'] = f'attachment; filename=CONTRATO FOMENTO MERCANTIL - {cma_id}.docx'
+        response['Content-Disposition'] = f'attachment; filename={contrato.cma_id2} - CONTRATO FOMENTO MERCANTIL - {cliente_associado.cli_nomefantasia}.docx'
     return response
 def editar_contratomae(request, id):
     contratomae=Dcontratomae.objects.get(cma_id=id)
@@ -293,10 +335,19 @@ def gerar_simulacao_word(request, sim_id):
     simulacao = Dsimulacao.objects.get(sim_id=sim_id)
     cliente_associado = simulacao.cli_id
     factoring_associado = simulacao.fac_id
-    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\SimulacaoPadrao.docx"     
-    # Caminho de saída do documento gerado
-    output_path = f"SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx"
+    
+    template_path = r"D:\Users\carlo\OneDrive\Programação\Factoring\Documentos\SimulacaoPadrao.docx"     
+    
+    # Caminho base do diretório "Downloads"
+    downloads_dir = r"D:\Users\carlo\Downloads"
+    # Nome do arquivo
+    file_name = f"SIMULACAO OPER {sim_id} {cliente_associado.cli_nomefantasia} {simulacao.sim_datasimulacao}.docx"
+    # Caminho completo do arquivo
+    output_path = os.path.join(downloads_dir, file_name)
     doc = DocxTemplate(template_path)
+    # Salvar o documento gerado no caminho especificado
+    doc.save(output_path)
+    
     # Defina os dados a serem inseridos no modelo
     context = {
         'ID_SIM': simulacao.sim_id,
@@ -407,7 +458,7 @@ def gerar_simulacao_word(request, sim_id):
     doc.save(output_path)
     with open(output_path, 'rb') as doc_file:
         response = HttpResponse(doc_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        response['Content-Disposition'] = f'attachment; filename=SIMULACAO OPERACAO DE FOMENTO MERCANTIL - {sim_id}.docx'
+        response['Content-Disposition'] = f'attachment; filename=SIMULACAO OPER {sim_id} {cliente_associado.cli_nomefantasia} {simulacao.sim_datasimulacao}.docx'
     return response
 def editar_simulacao(request, id):
     simulacao=Dsimulacao.objects.get(sim_id=id)
@@ -478,10 +529,19 @@ def gerar_operacao_word(request, ope_id):
     factoring_associado = operacao.fac_id       
     pessoas_associadas_rs = Dpessoas.objects.filter(cli_id_id=operacao.cli_id.cli_id, pes_tipopessoa='RS')
     pessoas_associadas_rt = Dpessoas.objects.filter(fac_id_id=operacao.fac_id.fac_id, pes_tipopessoa='RT')
-    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\OperacaoPadrao.docx"     
-    # Caminho de saída do documento gerado
-    output_path = f"ADITIVO OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx"
+
+    template_path = r"D:\Users\carlo\OneDrive\Programação\Factoring\Documentos\OperacaoPadrao.docx"     
+
+    # Caminho base do diretório "Downloads"
+    downloads_dir = r"D:\Users\carlo\Downloads"
+    # Nome do arquivo
+    file_name = f"ADITIVO OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx"
+  # Caminho completo do arquivo
+    output_path = os.path.join(downloads_dir, file_name)
     doc = DocxTemplate(template_path)
+    # Salvar o documento gerado no caminho especificado
+    doc.save(output_path)
+
     # Defina os dados a serem inseridos no modelo
     context = {        
         'ID_OPE': operacao.ope_id,
@@ -524,6 +584,8 @@ def gerar_operacao_word(request, ope_id):
         'VENC6': operacao.ope_vencimento6.strftime('%d/%m/%Y') if operacao.ope_vencimento6 else '',
         'DESP': f' {operacao.ope_despesas:,.2f}'.replace(',', '.'),
         'ACRE': f' {operacao.ope_acrescimos:,.2f}'.replace(',', '.'),
+        'RECO': f' {operacao.ope_recompra:,.2f}'.replace(',', '.'),
+        'JURO': f' {operacao.ope_juros:,.2f}'.replace(',', '.'),
         'VALTT': f' {(operacao.ope_valortotal1 + operacao.ope_valortotal2 + operacao.ope_valortotal3 + operacao.ope_valortotal4 + operacao.ope_valortotal5 + operacao.ope_valortotal6):,.2f}'.replace(',', '.'),
         'COUNT': (sum(1 for valor in [operacao.ope_valortotal1, operacao.ope_valortotal2, operacao.ope_valortotal3, operacao.ope_valortotal4, operacao.ope_valortotal5, operacao.ope_valortotal6] if valor is not None and valor > 0)),
         'COMPRATT': f' {(operacao.ope_valorcompra1 + operacao.ope_valorcompra2 + operacao.ope_valorcompra3 + operacao.ope_valorcompra4 + operacao.ope_valorcompra5 + operacao.ope_valorcompra6):,.2f}'.replace(',', '.'),
@@ -567,9 +629,20 @@ def gerar_promissoria_word(request, ope_id):
         maior_data_formatada = maior_data.strftime('%d/%m/%Y')
     else:
         maior_data_formatada = ''
-    template_path = r"D:\Users\carlo\OneDrive - Serviço Nacional de Aprendizagem Comercial - SENAC RN\DEVE\Python_Django\Factoring\Documentos\NotaPromissoriaPadrao.docx"         
-    output_path = f"PROMISSORIA OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx"
+    
+    # Caminho para arquivo Padrão
+    template_path = r"D:\Users\carlo\OneDrive\Programação\Factoring\Documentos\NotaPromissoriaPadrao.docx"     
+
+    # Caminho base do diretório "Downloads"
+    downloads_dir = r"D:\Users\carlo\Downloads"  
+    #Nome do arquivo
+    file_name = f"PROMISSORIA OPER {ope_id} {cliente_associado.cli_nomefantasia} {operacao.ope_dataoperacao}.docx"
+    # Caminho completo do arquivo
+    output_path = os.path.join(downloads_dir, file_name)
     doc = DocxTemplate(template_path)
+    # Salvar o documento gerado no caminho especificado
+    doc.save(output_path)
+
     # Defina os dados a serem inseridos no modelo
     context = {        
         'ID_OPE': operacao.ope_id,

@@ -28,6 +28,20 @@ h1 {
     color: rgb(70, 61, 13);
 }
 
+#searchInput {
+    margin-top: 20px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 500px; /* Ajuste conforme necessário */
+}
+
+#searchInput:focus {
+    outline: none; /* Remove a borda de foco padrão */
+    border-color: dodgerblue; /* Altere a cor da borda quando o elemento está em foco */
+}
+
 table {
     width: 100%;
     max-width: 100%;
@@ -191,6 +205,42 @@ input {
     margin: 10px;
 }
 
+.pagina-principal-btn {
+    padding: 10px;
+    background-color: #d5d9dc;
+    border: 1px solid rgb(189, 169, 57);
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin: 10px 0px 10px 0px;
+}
+
+.exportar-btn {
+    padding: 10px;
+    background-color: #d5d9dc;
+    border: 1px solid rgb(189, 169, 57);
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 10px;
+    margin: 10px 0px 10px 0px;
+    clear: both; /* Adiciona esta propriedade */
+}
+
+.exportar-btn:hover {
+    background-color: #becbd4; /* Cor de fundo verde mais escura quando hover */
+}
+
+
 .generate-word {
     padding: 10px;
     width: 120px;
@@ -204,20 +254,6 @@ input {
     cursor: pointer;
     font-weight: bold;
     margin: 10px;
-}
-
-.pagina-principal-btn {
-    padding: 10px;
-    background-color: #d5d9dc;
-    border: 1px solid rgb(189, 169, 57);
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    color: black;
-    float: left;
-    margin-right: 10px;
-    margin: 10px 0px 10px 0px;
 }
 
 button:hover {

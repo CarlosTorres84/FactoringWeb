@@ -24,6 +24,7 @@
 
     <main> 
         <form>
+            <input type="text" id="searchInput" placeholder="Buscar qualquer informação...">
             <fieldset>
                 <table class="table">
                     <thead>
@@ -48,7 +49,7 @@
                             <td>R$ {{i.cli_valortotaloperacao}}</td>
                             <td>
                                 <div>
-                                    <a class="edit-btn" href="{% url 'editar_clientes' i.cli_id %}">Editar</a>
+                                    <a class="edit-btn" href="{% url 'editar_clientes' i.cli_id %}">Detalhes/ Editar</a>
                                 </div>
                             </td>
                             <td>

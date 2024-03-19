@@ -9,6 +9,10 @@ $(document).ready(function(){
     $('#fac_telefone2').mask('00 00000-0000');
     $('#fac_cep').mask('00000-000');
     $('#fac_taxacompra').mask('0.00');
+    $('#fac_iof').mask('0.00');
+    $('#fac_iofadicional').mask('0.00');
+    $('#fac_pis').mask('0.00');
+    $('#fac_cofins').mask('0.00');
     $('#fac_multa').mask('0.00');
     $('#fac_juros').mask('0.00');
     $('#fac_taxarecompra').mask('0.00');
@@ -38,12 +42,12 @@ $(document).ready(function(){
 });
 // HTML Inserir Simulação
 $(document).ready(function(){
-    $('#sim_taxacompra').mask('0.00');
-    $('#sim_iof').mask('0.00');
-    $('#sim_iofadicional').mask('0.00');
-    $('#sim_despesas').mask('0.00');
-    $('#sim_acrescimos').mask('0.00');
-    $('#sim_float').mask('0.00');
+  $('#sim_taxacompra').mask('0.00');
+  $('#sim_iof').mask('0.00');
+  $('#sim_iofadicional').mask('0.00');
+  $('#sim_despesas').mask('0.00');
+  $('#sim_acrescimos').mask('0.00');
+  $('#sim_float').mask('0');
 });
 // HTML Inserir Operação
 $(document).ready(function(){
@@ -68,9 +72,11 @@ $(document).ready(function(){
   $('#ope_taxacompra').mask('0.00');
   $('#ope_iof').mask('0.00');
   $('#ope_iofadicional').mask('0.00');
-  $('#ope_despesas').mask('0.00');
-  $('#ope_acrescimos').mask('0.00');
-  $('#ope_float').mask('0.00');
+  $('#ope_despesas').mask('0000.00');
+  $('#ope_acrescimos').mask('0000.00');
+  $('#ope_recompra').mask('0000.00');
+  $('#ope_juros').mask('0000.00');
+  $('#ope_float').mask('0');
 });
 
 // Funções para calculos
@@ -168,6 +174,8 @@ function calcularoperacao() {
     var campoValorLiquido = document.getElementsByName('ope_valorliquido' + i)[0];
     var campoDespesas = document.getElementsByName('ope_despesas')[0];
     var campoAcrescimos = document.getElementsByName('ope_acrescimos')[0];
+    var campoRecompra = document.getElementsByName('ope_recompra')[0];
+    var campoJuros = document.getElementsByName('ope_juros')[0];
     var campoNumTitulo = document.getElementsByName('ope_numtitulo' + i)[0];
     var campoRazaoSocial = document.getElementsByName('ope_razaosocial' + i)[0];
     var campoCnpj = document.getElementsByName('ope_cnpj' + i)[0];
@@ -181,7 +189,7 @@ function calcularoperacao() {
     var campoCidade = document.getElementsByName('ope_cidade' + i)[0];
     var campoEstado = document.getElementsByName('ope_estado' + i)[0];
 
-    if (campoVencimento && campoPrazo && campoTaxaPeriodo && campoValorCompra && campoValorIOF && campoValorIOFadicional && campoValorLiquido && campoDespesas && campoAcrescimos) {
+    if (campoVencimento && campoPrazo && campoTaxaPeriodo && campoValorCompra && campoValorIOF && campoValorIOFadicional && campoValorLiquido && campoDespesas && campoAcrescimos && campoRecompra && campoJuros) {
       var vencimento = new Date(campoVencimento.value);
       var diferencaEmDias = Math.ceil((vencimento - dataOperacao) / (1000 * 60 * 60 * 24));
       var resultadoComFloat = diferencaEmDias + myFloat + 2;
@@ -227,7 +235,9 @@ function calcularoperacao() {
         if (i === 1) {
           var despesas = parseFloat(campoDespesas.value) || 0;
           var acrescimos = parseFloat(campoAcrescimos.value) || 0;
-          var valorLiquido1 = valortotal - valorCompra - valoriof - valoriofadicional - despesas + acrescimos;
+          var recompra = parseFloat(campoRecompra.value) || 0;
+          var juros = parseFloat(campoJuros.value) || 0;
+          var valorLiquido1 = valortotal - valorCompra - valoriof - valoriofadicional - despesas + acrescimos - recompra - juros;
           campoValorLiquido.value = valorLiquido1.toFixed(2);
         } else {
           var valorLiquido = valortotal - valorCompra - valoriof - valoriofadicional;
@@ -264,4 +274,20 @@ function converterParaCaixaAlta(elemento) {
 // Função para redirecionar para a página principal
 function irParaPaginaPrincipal() {
     window.location.href = "http://127.0.0.1:8000/Inicio";
+}
+
+$(document).ready(function () {
+  $("#searchInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("table tbody tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+  });
+});
+
+// Função para exportar os dados para Excel
+function exportToExcel() {
+  const table = document.getElementById('dataTable');
+  const wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"});
+  XLSX.writeFile(wb, 'DadosTela.xlsx');
 }

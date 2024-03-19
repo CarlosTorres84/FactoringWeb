@@ -58,7 +58,7 @@
         </fieldset>
         <fieldset class="custom-fieldset">
         <legend>Taxas e Limites</legend>
-          <div></div>
+
           <div class="form-group">
             <label for="ope_taxacompra">Taxa de Compra %:</label>
             <input type="text" id="ope_taxacompra" name="ope_taxacompra" value="{% if form.initial.ope_taxacompra %}{{ form.initial.ope_taxacompra|stringformat:"f" }}{% endif %}" required>
@@ -68,15 +68,19 @@
             <label for="ope_iof">IOF Anual %:</label>
             <input type="text" id="ope_iof" name="ope_iof" value="{% if form.initial.ope_iof %}{{ form.initial.ope_iof|stringformat:"f" }}{% endif %}" required>
           </div>
-      
+          
           <div class="form-group">
             <label for="ope_iofadicional">IOF Adicional %:</label>
             <input type="text" id="ope_iofadicional" name="ope_iofadicional" value="{% if form.initial.ope_iofadicional %}{{ form.initial.ope_iofadicional|stringformat:"f" }}{% endif %}" required>
+          </div>  
+          
+          <div class="form-group">
+            <label for="ope_float">Float:</label>
+            <input type="text" id="ope_float" name="ope_float" value="{% if form.initial.ope_float %}{{ form.initial.ope_float|stringformat:"f" }}{% endif %}" required>
           </div>
 
           <div></div>
-          <div></div>
-        
+         
           <div class="form-group">
             <label for="ope_despesas">Despesas $ (-):</label>
             <input type="text" id="ope_despesas" name="ope_despesas" value="{{ form.initial.ope_despesas|stringformat:"f" }}">
@@ -88,8 +92,13 @@
           </div>
 
           <div class="form-group">
-            <label for="ope_float">MyFloat:</label>
-            <input type="text" id="ope_float" name="ope_float" value="{% if form.initial.ope_float %}{{ form.initial.ope_float|stringformat:"f" }}{% endif %}" required>
+            <label for="ope_recompra">Recompra $ (-):</label>
+            <input type="text" id="ope_recompra" name="ope_recompra" value="{{ form.initial.ope_recompra|stringformat:"f" }}">
+          </div>
+
+          <div class="form-group">
+            <label for="ope_juros">Juros $ (-):</label>
+            <input type="text" id="ope_juros" name="ope_juros" value="{{ form.initial.ope_juros|stringformat:"f" }}">
           </div>
         </fieldset>
        

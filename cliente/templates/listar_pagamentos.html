@@ -6,6 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LISTAR PAGAMENTOS - LION'S FOMENTO MERCANTIL LTDA</title>
     <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
@@ -21,8 +24,9 @@
     </header>
 
     <main>
+        <input type="text" id="searchInput" placeholder="Buscar qualquer informação...">
         <fieldset>
-            <table class="table">
+            <table id="dataTable" class="table">
                 <thead>
                     <tr>
                         <th>Data de Pagamento</th>
@@ -46,6 +50,7 @@
         <div>
             <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página
                 Principal</button>
+                <button class="exportar-btn" onclick="exportToExcel()">Exportar Excel</button>
         </div>
     </main>
     <footer>

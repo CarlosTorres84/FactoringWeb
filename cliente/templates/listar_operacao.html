@@ -24,8 +24,8 @@
 
 
     <main>
+        <input type="text" id="searchInput" placeholder="Buscar qualquer informação...">
         <fieldset>
-
             <table class="table">
                 <thead>
                     <tr>
@@ -49,7 +49,7 @@
                         <td>{{i.ope_taxacompra}}%</td>
                         <td>
                             <div>
-                                <a href="{% url 'editar_operacao' i.ope_id %}" class="edit">Detalhes/ Editar</a>
+                                <a class="edit-btn" href="{% url 'editar_operacao' i.ope_id %}" class="edit">Detalhes/ Editar</a>
                             </div>
                         </td>
                         <td>

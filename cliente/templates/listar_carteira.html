@@ -6,6 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LISTAR CARTEIRA - LION'S FOMENTO MERCANTIL LTDA</title>
     <link rel="stylesheet" type="text/css" href="../static/admin/css/style.css">
@@ -21,8 +24,10 @@
     </header>
 
     <main>
+        
+        <input type="text" id="searchInput" placeholder="Buscar qualquer informação...">
         <fieldset>
-            <table class="table">
+            <table id="dataTable" class="table">
                 <thead>
                     <tr>
                         <th>Data Operação:</th>
@@ -31,8 +36,10 @@
                         <th>Sub Cliente Nome: </th>
                         <th>Título:</th>
                         <th>Vencimento:</th>
-                        <th id="total">Total:</th>
-                        <th id="pago">Pago:</th>
+                        <th>Total:</th>
+                        <th>Pago:</th>
+                        <th>Multa/ Juros:</th>
+                        <th>Saldo:</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,13 +53,37 @@
                         <td>{{i.ope_numtitulo1}}</td>
                         <td>{{ i.ope_vencimento1|date:"d/m/Y" }}</td>
                         <td>R$ {{i.ope_valortotal1}}</td>
-                        <td>
+                        <td> 
                             {% for carteira_item in carteira %}
-                            {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
-                            R$ {{ carteira_item.car_valorpgto }}
-                            {% endif %}
+                                {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
+                                    R$ {{ carteira_item.car_valorpgto }}
+                                {% endif %}
                             {% endfor %}
+                        </td>                        
+                        <td>
+                            {% with valorTotal=i.ope_valortotal1 %}
+                            {% for carteira_item in carteira %}
+                                {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
+                                    {{ valorTotal|add:carteira_item.car_valorpgto }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
                         </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal1 %}
+                                {% for carteira_item in carteira %}
+                                    {% if i.ope_numtitulo1 == carteira_item.car_titulonumero %}
+                                        {% with soma=valorTotal|add:carteira_item.car_valorpgto %}
+                                            {% if soma >= 0 %}
+                                                R$ {{ soma }}
+                                            {% else %}
+                                                R$ 0
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>   
                     </tr>
                     {% if i.ope_valortotal2 != 0 %}
                     <tr>
@@ -70,6 +101,30 @@
                             {% endif %}
                             {% endfor %}
                         </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal2 %}
+                            {% for carteira_item in carteira %}
+                                {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
+                                    {{ valorTotal|add:carteira_item.car_valorpgto }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                        </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal2 %}
+                                {% for carteira_item in carteira %}
+                                    {% if i.ope_numtitulo2 == carteira_item.car_titulonumero %}
+                                        {% with soma=valorTotal|add:carteira_item.car_valorpgto %}
+                                            {% if soma >= 0 %}
+                                                R$ {{ soma }}
+                                            {% else %}
+                                                R$ 0
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>   
                     </tr>
                     {% endif %}
                     {% if i.ope_valortotal3 != 0 %}
@@ -88,6 +143,30 @@
                             {% endif %}
                             {% endfor %}
                         </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal3 %}
+                            {% for carteira_item in carteira %}
+                                {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
+                                    {{ valorTotal|add:carteira_item.car_valorpgto }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                        </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal3 %}
+                                {% for carteira_item in carteira %}
+                                    {% if i.ope_numtitulo3 == carteira_item.car_titulonumero %}
+                                        {% with soma=valorTotal|add:carteira_item.car_valorpgto %}
+                                            {% if soma >= 0 %}
+                                                R$ {{ soma }}
+                                            {% else %}
+                                                R$ 0
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>   
                     </tr>
                     {% endif %}
                     {% if i.ope_valortotal4 != 0 %}
@@ -96,8 +175,8 @@
                         <td>{{i.ope_id}}</td>
                         <td>{{i.cli_id}}</td>
                         <td>{{i.ope_razaosocial4}}</td>
+                        <td>{{i.ope_numtitulo4}}</td>
                         <td>{{ i.ope_vencimento4|date:"d/m/Y" }}</td>
-                        <td>{{i.ope_vencimento4}}</td>
                         <td>R$ {{i.ope_valortotal4}}</td>
                         <td>
                             {% for carteira_item in carteira %}
@@ -106,6 +185,30 @@
                             {% endif %}
                             {% endfor %}
                         </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal4 %}
+                            {% for carteira_item in carteira %}
+                                {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
+                                    {{ valorTotal|add:carteira_item.car_valorpgto }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                        </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal4 %}
+                                {% for carteira_item in carteira %}
+                                    {% if i.ope_numtitulo4 == carteira_item.car_titulonumero %}
+                                        {% with soma=valorTotal|add:carteira_item.car_valorpgto %}
+                                            {% if soma >= 0 %}
+                                                R$ {{ soma }}
+                                            {% else %}
+                                                R$ 0
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>   
                     </tr>
                     {% endif %}
                     {% if i.ope_valortotal5 != 0 %}
@@ -124,6 +227,30 @@
                             {% endif %}
                             {% endfor %}
                         </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal5 %}
+                            {% for carteira_item in carteira %}
+                                {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
+                                    {{ valorTotal|add:carteira_item.car_valorpgto }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                        </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal5 %}
+                                {% for carteira_item in carteira %}
+                                    {% if i.ope_numtitulo5 == carteira_item.car_titulonumero %}
+                                        {% with soma=valorTotal|add:carteira_item.car_valorpgto %}
+                                            {% if soma >= 0 %}
+                                                R$ {{ soma }}
+                                            {% else %}
+                                                R$ 0
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>   
                     </tr>
                     {% endif %}
                     {% if i.ope_valortotal6 != 0 %}
@@ -142,17 +269,44 @@
                             {% endif %}
                             {% endfor %}
                         </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal6 %}
+                            {% for carteira_item in carteira %}
+                                {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
+                                    {{ valorTotal|add:carteira_item.car_valorpgto }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                        </td>
+                        <td>
+                            {% with valorTotal=i.ope_valortotal6 %}
+                                {% for carteira_item in carteira %}
+                                    {% if i.ope_numtitulo6 == carteira_item.car_titulonumero %}
+                                        {% with soma=valorTotal|add:carteira_item.car_valorpgto %}
+                                            {% if soma >= 0 %}
+                                                R$ {{ soma }}
+                                            {% else %}
+                                                R$ 0
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>   
                     </tr>
                     {% endif %}
                     {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
+            
+    <script src="../static/admin/js/script.js"></script>
         </fieldset>
         <div>
             <button class="pagina-principal-btn" type="button" onclick="irParaPaginaPrincipal()">Ir para a Página
                 Principal</button>
-        </div>
+            <button class="exportar-btn" onclick="exportToExcel()">Exportar Excel</button>
+        </div>    
     </main>
 
     <footer>

@@ -73,6 +73,11 @@
             <div></div>
 
             <div class="form-group">
+              <label class="label-diferente2" for="sim_float">Float:</label>
+              <input type="text" id="sim_float" name="sim_float" value="{% if form.initial.sim_float %}{{ form.initial.sim_float|stringformat:"f"  }}{% endif %}" class="form-control" required>
+            </div>
+
+            <div class="form-group">
               <label class="label-diferente2" for="sim_despesas">Despesas $ (-):</label>          
               <input type="text" id="sim_despesas" name="sim_despesas" value="{% if form.instance.sim_despesas %}{{ form.instance.sim_despesas|stringformat:"f" }}{% else %}0{% endif %}" />
             </div>
@@ -82,10 +87,6 @@
               <input type="text" id="sim_acrescimos" name="sim_acrescimos" value="{% if form.instance.sim_acrescimos %}{{ form.instance.sim_acrescimos|stringformat:"f" }}{% else %}0{% endif %}" />
             </div>
               
-            <div class="form-group">
-              <label class="label-diferente2" for="sim_float">Float:</label>
-              <input type="text" id="sim_float" name="sim_float" value="{% if form.initial.sim_float %}{{ form.initial.sim_float|stringformat:"f"  }}{% endif %}" class="form-control" required>
-            </div>
         </fieldset>
         
         <fieldset>

@@ -27,11 +27,10 @@
             {% csrf_token %}
             <fieldset>
                 <legend>Dados da Empresa</legend>
-                <div class="linha-diferente">
-                    <label class="label-diferente" for="fac_razaosocial">Razão Social:</label>
+                <div>
+                    <label for="fac_razaosocial">Razão Social:</label>
                     <input type="text" id="fac_razaosocial" name="fac_razaosocial" value="{{ form.instance.fac_razaosocial }}" oninput="converterParaCaixaAlta(this)" required>
                 </div>
-                <div> </div>
                 <div>
                     <label for="fac_nomefantasia">Nome Fantasia:</label>
                     <input type="text" id="fac_nomefantasia" name="fac_nomefantasia" value="{{ form.instance.fac_nomefantasia }}" oninput="converterParaCaixaAlta(this)" required>
@@ -47,6 +46,10 @@
                 <div>
                     <label for="fac_ie">Insc. Estadual:</label>
                     <input type="text" id="fac_ie" name="fac_ie" value="{{ form.instance.fac_ie }}">
+                </div>
+                <div>   
+                    <label for="{{ form.fac_datafundacao.id_for_label }}">Data Fundação:</label>
+                    {{ form.fac_datafundacao }}
                 </div>
                 <div>
                     <label for="fac_email1">E-mail:</label>
